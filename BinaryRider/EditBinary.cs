@@ -20,12 +20,36 @@ namespace BinaryRider
 		// *************************************************************
 		private Color m_Gay = Color.DimGray;
 		// *************************************************************
-		private string m_FileName = "";
-		public string FileName { get { return m_FileName; } }
-		// *************************************************************
+		private BDataFile? m_Data = null;
+		public BDataFile? Data
+		{
+			get { return m_Data; }
+			set
+			{
+				m_Data = value;
+				if((m_Data != null)&&(BBin !=null))
+				{
+					BBin.SetData(m_Data);
+				}
+			} 
+		}
+		public int ByteSize
+		{
+			get
+			{
+				int ret = 0;
+				if(m_Data != null)
+				{
+					ret = m_Data.ByteSize;
+				}
+				return ret;
+			}
+		}
+		/*
 		private byte[] m_Data = new byte[0];
 		public byte[] Data { get { return m_Data; } }
 		public int ByteSize {get { return m_Data.Length; }}
+		*/
 		public BSelection Selection = new BSelection();
 		public BSize BSize = new BSize();
 		public BDisp BDisp = new BDisp();
@@ -35,6 +59,7 @@ namespace BinaryRider
 		public EditBinary()
 		{
 			DrawFlag = false;
+
 			m_form.Alignment = StringAlignment.Center;
 			m_form.LineAlignment = StringAlignment.Center;
 			this.Size = new Size(300, 300);
@@ -59,28 +84,14 @@ true);
 		public bool LoadFile(string fn)
 		{
 			bool ret = false;
-			if (File.Exists(fn) == false) return ret;
-			try
+			if(m_Data != null)
 			{
-				m_Data = new byte[0];
-				m_FileName = "";
-				using (FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read))
+				ret = m_Data.LoadFile(fn);
+				if (ret)
 				{
-					byte[] bs = new byte[fs.Length];
-					int sz = fs.Read(bs, 0, bs.Length);
-					if (sz == fs.Length)
-					{
-						m_Data = bs;
-						m_FileName = fn;
-						DrawOffScr();
-						this.Invalidate();
-						ret = true;
-					}
+					DrawOffScr();
+					this.Invalidate();
 				}
-			}
-			catch
-			{
-				ret = false;
 			}
 			return ret;
 		}

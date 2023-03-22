@@ -19,7 +19,7 @@ namespace BinaryRider
 		}
 		protected override void OnResize(EventArgs e)
 		{
-			int mh = 30;
+			int mh = 50;
 			int w = this.ClientSize.Width - vScrollBar1.Width;
 			int h = this.ClientSize.Height - mh;
 			editBinary1.Location = new Point(0, mh);

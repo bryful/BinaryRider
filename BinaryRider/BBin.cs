@@ -24,10 +24,15 @@ namespace BinaryRider
 			m_eb = eb;
 			if (m_eb != null)
 			{
+				m_Data = m_eb.Data;
 				m_eb.Resize += (sender, e) => { ChkSize(); };
 				m_Location = new Point(m_eb.BSize.ByteLeft, m_eb.BSize.LineHeight);
 				ChkSize();
 			}
+		}
+		public void SetData(BDataFile df)
+		{
+			m_Data = df;
 		}
 		public void ChkSize()
 		{
@@ -41,10 +46,14 @@ namespace BinaryRider
 			}
 		}
 		// *********************************************************************************
-		private string ByteHex(byte b)
+		private string ByteHex(byte? b)
 		{
-			string ret = $"{b:X}";
-			if (b < 0x10) ret = "0" + ret;
+			string ret = "??";
+			if (b != null)
+			{
+				ret = $"{b:X}";
+				if (b < 0x10) ret = "0" + ret;
+			}
 			return ret ;
 		}
 		// *********************************************************************************
@@ -56,19 +65,20 @@ namespace BinaryRider
 			using (SolidBrush sb = new SolidBrush(BackColor0))
 			{
 				g.FillRectangle(sb, ClientRectangle);
-				if (m_eb != null)
+				if ((m_eb != null)&&(m_Data!=null))
 				{
 					SFormat.Alignment = StringAlignment.Center;
 
-					if(m_eb.ByteSize>0)
+					if(m_Data.ByteSize>0)
 					{
 						int charLeft = m_eb.BSize.CharLeft;
-						for (int idx = 0; idx< m_eb.ByteSize;idx++)
+						for (int idx = 0; idx< m_Data.ByteSize; idx++)
 						{
 							int line = idx / (int)m_eb.BDisp.DispMode;
 							int y = line * m_eb.BSize.LineHeight - m_eb.BDisp.Y;
+							if (y >= m_Size.Height) break;
 
-							if(y + m_eb.BSize.LineHeight>0)
+							if (y + m_eb.BSize.LineHeight>0)
 							{
 								int x = idx % (int)m_eb.BDisp.DispMode;
 
@@ -90,7 +100,7 @@ namespace BinaryRider
 									m_eb.BSize.ByteWidth,
 									m_eb.BSize.LineHeight
 									);
-								g.DrawString(ByteHex(m_eb.Data[idx]), m_eb.Font, sb, r, SFormat);
+								g.DrawString(ByteHex(m_Data[idx]), m_eb.Font, sb, r, SFormat);
 								r = new Rectangle(
 									x * m_eb.BSize.CharWidth + charLeft,
 									y,
@@ -98,10 +108,6 @@ namespace BinaryRider
 									m_eb.BSize.LineHeight
 									);
 								g.DrawString(".", m_eb.Font, sb, r, SFormat);
-							}
-							else if (y >= m_Size.Height)
-							{
-								break;
 							}
 						}
 

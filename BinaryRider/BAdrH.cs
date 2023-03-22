@@ -27,6 +27,7 @@ namespace BinaryRider
 			m_eb = eb;
 			if (m_eb != null)
 			{
+				m_Data = m_eb.Data;
 				m_Location = new Point(m_eb.BSize.ByteLeft, 0);
 				SetSzie(new Size(
 					(int)eb.BSize.HeaderWidth,

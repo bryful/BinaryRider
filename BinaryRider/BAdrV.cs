@@ -25,6 +25,7 @@ namespace BinaryRider
 			m_eb = eb;
 			if (m_eb != null)
 			{
+				m_Data = m_eb.Data;
 				m_eb.Resize += (sender, e) => { ChkSize(); };
 				m_Location = new Point(0, m_eb.BSize.LineHeight);
 				ChkSize();
@@ -41,7 +42,10 @@ namespace BinaryRider
 						));
 			}
 		}
-
+		private string AdrHex(int adr)
+		{
+			return $"{adr:X4}";
+		}
 		public override void DrawOffScr()
 		{
 			if (m_OffScr == null) return;
@@ -71,7 +75,7 @@ namespace BinaryRider
 							sb.Color = ForeColor;
 							Rectangle r = new Rectangle(0, y, m_eb.BSize.AdrWidth1, m_eb.BSize.LineHeight);
 							int adr = idx * (int)m_eb.BDisp.DispMode;
-							g.DrawString($"{adr:X}", m_eb.Font, sb, r, SFormat);
+							g.DrawString(AdrHex(adr), m_eb.Font, sb, r, SFormat);
 						}
 						y += m_eb.BSize.LineHeight;
 						idx++;

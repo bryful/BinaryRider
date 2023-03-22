@@ -36,7 +36,7 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(744, 435);
 			Name = "MainForm";
-			Text = "Form1";
+			Text = "BinaryRider";
 			ResumeLayout(false);
 			PerformLayout();
 		}

@@ -16,9 +16,11 @@ namespace BinaryRider
 	{
 		// ************************************************************************
 		protected EditBinary? m_eb = null;
+		protected BDataFile? m_Data = null; 
 		protected virtual void SetEditBinary(EditBinary eb)
 		{
 			m_eb = eb;
+			m_Data = eb.Data;
 			DrawOffScr();
 		}
 		// ************************************************************************
