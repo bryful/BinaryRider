@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -12,11 +13,11 @@ using System.Windows.Forms;
 
 namespace BinaryRider
 {
-	public class BAdrV :BControl
+	public class BAdressV :BControl
 	{
 		public Color BackColor0 { get; set; } = Color.FromArgb(220, 220, 220);
 		public Color BackColor1 { get; set; } = Color.FromArgb(200, 200, 200);
-		public BAdrV(EditBinary eb) : base(eb)
+		public BAdressV(EditBinary eb) : base(eb)
 		{
 			SetEditBinary(eb);
 		}
@@ -25,9 +26,8 @@ namespace BinaryRider
 			m_eb = eb;
 			if (m_eb != null)
 			{
-				m_Data = m_eb.Data;
+				m_DataFile = m_eb.DataFile;
 				m_eb.Resize += (sender, e) => { ChkSize(); };
-				m_Location = new Point(0, m_eb.BSize.LineHeight);
 				ChkSize();
 			}
 		}
@@ -40,6 +40,7 @@ namespace BinaryRider
 						m_eb.BSize.AdrWidthAll,
 						m_eb.Height - m_eb.BSize.LineHeight
 						));
+				m_Location = new Point(0, m_eb.BSize.LineHeight);
 			}
 		}
 		private string AdrHex(int adr)
@@ -54,31 +55,36 @@ namespace BinaryRider
 			{
 				g.FillRectangle(sb, ClientRectangle);
 				sb.Color = ForeColor;
-				if (m_eb != null)
+				if ((m_eb != null))
 				{
 					SFormat.Alignment = StringAlignment.Far;
 
+					int h = m_eb.BSize.LineHeight;
 
-					int y = -m_eb.BDisp.Y;
 					sb.Color = ForeColor;
-					int idx = 0;
-					while (y < this.m_Size.Height)
+
+					int sline = m_eb.BDisp.Y / h;
+					int adr = m_eb.BDisp.DispStartAdress + sline* BDisp.HexC;
+					int y = -m_eb.BDisp.Y + sline * h;
+					int lineIdx = sline;
+
+					while (y < m_Size.Height)
 					{
-						if(y + m_eb.BSize.LineHeight >=0)
+						if (y + h >=0)
 						{
-							if(idx%2 ==1)
+							if(lineIdx%2 ==1)
 							{
 								sb.Color = BackColor1;
-								Rectangle rr = new Rectangle(0, y, m_eb.BSize.AdrWidthAll, m_eb.BSize.LineHeight);
-								g.FillRectangle(sb, rr);
+								g.FillRectangle(sb, new Rectangle(0, y, m_eb.BSize.AdrWidthAll, h));
 							}
 							sb.Color = ForeColor;
-							Rectangle r = new Rectangle(0, y, m_eb.BSize.AdrWidth1, m_eb.BSize.LineHeight);
-							int adr = idx * (int)m_eb.BDisp.DispMode;
+							Rectangle r = new Rectangle(0, y, m_eb.BSize.AdrWidth1, h);
+							Debug.WriteLine(r.ToString());
 							g.DrawString(AdrHex(adr), m_eb.Font, sb, r, SFormat);
 						}
-						y += m_eb.BSize.LineHeight;
-						idx++;
+						y += h;
+						lineIdx++;
+						adr += BDisp.HexC;
 					}
 				}
 			}

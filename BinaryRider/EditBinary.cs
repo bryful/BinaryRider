@@ -14,22 +14,52 @@ namespace BinaryRider
 	public partial class EditBinary : Control
 	{
 		private bool DrawFlag = true;
-		public BAdrH? BAdrH { get; set; }=null;
-		public BAdrV? BAdrV { get; set; } = null;
-		public BBin? BBin { get; set; } = null;
+		public BAdressH? BAdrH { get; set; }=null;
+		public BAdressV? BAdrV { get; set; } = null;
+		public BSheet? BSheet { get; set; } = null;
+
+		private VScrollBar vsbar = new VScrollBar();
 		// *************************************************************
 		private Color m_Gay = Color.DimGray;
 		// *************************************************************
-		private BDataFile? m_Data = null;
-		public BDataFile? Data
+		public new Font Font 
 		{
-			get { return m_Data; }
+			get { return base.Font; }
 			set
 			{
-				m_Data = value;
-				if((m_Data != null)&&(BBin !=null))
+				base.Font = value;
+				if(BSize != null)
 				{
-					BBin.SetData(m_Data);
+					BSize.GetSizeFromFont();
+					ChkSize();
+				}
+			} 
+		}
+		// *************************************************************
+		public void ChkSize()
+		{
+			BDisp.ChkSize();
+			if (BAdrH != null) BAdrH.ChkSize();
+			if (BAdrV != null) BAdrV.ChkSize();
+			if (BSheet != null) BSheet.ChkSize();
+
+			vsbar.Location = new Point(this.Width - vsbar.Width, 0);
+			vsbar.Size = new Size(vsbar.Width, this.Height);
+			vsbar.Maximum = BDisp.MaxY;
+			DrawOffScr();
+			this.Invalidate();
+		}
+		// *************************************************************
+		private BDataFile? m_DataFile = null;
+		public BDataFile? DataFile
+		{
+			get { return m_DataFile; }
+			set
+			{
+				m_DataFile = value;
+				if((m_DataFile != null)&&(BSheet !=null))
+				{
+					BSheet.SetDataFile(m_DataFile);
 				}
 			} 
 		}
@@ -38,18 +68,21 @@ namespace BinaryRider
 			get
 			{
 				int ret = 0;
-				if(m_Data != null)
+				if(m_DataFile != null)
 				{
-					ret = m_Data.ByteSize;
+					ret = m_DataFile.ByteSize;
 				}
 				return ret;
 			}
 		}
-		/*
-		private byte[] m_Data = new byte[0];
-		public byte[] Data { get { return m_Data; } }
-		public int ByteSize {get { return m_Data.Length; }}
-		*/
+		public int DispStartAdress
+		{
+			get{ return BDisp.DispStartAdress; }
+		}
+		public int DispByteSize
+		{
+			get {return BDisp.DispByteSize;}
+		}
 		public BSelection Selection = new BSelection();
 		public BSize BSize = new BSize();
 		public BDisp BDisp = new BDisp();
@@ -74,9 +107,30 @@ true);
 			Selection.SetEditBinary(this);
 			BSize.SetEditBinary(this);
 			BDisp.SetEditBinary(this);
-			BAdrH = new BAdrH(this);
-			BAdrV = new BAdrV(this);
-			BBin = new BBin(this);
+			BAdrH = new BAdressH(this);
+			BAdrV = new BAdressV(this);
+			BSheet = new BSheet(this);
+			BSize.GetSizeFromFont();
+
+			vsbar.Name = "vsbar";
+			vsbar.Location = new Point(this.Width - vsbar.Width, 0);
+			vsbar.Size = new Size(vsbar.Width, this.Height);
+
+			this.Controls.Add(vsbar);
+			ChkSize();
+			vsbar.Maximum = BDisp.MaxY;
+			vsbar.Value = BDisp.Y;
+
+			vsbar.ValueChanged += (sender, e) =>
+			{
+				if (BDisp.Y != vsbar.Value)
+				{
+					BDisp.Y = vsbar.Value;
+					if (BAdrV != null) BAdrV.DrawOffScr();
+					if (BSheet != null) BSheet.DrawOffScr();
+					this.Refresh();
+				}
+			};
 			DrawFlag = true;
 			this.Refresh();
 		}
@@ -84,11 +138,14 @@ true);
 		public bool LoadFile(string fn)
 		{
 			bool ret = false;
-			if(m_Data != null)
+			if(m_DataFile != null)
 			{
-				ret = m_Data.LoadFile(fn);
+				ret = m_DataFile.LoadFile(fn);
 				if (ret)
 				{
+					ChkSize();
+					vsbar.Maximum = BDisp.MaxY;
+					vsbar.Value = BDisp.Y;
 					DrawOffScr();
 					this.Invalidate();
 				}
@@ -100,7 +157,7 @@ true);
 		{
 			if (BAdrH != null) BAdrH.DrawOffScr();
 			if (BAdrV != null) BAdrV.DrawOffScr();
-			if (BBin != null) BBin.DrawOffScr();
+			if (BSheet != null) BSheet.DrawOffScr();
 		}
 		// *************************************************************
 		protected override void OnPaint(PaintEventArgs pe)
@@ -113,7 +170,7 @@ true);
 				g.Clear(BackColor);
 				if (BAdrH != null) BAdrH.Draw(g);
 				if (BAdrV != null) BAdrV.Draw(g);
-				if (BBin != null) BBin.Draw(g);
+				if (BSheet != null) BSheet.Draw(g);
 			}
 		}
 		// *************************************************************
@@ -124,6 +181,11 @@ true);
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			base.OnMouseClick(e);
+		}
+		// *************************************************************
+		protected override void OnResize(EventArgs e)
+		{
+			ChkSize();
 		}
 	}
 }

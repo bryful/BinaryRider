@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace BinaryRider
 {
@@ -17,6 +19,29 @@ namespace BinaryRider
 			{
 				//ChkSize();
 			}
+		}
+		// *******************************************************
+		public bool GetSizeFromFont()
+		{
+			bool ret = false;
+			if (m_BE == null) return ret;
+
+			using (StringFormat format = new StringFormat(StringFormat.GenericTypographic))
+			using (Bitmap bmp = new Bitmap(200,50,PixelFormat.Format32bppArgb))
+			{
+				Graphics g = Graphics.FromImage(bmp);
+				SizeF szF = g.MeasureString("FFF", m_BE.Font, 100, format);
+				int w = (int)(szF.Width/3+0.5);
+				int h = (int)(szF.Height+0.5);
+
+				LineHeight = h;
+				AdrWidth1 = w * 8;
+				AdrWidth2 = w * 1;
+				ByteWidth = (int)((double)w * 3.3);
+				CharWidth = (int)((double)w * 1.1);
+				ret = true;
+			}
+			return ret;
 		}
 		// *******************************************************
 		/// <summary>
@@ -52,7 +77,7 @@ namespace BinaryRider
 		/// <summary>
 		/// バイトと文字の間の幅
 		/// </summary>
-		public int ByteSide { get; set; } = 24;
+		public int ByteSide { get; set; } = 10;
 		/// <summary>
 		/// 文字表示の横幅
 		/// </summary>
@@ -66,24 +91,14 @@ namespace BinaryRider
 		{
 			get 
 			{
-				int x = 0x10;
-				if (m_BE != null)
-				{
-					x = (int)m_BE.BDisp.DispMode;
-				}
-				return  (ByteWidth * x) + ByteSide;
+				return  (ByteWidth * BDisp.HexC) + ByteSide;
 			}
 		}
 		public int HeaderWidth
 		{
 			get 
 			{
-				int x = 16;
-				if(m_BE!=null)
-				{
-					x = (int)m_BE.BDisp.DispMode;
-				}
-				return (ByteWidth + CharWidth) * x + ByteSide;
+				return (ByteWidth + CharWidth) * BDisp.HexC + ByteSide + CharWidth;
 			}
 		}
 

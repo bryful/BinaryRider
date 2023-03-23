@@ -33,9 +33,8 @@
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			editToolStripMenuItem = new ToolStripMenuItem();
 			editBinary1 = new EditBinary();
-			vScrollBar1 = new VScrollBar();
-			toolStrip1 = new ToolStrip();
 			bDataFile1 = new BDataFile(components);
+			toolStrip1 = new ToolStrip();
 			menuStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -44,7 +43,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(726, 24);
+			menuStrip1.Size = new Size(1131, 24);
 			menuStrip1.TabIndex = 0;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -62,26 +61,19 @@
 			// 
 			// editBinary1
 			// 
-			editBinary1.Data = bDataFile1;
+			editBinary1.DataFile = bDataFile1;
 			editBinary1.Font = new Font("源ノ角ゴシック Code JP R", 8.999999F, FontStyle.Regular, GraphicsUnit.Point);
 			editBinary1.Location = new Point(0, 50);
 			editBinary1.Name = "editBinary1";
-			editBinary1.Size = new Size(671, 452);
+			editBinary1.Size = new Size(922, 452);
 			editBinary1.TabIndex = 1;
 			editBinary1.Text = "editBinary1";
-			// 
-			// vScrollBar1
-			// 
-			vScrollBar1.Location = new Point(693, 49);
-			vScrollBar1.Name = "vScrollBar1";
-			vScrollBar1.Size = new Size(17, 455);
-			vScrollBar1.TabIndex = 2;
 			// 
 			// toolStrip1
 			// 
 			toolStrip1.Location = new Point(0, 24);
 			toolStrip1.Name = "toolStrip1";
-			toolStrip1.Size = new Size(726, 25);
+			toolStrip1.Size = new Size(1131, 25);
 			toolStrip1.TabIndex = 3;
 			toolStrip1.Text = "toolStrip1";
 			// 
@@ -89,9 +81,8 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(726, 502);
+			ClientSize = new Size(1131, 507);
 			Controls.Add(toolStrip1);
-			Controls.Add(vScrollBar1);
 			Controls.Add(editBinary1);
 			Controls.Add(menuStrip1);
 			DoubleBuffered = true;
@@ -110,7 +101,6 @@
 		private ToolStripMenuItem fileToolStripMenuItem;
 		private ToolStripMenuItem editToolStripMenuItem;
 		private EditBinary editBinary1;
-		private VScrollBar vScrollBar1;
 		private ToolStrip toolStrip1;
 		private BDataFile bDataFile1;
 	}

@@ -34,7 +34,7 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(744, 435);
+			ClientSize = new Size(910, 473);
 			Name = "MainForm";
 			Text = "BinaryRider";
 			ResumeLayout(false);

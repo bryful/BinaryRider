@@ -12,11 +12,11 @@ using System.Windows.Forms;
 
 namespace BinaryRider
 {
-	public class BAdrH : BControl
+	public class BAdressH : BControl
 	{
 		public Color ForeColor0 { get; set; } = Color.FromArgb(100, 100, 100);
 		public Color ForeColor1 { get; set; } = Color.FromArgb(150, 150, 150);
-		public BAdrH(EditBinary eb):base(eb)
+		public BAdressH(EditBinary eb):base(eb)
 		{
 			BackColor = Color.LightGray;
 			ForeColor = Color.Black;
@@ -27,12 +27,20 @@ namespace BinaryRider
 			m_eb = eb;
 			if (m_eb != null)
 			{
-				m_Data = m_eb.Data;
-				m_Location = new Point(m_eb.BSize.ByteLeft, 0);
+				m_DataFile = m_eb.DataFile;
 				SetSzie(new Size(
-					(int)eb.BSize.HeaderWidth,
-					eb.BSize.LineHeight
+					(int)m_eb.BSize.HeaderWidth,
+					m_eb.BSize.LineHeight
 					));
+			}
+		}
+		public void ChkSize(int ow = 0, int oh = 0)
+		{
+			if (m_eb != null) {
+				int w = m_eb.BSize.HeaderWidth;
+				int h = m_eb.BSize.LineHeight;
+				SetSzie(new Size(w, h));
+				m_Location = new Point(m_eb.BSize.ByteLeft, 0);
 			}
 		}
 		public override void DrawOffScr()
@@ -71,21 +79,18 @@ namespace BinaryRider
 					
 					p.Color = ForeColor0;
 					p.Width = 1;
-					if(m_eb.BDisp.DispMode == DispMode.Hex16)
-					{
-						int y0 = 0;
-						int y1 = m_eb.BSize.LineHeight;
-						int x = m_eb.BSize.ByteWidth * 8;
-						p.Color = ForeColor0;
-						g.DrawLine(p,x, y0, x, y1);
-						x = m_eb.BSize.ByteWidth * 16;
-						g.DrawLine(p, x, y0, x, y1);
-						p.Color = ForeColor1;
-						x = m_eb.BSize.ByteWidth * 4;
-						g.DrawLine(p, x, y0, x, y1);
-						x = m_eb.BSize.ByteWidth * 12;
-						g.DrawLine(p, x, y0, x, y1);
-					}
+					int y0 = 0;
+					int y1 = m_eb.BSize.LineHeight;
+					int x = m_eb.BSize.ByteWidth * 8;
+					p.Color = ForeColor0;
+					g.DrawLine(p,x, y0, x, y1);
+					x = m_eb.BSize.ByteWidth * 16;
+					g.DrawLine(p, x, y0, x, y1);
+					p.Color = ForeColor1;
+					x = m_eb.BSize.ByteWidth * 4;
+					g.DrawLine(p, x, y0, x, y1);
+					x = m_eb.BSize.ByteWidth * 12;
+					g.DrawLine(p, x, y0, x, y1);
 				}
 			}
 		}

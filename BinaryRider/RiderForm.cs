@@ -20,12 +20,10 @@ namespace BinaryRider
 		protected override void OnResize(EventArgs e)
 		{
 			int mh = 50;
-			int w = this.ClientSize.Width - vScrollBar1.Width;
+			int w = this.ClientSize.Width;
 			int h = this.ClientSize.Height - mh;
 			editBinary1.Location = new Point(0, mh);
-			vScrollBar1.Location = new Point(w, mh);
 			editBinary1.Size = new Size(w, h);
-			vScrollBar1.Size = new Size(vScrollBar1.Width, h);
 		}
 		// ***************************************************************
 		protected override void OnDragEnter(DragEventArgs drgevent)
