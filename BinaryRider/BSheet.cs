@@ -110,13 +110,14 @@ namespace BinaryRider
 								g.DrawString(ByteHex(m_DataFile[adr]), m_eb.Font, sb, r, SFormat);
 
 
-								if (TwoByteFlag == 2)
+								if (TwoByteFlag > 0)
 								{
-									TwoByteFlag = 0;
+									TwoByteFlag--;
+									if (TwoByteFlag < 0) TwoByteFlag = 0;
 								}
 								else
 								{
-									string ss = m_DataFile.ToStrShiftJIS(adr, ref TwoByteFlag);
+									string ss = m_DataFile.ToStrUtf8(adr, ref TwoByteFlag);
 									SFormat.Alignment = StringAlignment.Near;
 									r = new Rectangle(
 										xcc * m_eb.BSize.CharWidth + charLeft,

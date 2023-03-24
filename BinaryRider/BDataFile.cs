@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace BinaryRider
 {
-	public enum EnCodeMode
+	public enum EncodeMode
 	{
 		ShiftJIS,
 		UTF8
 	}
 	public partial class BDataFile : Component
 	{
+		static Encoding enc8 = Encoding.UTF8;       
 		// *************************************************************
 		private string m_FileName = "";
 		public string FileName { get { return m_FileName; } }
@@ -37,9 +38,50 @@ namespace BinaryRider
 			}
 		}
 		// *************************************************************
-		public string ToStrUtf8(int idx)
+		public string ToStrUtf8(int idx, ref int len)
 		{
-			return "";
+			byte[] data = new byte[0];
+			byte nd = m_Data[idx];
+			len = -1;
+			if((nd>=0xF0)&&(nd<=0xF4)&&(idx<m_Data.Length-4))
+			{
+				data = new byte[4];
+				data[0] = nd;
+				data[1] = m_Data[idx + 1];
+				data[2] = m_Data[idx + 2];
+				data[3] = m_Data[idx + 3];
+				len = 3;
+			}else if ((nd >= 0xE0) && (nd <= 0xEF) && (idx < m_Data.Length - 3))
+			{
+				data = new byte[3];
+				data[0] = nd;
+				data[1] = m_Data[idx + 1];
+				data[2] = m_Data[idx + 2];
+				len = 2;
+			}
+			else if ((nd >= 0xC2) && (nd <= 0xDF) && (idx < m_Data.Length - 2))
+			{
+				data = new byte[2];
+				data[0] = nd;
+				data[1] = m_Data[idx + 1];
+				len = 1;
+			} else if ((nd >= 0x20) && (nd <= 0x7E))
+			{
+				data = new byte[1];
+				data[0] = nd;
+				len = 0;
+			}
+			if(len<0)
+			{
+				len = 0;
+				return "?";
+			}
+			else
+			{
+
+				return  enc8.GetString(data);
+
+			}
 		}
 		public string ToStrShiftJIS(int idx,ref int len)
 		{
@@ -52,7 +94,7 @@ namespace BinaryRider
 					data = new byte[2];
 					data[0] = nd;
 					data[1] = m_Data[idx+1];
-					len = 2;
+					len = 1;
 				}
 			}
 			if (data.Length == 0)
@@ -61,7 +103,7 @@ namespace BinaryRider
 				{
 					data = new byte[1];
 					data[0] = nd;
-					len = 1;
+					len = 0;
 				}
 				else
 				{
@@ -71,6 +113,17 @@ namespace BinaryRider
 			}
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // memo: Shift-JISを扱うためのおまじない
 			return System.Text.Encoding.GetEncoding(932).GetString(data); ;
+		}
+		public string ToStr(EncodeMode md, int idx, ref int len)
+		{
+			switch (md) 
+			{
+				case EncodeMode.ShiftJIS:
+					return ToStrShiftJIS(idx, ref len);
+				case EncodeMode.UTF8:
+				default:
+					return ToStrUtf8(idx, ref len);
+			}
 		}
 		// *************************************************************
 		public BDataFile()
