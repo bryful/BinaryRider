@@ -98,7 +98,7 @@ namespace BinaryRider
 			{
 
 				int sz = m_BE.DispByteSize;
-				int h = m_BE.BSize.LineHeight;
+				int h = m_BE.BSz.LineHeight;
 				int dh = m_BE.Height - h;// アドレスヘッダー分減らして計算
 				if (sz > 0) 
 				{

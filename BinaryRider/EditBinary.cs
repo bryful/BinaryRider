@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,13 +16,19 @@ namespace BinaryRider
 	public partial class EditBinary : Control
 	{
 		private bool DrawFlag = true;
-		public BAdressH? BAdrH { get; set; }=null;
-		public BAdressV? BAdrV { get; set; } = null;
-		public BSheet? BSheet { get; set; } = null;
+		public BAdressH BAdressHor { get; set; }= new BAdressH();
+		public BAdressV BAdressVur { get; set; } = new BAdressV();
+		public BSheet BinSheet { get; set; } = new BSheet();
 
 		private VScrollBar vsbar = new VScrollBar();
+
+		public BSelection Selection { get; set; } = new BSelection();
+		public BSize BSz = new BSize();
+		public BDisp BDp = new BDisp();
+
 		// *************************************************************
 		private Color m_Gay = Color.DimGray;
+		private Color m_ColorSelect = Color.Gray;
 		// *************************************************************
 		public new Font Font 
 		{
@@ -28,9 +36,9 @@ namespace BinaryRider
 			set
 			{
 				base.Font = value;
-				if(BSize != null)
+				if(BSz != null)
 				{
-					BSize.GetSizeFromFont();
+					BSz.GetSizeFromFont();
 					ChkSize();
 				}
 			} 
@@ -38,14 +46,14 @@ namespace BinaryRider
 		// *************************************************************
 		public void ChkSize()
 		{
-			BDisp.ChkSize();
-			if (BAdrH != null) BAdrH.ChkSize();
-			if (BAdrV != null) BAdrV.ChkSize();
-			if (BSheet != null) BSheet.ChkSize();
+			BDp.ChkSize();
+			if (BAdressHor != null) BAdressHor.ChkSize();
+			if (BAdressVur != null) BAdressVur.ChkSize();
+			if (BinSheet != null) BinSheet.ChkSize();
 
 			vsbar.Location = new Point(this.Width - vsbar.Width, 0);
 			vsbar.Size = new Size(vsbar.Width, this.Height);
-			vsbar.Maximum = BDisp.MaxY;
+			vsbar.Maximum = BDp.MaxY;
 			DrawOffScr();
 			this.Invalidate();
 		}
@@ -57,9 +65,17 @@ namespace BinaryRider
 			set
 			{
 				m_DataFile = value;
-				if((m_DataFile != null)&&(BSheet !=null))
+				if((m_DataFile != null)&&(BinSheet !=null))
 				{
-					BSheet.SetDataFile(m_DataFile);
+					BinSheet.SetDataFile(m_DataFile);
+					m_DataFile.OpenedFile += (sender, e) =>
+					{
+						ChkSize();
+						vsbar.Maximum = BDp.MaxY;
+						vsbar.Value = BDp.Y;
+						DrawOffScr();
+						this.Invalidate();
+					};
 				}
 			} 
 		}
@@ -77,15 +93,13 @@ namespace BinaryRider
 		}
 		public int DispStartAdress
 		{
-			get{ return BDisp.DispStartAdress; }
+			get{ return BDp.DispStartAdress; }
 		}
 		public int DispByteSize
 		{
-			get {return BDisp.DispByteSize;}
+			get {return BDp.DispByteSize;}
 		}
-		public BSelection Selection = new BSelection();
-		public BSize BSize = new BSize();
-		public BDisp BDisp = new BDisp();
+
 		// *************************************************************
 		private StringFormat m_form = new StringFormat();
 		// *************************************************************
@@ -105,12 +119,12 @@ ControlStyles.AllPaintingInWmPaint |
 ControlStyles.SupportsTransparentBackColor,
 true);
 			Selection.SetEditBinary(this);
-			BSize.SetEditBinary(this);
-			BDisp.SetEditBinary(this);
-			BAdrH = new BAdressH(this);
-			BAdrV = new BAdressV(this);
-			BSheet = new BSheet(this);
-			BSize.GetSizeFromFont();
+			BSz.SetEditBinary(this);
+			BDp.SetEditBinary(this);
+			BAdressHor.SetEditBinary(this);
+			BAdressVur.SetEditBinary(this);
+			BinSheet.SetEditBinary(this);
+			BSz.GetSizeFromFont();
 
 			vsbar.Name = "vsbar";
 			vsbar.Location = new Point(this.Width - vsbar.Width, 0);
@@ -118,16 +132,16 @@ true);
 
 			this.Controls.Add(vsbar);
 			ChkSize();
-			vsbar.Maximum = BDisp.MaxY;
-			vsbar.Value = BDisp.Y;
+			vsbar.Maximum = BDp.MaxY;
+			vsbar.Value = BDp.Y;
 
 			vsbar.ValueChanged += (sender, e) =>
 			{
-				if (BDisp.Y != vsbar.Value)
+				if (BDp.Y != vsbar.Value)
 				{
-					BDisp.Y = vsbar.Value;
-					if (BAdrV != null) BAdrV.DrawOffScr();
-					if (BSheet != null) BSheet.DrawOffScr();
+					BDp.Y = vsbar.Value;
+					if (BAdressVur != null) BAdressVur.DrawOffScr();
+					if (BinSheet != null) BinSheet.DrawOffScr();
 					this.Refresh();
 				}
 			};
@@ -135,29 +149,11 @@ true);
 			this.Refresh();
 		}
 		// *************************************************************
-		public bool LoadFile(string fn)
-		{
-			bool ret = false;
-			if(m_DataFile != null)
-			{
-				ret = m_DataFile.LoadFile(fn);
-				if (ret)
-				{
-					ChkSize();
-					vsbar.Maximum = BDisp.MaxY;
-					vsbar.Value = BDisp.Y;
-					DrawOffScr();
-					this.Invalidate();
-				}
-			}
-			return ret;
-		}
-		// *************************************************************
 		private void DrawOffScr()
 		{
-			if (BAdrH != null) BAdrH.DrawOffScr();
-			if (BAdrV != null) BAdrV.DrawOffScr();
-			if (BSheet != null) BSheet.DrawOffScr();
+			if (BAdressHor != null) BAdressHor.DrawOffScr();
+			if (BAdressVur != null) BAdressVur.DrawOffScr();
+			if (BinSheet != null) BinSheet.DrawOffScr();
 		}
 		// *************************************************************
 		protected override void OnPaint(PaintEventArgs pe)
@@ -168,19 +164,77 @@ true);
 			using (Pen p = new Pen(ForeColor))
 			{
 				g.Clear(BackColor);
-				if (BAdrH != null) BAdrH.Draw(g);
-				if (BAdrV != null) BAdrV.Draw(g);
-				if (BSheet != null) BSheet.Draw(g);
+				if (BAdressHor != null) BAdressHor.Draw(g);
+				if (BAdressVur != null) BAdressVur.Draw(g);
+				if (BinSheet != null) BinSheet.Draw(g);
 			}
 		}
 		// *************************************************************
+		
+		private BSheet.MouseDownStatus?  m_MDStat = null;
+		private Point m_MDPoint = new Point();
+		private int m_Start = 0;
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			base.OnMouseDown(e);
+			if (BinSheet != null)
+			{
+				BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
+				if(stat.Down==true)
+				{
+					m_MDStat = stat;
+					Selection.Start = stat.Adress;
+					Selection.Length = 1;
+					BinSheet.DrawOffScr();
+					this.Invalidate();
+				}
+			}
+			//base.OnMouseDown(e);
+		}
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			if(m_MDStat !=null)
+			{
+				if (BinSheet != null)
+				{
+					BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
+					if (stat.Down == true)
+					{
+						if (m_MDStat.IsByte == stat.IsByte)
+						{
+							Selection.SetStartLast(m_MDStat.Adress, stat.Adress);
+							BinSheet.DrawOffScr();
+							this.Invalidate();
+						}
+					}
+				}
+			}
+		}
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			if (m_MDStat != null)
+			{
+				if (BinSheet != null)
+				{
+					m_MDStat = null;
+					BinSheet.DrawOffScr();
+					this.Refresh();
+				}
+			}
 		}
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			base.OnMouseClick(e);
+		}
+		// *************************************************************
+		protected override void OnMouseWheel(MouseEventArgs e)
+		{
+			int x = e.Delta/120;
+
+			BDp.Y += x * BSz.LineHeight;
+			vsbar.Value = BDp.Y;
+			if(BinSheet!=null) BinSheet.DrawOffScr();
+			if (BAdressVur != null) BAdressVur.DrawOffScr();
+			Refresh();
 		}
 		// *************************************************************
 		protected override void OnResize(EventArgs e)

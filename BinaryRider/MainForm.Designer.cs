@@ -34,11 +34,13 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(910, 473);
+			ClientSize = new Size(190, 62);
 			Name = "MainForm";
+			Opacity = 0D;
+			ShowIcon = false;
+			ShowInTaskbar = false;
 			Text = "BinaryRider";
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion

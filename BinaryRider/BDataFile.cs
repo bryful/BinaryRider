@@ -8,13 +8,39 @@ using System.Threading.Tasks;
 
 namespace BinaryRider
 {
-	public enum EncodeMode
+	public enum CharCodeMode
 	{
 		ShiftJIS,
 		UTF8
 	}
 	public partial class BDataFile : Component
 	{
+		// *************************************************************
+		public delegate void OpenEventHandler(object sender, EventArgs e);
+
+		//イベントデリゲートの宣言
+		public event OpenEventHandler? OpenedFile = null;
+
+		protected virtual void OnOpenedFile(EventArgs e)
+		{
+			if (OpenedFile != null)
+			{
+				OpenedFile(this, e);
+			}
+		}
+		public delegate void SaveEventHandler(object sender, EventArgs e);
+
+		//イベントデリゲートの宣言
+		public event SaveEventHandler? SavedFile = null;
+
+		protected virtual void OnSavedFile(EventArgs e)
+		{
+			if (SavedFile != null)
+			{
+				SavedFile(this, e);
+			}
+		}
+		// *************************************************************
 		static Encoding enc8 = Encoding.UTF8;       
 		// *************************************************************
 		private string m_FileName = "";
@@ -114,13 +140,13 @@ namespace BinaryRider
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // memo: Shift-JISを扱うためのおまじない
 			return System.Text.Encoding.GetEncoding(932).GetString(data); ;
 		}
-		public string ToStr(EncodeMode md, int idx, ref int len)
+		public string ToChar(CharCodeMode md, int idx, ref int len)
 		{
 			switch (md) 
 			{
-				case EncodeMode.ShiftJIS:
+				case CharCodeMode.ShiftJIS:
 					return ToStrShiftJIS(idx, ref len);
-				case EncodeMode.UTF8:
+				case CharCodeMode.UTF8:
 				default:
 					return ToStrUtf8(idx, ref len);
 			}
@@ -161,6 +187,7 @@ namespace BinaryRider
 					{
 						m_Data = bs;
 						m_FileName = fn;
+						OnOpenedFile(new EventArgs());
 						ret = true;
 					}
 				}

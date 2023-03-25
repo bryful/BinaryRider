@@ -17,11 +17,10 @@ namespace BinaryRider
 	{
 		public Color BackColor0 { get; set; } = Color.FromArgb(220, 220, 220);
 		public Color BackColor1 { get; set; } = Color.FromArgb(200, 200, 200);
-		public BAdressV(EditBinary eb) : base(eb)
+		public BAdressV()
 		{
-			SetEditBinary(eb);
 		}
-		protected override void SetEditBinary(EditBinary eb)
+		public override void SetEditBinary(EditBinary eb)
 		{
 			m_eb = eb;
 			if (m_eb != null)
@@ -37,10 +36,10 @@ namespace BinaryRider
 			{
 
 				SetSzie(new Size(
-						m_eb.BSize.AdrWidthAll,
-						m_eb.Height - m_eb.BSize.LineHeight
+						m_eb.BSz.AdrWidthAll,
+						m_eb.Height - m_eb.BSz.LineHeight
 						));
-				m_Location = new Point(0, m_eb.BSize.LineHeight);
+				m_Location = new Point(0, m_eb.BSz.LineHeight);
 			}
 		}
 		private string AdrHex(int adr)
@@ -59,13 +58,13 @@ namespace BinaryRider
 				{
 					SFormat.Alignment = StringAlignment.Far;
 
-					int h = m_eb.BSize.LineHeight;
+					int h = m_eb.BSz.LineHeight;
 
 					sb.Color = ForeColor;
 
-					int sline = m_eb.BDisp.Y / h;
-					int adr = m_eb.BDisp.DispStartAdress + sline* BDisp.HexC;
-					int y = -m_eb.BDisp.Y + sline * h;
+					int sline = m_eb.BDp.Y / h;
+					int adr = m_eb.BDp.DispStartAdress + sline* BDisp.HexC;
+					int y = -m_eb.BDp.Y + sline * h;
 					int lineIdx = sline;
 
 					while (y < m_Size.Height)
@@ -75,10 +74,10 @@ namespace BinaryRider
 							if(lineIdx%2 ==1)
 							{
 								sb.Color = BackColor1;
-								g.FillRectangle(sb, new Rectangle(0, y, m_eb.BSize.AdrWidthAll, h));
+								g.FillRectangle(sb, new Rectangle(0, y, m_eb.BSz.AdrWidthAll, h));
 							}
 							sb.Color = ForeColor;
-							Rectangle r = new Rectangle(0, y, m_eb.BSize.AdrWidth1, h);
+							Rectangle r = new Rectangle(0, y, m_eb.BSz.AdrWidth1, h);
 							Debug.WriteLine(r.ToString());
 							g.DrawString(AdrHex(adr), m_eb.Font, sb, r, SFormat);
 						}

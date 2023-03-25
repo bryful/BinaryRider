@@ -15,21 +15,22 @@ namespace BinaryRider
 			m_BE = be;
 			if (m_BE != null)
 			{
-				//ChkSize();
 			}
 		}
 
 		// *******************************************************
-		private int m_Start = -1;
+		private int m_Start = 0;
+		private int m_Last = 0;
 		private int m_Length = 0;
 		public int Start
 		{
 			get { return m_Start; }
 			set 
 			{
-				if (value + Length >= 0)
+				if (value + m_Length >= 0)
 				{
 					m_Start = value;
+					m_Last = m_Start + m_Length;
 				}
 			}
 		}
@@ -39,8 +40,13 @@ namespace BinaryRider
 			set 
 			{
 				if (value < 0) value = 0;
-				m_Length = value; 
+				m_Length = value;
+				m_Last = m_Start + m_Length;
 			}
+		}
+		public int Last
+		{
+			get { return m_Last; }
 		}
 		// *******************************************************
 		public BSelection()
@@ -48,5 +54,31 @@ namespace BinaryRider
 
 		}
 		// *******************************************************
+		public bool IsInSection(int idx)
+		{
+			bool ret = false;
+			if(m_BE != null)
+			{
+				if(idx>=m_BE.ByteSize) return ret;
+			}
+			ret = ((idx >= m_Start) && (idx < m_Last));
+			return ret;
+		}
+		public void SetStartLast(int st,int  last) 
+		{
+			if (m_BE != null)
+			{
+				Length = Math.Abs(last - st)+1;
+				if(st<=last)
+				{
+					m_Start = st;
+				}
+				else
+				{
+					m_Start = last;
+				}
+				m_Last = m_Start + m_Length;
+			}
+		}
 	}
 }

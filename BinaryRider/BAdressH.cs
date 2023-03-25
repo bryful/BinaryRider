@@ -16,31 +16,30 @@ namespace BinaryRider
 	{
 		public Color ForeColor0 { get; set; } = Color.FromArgb(100, 100, 100);
 		public Color ForeColor1 { get; set; } = Color.FromArgb(150, 150, 150);
-		public BAdressH(EditBinary eb):base(eb)
+		public BAdressH()
 		{
 			BackColor = Color.LightGray;
 			ForeColor = Color.Black;
-			SetEditBinary(eb);
 		}
-		protected override void SetEditBinary(EditBinary eb)
+		public override void SetEditBinary(EditBinary eb)
 		{
 			m_eb = eb;
 			if (m_eb != null)
 			{
 				m_DataFile = m_eb.DataFile;
 				SetSzie(new Size(
-					(int)m_eb.BSize.HeaderWidth,
-					m_eb.BSize.LineHeight
+					(int)m_eb.BSz.HeaderWidth,
+					m_eb.BSz.LineHeight
 					));
 			}
 		}
 		public void ChkSize(int ow = 0, int oh = 0)
 		{
 			if (m_eb != null) {
-				int w = m_eb.BSize.HeaderWidth;
-				int h = m_eb.BSize.LineHeight;
+				int w = m_eb.BSz.HeaderWidth;
+				int h = m_eb.BSz.LineHeight;
 				SetSzie(new Size(w, h));
-				m_Location = new Point(m_eb.BSize.ByteLeft, 0);
+				m_Location = new Point(m_eb.BSz.ByteLeft, 0);
 			}
 		}
 		public override void DrawOffScr()
@@ -58,21 +57,21 @@ namespace BinaryRider
 					for (int i = 0; i < 0x10; i++)
 					{
 						Rectangle r = new Rectangle(
-							i * m_eb.BSize.ByteWidth, 0,
-							m_eb.BSize.ByteWidth, m_eb.BSize.LineHeight
+							i * m_eb.BSz.ByteWidth, 0,
+							m_eb.BSz.ByteWidth, m_eb.BSz.LineHeight
 							);
 
 						g.DrawString($"+{i:X}", m_eb.Font, sb, r, SFormat);
 					}
-					int cl = m_eb.BSize.CharLeft;
+					int cl = m_eb.BSz.CharLeft;
 
 					for (int i = 0; i < 0x10; i++)
 					{
 						Rectangle r = new Rectangle(
-							i * m_eb.BSize.CharWidth + cl,
+							i * m_eb.BSz.CharWidth + cl,
 							0,
-							m_eb.BSize.CharWidth, 
-							m_eb.BSize.LineHeight
+							m_eb.BSz.CharWidth, 
+							m_eb.BSz.LineHeight
 							);
 						g.DrawString($"{i:X}", m_eb.Font, sb, r, SFormat);
 					}
@@ -80,16 +79,16 @@ namespace BinaryRider
 					p.Color = ForeColor0;
 					p.Width = 1;
 					int y0 = 0;
-					int y1 = m_eb.BSize.LineHeight;
-					int x = m_eb.BSize.ByteWidth * 8;
+					int y1 = m_eb.BSz.LineHeight;
+					int x = m_eb.BSz.ByteWidth * 8;
 					p.Color = ForeColor0;
 					g.DrawLine(p,x, y0, x, y1);
-					x = m_eb.BSize.ByteWidth * 16;
+					x = m_eb.BSz.ByteWidth * 16;
 					g.DrawLine(p, x, y0, x, y1);
 					p.Color = ForeColor1;
-					x = m_eb.BSize.ByteWidth * 4;
+					x = m_eb.BSz.ByteWidth * 4;
 					g.DrawLine(p, x, y0, x, y1);
-					x = m_eb.BSize.ByteWidth * 12;
+					x = m_eb.BSz.ByteWidth * 12;
 					g.DrawLine(p, x, y0, x, y1);
 				}
 			}

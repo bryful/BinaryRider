@@ -17,7 +17,7 @@ namespace BinaryRider
 		// ************************************************************************
 		protected EditBinary? m_eb = null;
 		protected BDataFile? m_DataFile = null; 
-		protected virtual void SetEditBinary(EditBinary eb)
+		public virtual void SetEditBinary(EditBinary eb)
 		{
 			m_eb = eb;
 			m_DataFile = eb.DataFile;
@@ -33,11 +33,10 @@ namespace BinaryRider
 		public Rectangle ClientRectangle { get { return new Rectangle(0, 0, m_Size.Width, m_Size.Height); } }
 		protected Bitmap m_OffScr = new Bitmap(100,100,PixelFormat.Format32bppArgb); 
 		// ************************************************************************
-		public BControl(EditBinary eb)
+		public BControl()
 		{
 			SFormat.Alignment = StringAlignment.Center;
 			SFormat.LineAlignment = StringAlignment.Center;
-			SetEditBinary(eb);
 		}
 		// ************************************************************************
 		public void SetSzie(Size sz)

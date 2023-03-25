@@ -37,8 +37,8 @@ namespace BinaryRider
 				LineHeight = h;
 				AdrWidth1 = w * 8;
 				AdrWidth2 = w * 1;
-				ByteWidth = (int)((double)w * 3.3);
-				CharWidth = (int)((double)w * 1.1);
+				ByteWidth = (int)((double)w * 4);
+				CharWidth = (int)((double)w * 1.5);
 				ret = true;
 			}
 			return ret;
