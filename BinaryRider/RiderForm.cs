@@ -188,10 +188,8 @@ namespace BinaryRider
 			if (ret == true)
 			{
 				this.Text = p;
-			}
-			else
-			{
-				this.Text = "Binary Rider";
+				editBinaryTwo1.SelectionInit();
+
 			}
 			return ret;
 		}
@@ -268,7 +266,7 @@ namespace BinaryRider
 			windowMenu.DropDownItems.AddRange(ms.ToArray());
 		}
 		// ***************************************************************
-		public bool Jump(int adr, int Len = 1)
+		public bool Jump(long adr, long Len = 1)
 		{
 			return editBinaryTwo1.Jump(adr, Len);
 		}

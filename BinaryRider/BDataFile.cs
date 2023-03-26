@@ -49,9 +49,9 @@ namespace BinaryRider
 		// *************************************************************
 		private byte[] m_Data = new byte[0];
 		public byte[] Data { get { return m_Data; } }
-		public int ByteSize { get { return m_Data.Length; } }
+		public long ByteSize { get { return m_Data.Length; } }
 		// *************************************************************
-		public byte? this[int idx]
+		public byte? this[long idx]
 		{
 			get
 			{
@@ -64,7 +64,7 @@ namespace BinaryRider
 			}
 		}
 		// *************************************************************
-		public string ToStrUtf8(int idx, ref int len)
+		public string ToStrUtf8(long idx, ref int len)
 		{
 			byte[] data = new byte[0];
 			byte nd = m_Data[idx];
@@ -109,7 +109,7 @@ namespace BinaryRider
 
 			}
 		}
-		public string ToStrShiftJIS(int idx,ref int len)
+		public string ToStrShiftJIS(long idx,ref int len)
 		{
 			byte[] data = new byte[0];
 			byte nd = m_Data[idx];
@@ -140,7 +140,7 @@ namespace BinaryRider
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // memo: Shift-JISを扱うためのおまじない
 			return System.Text.Encoding.GetEncoding(932).GetString(data); ;
 		}
-		public string ToChar(CharCodeMode md, int idx, ref int len)
+		public string ToChar(CharCodeMode md, long idx, ref int len)
 		{
 			switch (md) 
 			{

@@ -79,11 +79,11 @@ namespace BinaryRider
 				}
 			} 
 		}
-		public int ByteSize
+		public long ByteSize
 		{
 			get
 			{
-				int ret = 0;
+				long ret = 0;
 				if(m_DataFile != null)
 				{
 					ret = m_DataFile.ByteSize;
@@ -91,11 +91,11 @@ namespace BinaryRider
 				return ret;
 			}
 		}
-		public int DispStartAdress
+		public long DispStartAdress
 		{
 			get{ return BDp.DispStartAdress; }
 		}
-		public int DispByteSize
+		public long DispByteSize
 		{
 			get {return BDp.DispByteSize;}
 		}
@@ -149,7 +149,7 @@ true);
 			this.Refresh();
 		}
 		// *************************************************************
-		private void DrawOffScr()
+		public void DrawOffScr()
 		{
 			if (BAdressHor != null) BAdressHor.DrawOffScr();
 			if (BAdressVur != null) BAdressVur.DrawOffScr();
@@ -176,16 +176,22 @@ true);
 		private int m_Start = 0;
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			if (BinSheet != null)
+			if (DataFile != null)
 			{
-				BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
-				if(stat.Down==true)
+				if (DataFile.FileName != "")
 				{
-					m_MDStat = stat;
-					Selection.Start = stat.Adress;
-					Selection.Length = 1;
-					BinSheet.DrawOffScr();
-					this.Invalidate();
+					if (BinSheet != null)
+					{
+						BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
+						if (stat.Down == true)
+						{
+							m_MDStat = stat;
+							Selection.Start = stat.Adress;
+							Selection.Length = 1;
+							BinSheet.DrawOffScr();
+							this.Invalidate();
+						}
+					}
 				}
 			}
 			//base.OnMouseDown(e);
@@ -242,7 +248,7 @@ true);
 			ChkSize();
 		}
 		// *************************************************************
-		public bool Jump(int adr,int len =1)
+		public bool Jump(long adr, long len =1)
 		{
 			if(m_DataFile==null) return false;
 			if (adr < 0) adr = 0;
@@ -251,13 +257,13 @@ true);
 			Selection.Start = adr;
 			Selection.Length = len;
 
-			int y = ((adr - BDp.DispStartAdress) / BDisp.HexC);
+			long y = ((adr - BDp.DispStartAdress) / BDisp.HexC);
 
 			int ds = BDp.Y * BDisp.HexC;
 			int de = ds + (BinSheet.Size.Height / BSz.LineHeight) * BDisp.HexC;
 			if((adr<ds)||(adr>=de))
 			{
-				BDp.Y = (adr / BDisp.HexC) * BSz.LineHeight;
+				BDp.Y = (int)((adr / BDisp.HexC) * BSz.LineHeight);
 				if(vsbar.Value != BDp.Y) { vsbar.Value = BDp.Y; }
 			}
 			if (BinSheet !=null) { BinSheet.DrawOffScr(); }
@@ -268,7 +274,7 @@ true);
 		}
 		public bool JumpTop()
 		{
-			int adr = BDp.DispStartAdress;
+			long adr = BDp.DispStartAdress;
 			return Jump(adr, 1);
 		}
 		public bool JumpEnd()
@@ -276,7 +282,7 @@ true);
 			bool ret = false;
 			if (m_DataFile != null)
 			{
-				int adr = m_DataFile.ByteSize-1;
+				long adr = m_DataFile.ByteSize-1;
 				if (adr < 0) adr = 0;
 				ret = Jump(adr, 1);
 			}

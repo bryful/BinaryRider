@@ -32,19 +32,20 @@ namespace BinaryRider
 		{
 			if (rf != null)
 			{
-				int st = rf.Selection.Start;
-				int mx = rf.BDataFile.ByteSize - 1;
+				long st = rf.Selection.Start;
+				long mx = rf.BDataFile.ByteSize - 1;
+				if (mx < 0) mx = 0;
 				if (hexBox1.IsHex)
 				{
 					lbInfo.Text = $"Position:0x{st:X}/ Max:0x{mx:X}";
 				}
 				else
 				{
-					lbInfo.Text = $"Position:{st}/ Max:{mx}";
+					lbInfo.Text = $"Position:  {st}/ Max:  {mx}";
 				}
 			}
 		}
-		public int Adress
+		public long Adress
 		{
 			get { return hexBox1.Value; }
 			set
@@ -71,8 +72,8 @@ namespace BinaryRider
 		{
 			if (rf != null)
 			{
-				int sz = rf.BDataFile.ByteSize;
-				int v = hexBox1.Value;
+				long sz = rf.BDataFile.ByteSize;
+				long v = hexBox1.Value;
 				btnJump.Enabled = ((v >= 0) && (v < sz));
 			}
 

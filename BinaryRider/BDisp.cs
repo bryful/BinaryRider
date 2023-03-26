@@ -27,8 +27,8 @@ namespace BinaryRider
 		private int m_LineMax = 0;
 		private int m_LineDisp = 0;
 
-		private int m_DispStartAdress = 0;
-		public int DispStartAdress 
+		private long m_DispStartAdress = 0;
+		public long DispStartAdress 
 		{
 			get { return m_DispStartAdress; }
 			set
@@ -54,11 +54,11 @@ namespace BinaryRider
 				}
 			}
 		}
-		public int DispByteSize
+		public long DispByteSize
 		{
 			get 
 			{
-				int ret = 0;
+				long ret = 0;
 				if((m_BE != null)&&(m_BE.ByteSize>0))
 				{
 					ret = m_BE.ByteSize - m_DispStartAdress;
@@ -97,20 +97,20 @@ namespace BinaryRider
 			if (m_BE != null)
 			{
 
-				int sz = m_BE.DispByteSize;
-				int h = m_BE.BSz.LineHeight;
-				int dh = m_BE.Height - h;// アドレスヘッダー分減らして計算
+				long sz = m_BE.DispByteSize;
+				long h = m_BE.BSz.LineHeight;
+				long dh = m_BE.Height - h;// アドレスヘッダー分減らして計算
 				if (sz > 0) 
 				{
 					//最大行数を計算
-					m_LineMax = sz / BDisp.HexC;
+					m_LineMax = (int)(sz / BDisp.HexC);
 					if (sz % BDisp.HexC > 0) m_LineMax++;
 					//表示されている行数
-					m_LineDisp = dh / h;
+					m_LineDisp = (int)(dh / h);
 					if (dh % h > 0) m_LineDisp++; // 16以下の時は＋１
 					if (m_LineDisp > m_LineMax) m_LineDisp = m_LineMax;
 
-					m_MaxY = m_LineMax * h - dh + h/2;
+					m_MaxY = (int)(m_LineMax * h - dh + h/2);
 					if (m_MaxY < 0) m_MaxY = 0;
 					if (m_Y > m_MaxY) m_Y = m_MaxY;
 					else if (m_Y < 0) m_Y = 0;

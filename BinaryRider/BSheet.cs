@@ -85,7 +85,7 @@ namespace BinaryRider
 			public bool IsChar { get { return !IsByte; } }
 			public int x = 0;
 			public int y = 0;
-			public int Adress = 0;
+			public long Adress = 0;
 		}
 		public MouseDownStatus MousePosStatus(MouseEventArgs e)
 		{
@@ -107,7 +107,7 @@ namespace BinaryRider
 					ret.IsByte = false;
 					ret.x = (X - m_eb.BSz.CharLeft) / m_eb.BSz.CharWidth;
 				}
-				ret.Adress = ret.x + ret.y * BDisp.HexC + m_eb.BDp.DispStartAdress;
+				ret.Adress = (long)ret.x + (long)ret.y * (long)BDisp.HexC + m_eb.BDp.DispStartAdress;
 			}
 			return ret;
 		}
@@ -136,10 +136,10 @@ namespace BinaryRider
 						int sline = m_eb.BDp.Y / h;
 
 						int TwoByteFlag = 0;
-						for (int idx = sline* BDisp.HexC; idx< m_eb.DispByteSize; idx++)
+						for (long idx = sline* BDisp.HexC; idx< m_eb.DispByteSize; idx++)
 						{
-							int line = idx / BDisp.HexC;
-							int y = line * h - m_eb.BDp.Y;
+							long line = (idx / BDisp.HexC);
+							long y = line * h - m_eb.BDp.Y;
 							
 
 							//画面外になったので終了
@@ -147,8 +147,8 @@ namespace BinaryRider
 
 							if (y + h>0)
 							{
-								int adr = idx + m_eb.DispStartAdress;// アドレス
-								int xcc = idx % BDisp.HexC;
+								long adr = idx + m_eb.DispStartAdress;// アドレス
+								int xcc = (int)(idx % (long)BDisp.HexC);
 
 								//行の最初の時だけ背景色を描画
 								if ((line % 2 == 1)&&(xcc ==0))
@@ -156,7 +156,7 @@ namespace BinaryRider
 									sb.Color = BackColor1;
 									Rectangle rr = new Rectangle(
 										0,
-										y,
+										(int)y,
 										this.m_Size.Width,
 										m_eb.BSz.LineHeight
 										);
@@ -164,7 +164,7 @@ namespace BinaryRider
 								}
 								Rectangle r = new Rectangle(
 									xcc * m_eb.BSz.ByteWidth,
-									y,
+									(int)y,
 									m_eb.BSz.ByteWidth,
 									h
 									);
@@ -190,7 +190,7 @@ namespace BinaryRider
 									SFormat.Alignment = StringAlignment.Near;
 									r = new Rectangle(
 										xcc * m_eb.BSz.CharWidth + charLeft,
-										y,
+										(int)y,
 										m_eb.BSz.CharWidth * (TwoByteFlag+1),
 										h
 										);

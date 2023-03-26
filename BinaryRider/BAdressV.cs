@@ -42,9 +42,9 @@ namespace BinaryRider
 				m_Location = new Point(0, m_eb.BSz.LineHeight);
 			}
 		}
-		private string AdrHex(int adr)
+		private string AdrHex(long adr)
 		{
-			return $"{adr:X4}";
+			return $"{adr:X7}";
 		}
 		public override void DrawOffScr()
 		{
@@ -63,7 +63,7 @@ namespace BinaryRider
 					sb.Color = ForeColor;
 
 					int sline = m_eb.BDp.Y / h;
-					int adr = m_eb.BDp.DispStartAdress + sline* BDisp.HexC;
+					long adr = m_eb.BDp.DispStartAdress + sline* BDisp.HexC;
 					int y = -m_eb.BDp.Y + sline * h;
 					int lineIdx = sline;
 

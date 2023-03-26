@@ -115,7 +115,7 @@ namespace BinaryRider
 				}
 			}
 		}
-		public bool Jump(int adr, int len=1)
+		public bool Jump(long adr, long len =1)
 		{
 			bool ret =false;
 			if (ActiveEditBinary != null)
@@ -141,6 +141,16 @@ namespace BinaryRider
 				ret = ActiveEditBinary.JumpEnd();
 			}
 			return ret;
+		}
+		public void SelectionInit()
+		{
+			EditBinary1.Selection.SetStartLength(0, 0);
+			EditBinary2.Selection.SetStartLength(0, 0);
+			EditBinary1.DrawOffScr();
+			EditBinary2.DrawOffScr();
+			EditBinary1.Invalidate();
+			EditBinary2.Invalidate();
+
 		}
 	}
 }

@@ -30,12 +30,12 @@ namespace BinaryRider
 			using (Bitmap bmp = new Bitmap(200,50,PixelFormat.Format32bppArgb))
 			{
 				Graphics g = Graphics.FromImage(bmp);
-				SizeF szF = g.MeasureString("FFF", m_BE.Font, 100, format);
-				int w = (int)(szF.Width/3+0.5);
+				SizeF szF = g.MeasureString("FFFF", m_BE.Font, 100, format);
+				int w = (int)(szF.Width/4+0.5);
 				int h = (int)(szF.Height+0.5);
 
 				LineHeight = h;
-				AdrWidth1 = w * 8;
+				AdrWidth1 = w * 10;
 				AdrWidth2 = w * 1;
 				ByteWidth = (int)((double)w * 4);
 				CharWidth = (int)((double)w * 1.5);

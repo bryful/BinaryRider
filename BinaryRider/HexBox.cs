@@ -20,24 +20,24 @@ namespace BinaryRider
 			{
 				if (m_IsHex != value)
 				{
-					int v = Value;
+					long v = Value;
 					m_IsHex = value;
 					Value = v;
 				}
 			}
 		}
-		public int Value
+		public long Value
 		{
 			get 
 			{
 				if(this.Text=="") return 0;
 				if (m_IsHex)
 				{
-					return Convert.ToInt32(this.Text, 16);
+					return Convert.ToInt64(this.Text, 16);
 				}
 				else
 				{
-					return Convert.ToInt32(this.Text);
+					return Convert.ToInt64(this.Text);
 				}
 			}
 			set

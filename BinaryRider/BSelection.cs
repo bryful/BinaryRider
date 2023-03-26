@@ -19,10 +19,10 @@ namespace BinaryRider
 		}
 
 		// *******************************************************
-		private int m_Start = 0;
-		private int m_Last = 0;
-		private int m_Length = 0;
-		public int Start
+		private long m_Start = 0;
+		private long m_Last = 0;
+		private long m_Length = 0;
+		public long Start
 		{
 			get { return m_Start; }
 			set 
@@ -34,7 +34,7 @@ namespace BinaryRider
 				}
 			}
 		}
-		public int Length
+		public long Length
 		{
 			get { return m_Length; }
 			set 
@@ -44,9 +44,17 @@ namespace BinaryRider
 				m_Last = m_Start + m_Length;
 			}
 		}
-		public int Last
+		public long Last
 		{
 			get { return m_Last; }
+		}
+		public void SetStartLength(long st,long len)
+		{
+			m_Start = st;
+			if (m_Start < 0) m_Start = 0;
+			m_Length = len;
+			if (m_Length < 0) m_Length = 0;
+			m_Last = m_Start + m_Length;
 		}
 		// *******************************************************
 		public BSelection()
@@ -54,7 +62,7 @@ namespace BinaryRider
 
 		}
 		// *******************************************************
-		public bool IsInSection(int idx)
+		public bool IsInSection(long idx)
 		{
 			bool ret = false;
 			if(m_BE != null)
@@ -64,7 +72,7 @@ namespace BinaryRider
 			ret = ((idx >= m_Start) && (idx < m_Last));
 			return ret;
 		}
-		public void SetStartLast(int st,int  last) 
+		public void SetStartLast(long st, long last) 
 		{
 			if (m_BE != null)
 			{

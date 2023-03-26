@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			components = new System.ComponentModel.Container();
 			BSelection bSelection1 = new BSelection();
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
@@ -55,8 +54,11 @@
 			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
+			hexEdit2 = new HexEdit();
+			hexEdit1 = new HexEdit();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).BeginInit();
+			editBinaryTwo1.Panel1.SuspendLayout();
 			editBinaryTwo1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -65,7 +67,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionToolStripMenuItem, jumpMenu, scriptMenu, windowMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(576, 24);
+			menuStrip1.Size = new Size(732, 24);
 			menuStrip1.TabIndex = 1;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -170,19 +172,19 @@
 			// 
 			addressMenu.Name = "addressMenu";
 			addressMenu.ShortcutKeys = Keys.Control | Keys.J;
-			addressMenu.Size = new Size(180, 22);
+			addressMenu.Size = new Size(153, 22);
 			addressMenu.Text = "Address";
 			// 
 			// jumpTopMenu
 			// 
 			jumpTopMenu.Name = "jumpTopMenu";
-			jumpTopMenu.Size = new Size(180, 22);
+			jumpTopMenu.Size = new Size(153, 22);
 			jumpTopMenu.Text = "Top";
 			// 
 			// jumpEndMenu
 			// 
 			jumpEndMenu.Name = "jumpEndMenu";
-			jumpEndMenu.Size = new Size(180, 22);
+			jumpEndMenu.Size = new Size(153, 22);
 			jumpEndMenu.Text = "End";
 			// 
 			// scriptMenu
@@ -219,18 +221,23 @@
 			// editBinaryTwo1
 			// 
 			editBinaryTwo1.CharCodeMode = CharCodeMode.UTF8;
+			editBinaryTwo1.DataFile = null;
 			editBinaryTwo1.IsTwoWin = false;
 			editBinaryTwo1.IsVurWin = false;
 			editBinaryTwo1.Location = new Point(12, 30);
 			editBinaryTwo1.Name = "editBinaryTwo1";
 			editBinaryTwo1.Orientation = Orientation.Horizontal;
 			// 
+			// editBinaryTwo1.Panel1
+			// 
+			editBinaryTwo1.Panel1.Controls.Add(hexEdit2);
+			// 
 			// editBinaryTwo1.Panel2
 			// 
 			editBinaryTwo1.Panel2.Paint += editBinaryTwo1_Panel2_Paint;
 			editBinaryTwo1.Panel2Collapsed = true;
-			bSelection1.Length = 0;
-			bSelection1.Start = 0;
+			bSelection1.Length = 0L;
+			bSelection1.Start = 0L;
 			editBinaryTwo1.Selection = bSelection1;
 			editBinaryTwo1.Size = new Size(543, 360);
 			editBinaryTwo1.SplitterDistance = 289;
@@ -238,18 +245,46 @@
 			editBinaryTwo1.SplitterWidth = 8;
 			editBinaryTwo1.TabIndex = 2;
 			// 
+			// hexEdit2
+			// 
+			hexEdit2.Alignment = StringAlignment.Center;
+			hexEdit2.BackColor = SystemColors.Control;
+			hexEdit2.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			hexEdit2.ForeColor = SystemColors.ControlText;
+			hexEdit2.Location = new Point(472, 217);
+			hexEdit2.Name = "hexEdit2";
+			hexEdit2.Size = new Size(135, 33);
+			hexEdit2.TabIndex = 2;
+			hexEdit2.Text = "hexEdit2";
+			hexEdit2.Value = 256L;
+			// 
+			// hexEdit1
+			// 
+			hexEdit1.Alignment = StringAlignment.Center;
+			hexEdit1.BackColor = SystemColors.Control;
+			hexEdit1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			hexEdit1.ForeColor = SystemColors.ControlText;
+			hexEdit1.Location = new Point(469, 413);
+			hexEdit1.Name = "hexEdit1";
+			hexEdit1.Size = new Size(120, 33);
+			hexEdit1.TabIndex = 1;
+			hexEdit1.Text = "hexEdit1";
+			hexEdit1.Value = 11L;
+			// 
 			// RiderForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(576, 405);
+			ClientSize = new Size(732, 489);
 			Controls.Add(editBinaryTwo1);
 			Controls.Add(menuStrip1);
+			Controls.Add(hexEdit1);
 			MainMenuStrip = menuStrip1;
 			Name = "RiderForm";
 			Text = "RiderForm";
 			menuStrip1.ResumeLayout(false);
 			menuStrip1.PerformLayout();
+			editBinaryTwo1.Panel1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).EndInit();
 			editBinaryTwo1.ResumeLayout(false);
 			ResumeLayout(false);
@@ -282,5 +317,7 @@
 		private ToolStripMenuItem jumpTopMenu;
 		private ToolStripMenuItem jumpEndMenu;
 		private ToolStripMenuItem addressMenu;
+		private HexEdit hexEdit1;
+		private HexEdit hexEdit2;
 	}
 }

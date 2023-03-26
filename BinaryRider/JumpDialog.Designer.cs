@@ -33,6 +33,7 @@
 			btnJump = new Button();
 			btnClose = new Button();
 			lbInfo = new Label();
+			hexEdit1 = new HexEdit();
 			SuspendLayout();
 			// 
 			// hexBox1
@@ -44,7 +45,7 @@
 			hexBox1.Size = new Size(203, 29);
 			hexBox1.TabIndex = 0;
 			hexBox1.Text = "0";
-			hexBox1.Value = 0;
+			hexBox1.Value = 0L;
 			// 
 			// cbHex
 			// 
@@ -89,13 +90,27 @@
 			lbInfo.TabIndex = 4;
 			lbInfo.Text = "Jump";
 			// 
+			// hexEdit1
+			// 
+			hexEdit1.Alignment = StringAlignment.Center;
+			hexEdit1.BackColor = SystemColors.Control;
+			hexEdit1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			hexEdit1.ForeColor = SystemColors.ControlText;
+			hexEdit1.Location = new Point(24, 97);
+			hexEdit1.Name = "hexEdit1";
+			hexEdit1.Size = new Size(120, 33);
+			hexEdit1.TabIndex = 5;
+			hexEdit1.Text = "hexEdit1";
+			hexEdit1.Value = 0L;
+			// 
 			// JumpDialog
 			// 
 			AcceptButton = btnJump;
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			CancelButton = btnClose;
-			ClientSize = new Size(308, 106);
+			ClientSize = new Size(338, 147);
+			Controls.Add(hexEdit1);
 			Controls.Add(lbInfo);
 			Controls.Add(btnClose);
 			Controls.Add(btnJump);
@@ -116,5 +131,6 @@
 		private Button btnJump;
 		private Button btnClose;
 		private Label lbInfo;
+		private HexEdit hexEdit1;
 	}
 }
