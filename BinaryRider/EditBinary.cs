@@ -241,5 +241,46 @@ true);
 		{
 			ChkSize();
 		}
+		// *************************************************************
+		public bool Jump(int adr,int len =1)
+		{
+			if(m_DataFile==null) return false;
+			if (adr < 0) adr = 0;
+			else if (adr >= m_DataFile.ByteSize) adr = m_DataFile.ByteSize - 1;
+			if (adr < BDp.DispStartAdress) return false;
+			Selection.Start = adr;
+			Selection.Length = len;
+
+			int y = ((adr - BDp.DispStartAdress) / BDisp.HexC);
+
+			int ds = BDp.Y * BDisp.HexC;
+			int de = ds + (BinSheet.Size.Height / BSz.LineHeight) * BDisp.HexC;
+			if((adr<ds)||(adr>=de))
+			{
+				BDp.Y = (adr / BDisp.HexC) * BSz.LineHeight;
+				if(vsbar.Value != BDp.Y) { vsbar.Value = BDp.Y; }
+			}
+			if (BinSheet !=null) { BinSheet.DrawOffScr(); }
+			if (BAdressVur != null) { BAdressVur.DrawOffScr(); }
+
+			this.Invalidate();
+			return true;
+		}
+		public bool JumpTop()
+		{
+			int adr = BDp.DispStartAdress;
+			return Jump(adr, 1);
+		}
+		public bool JumpEnd()
+		{
+			bool ret = false;
+			if (m_DataFile != null)
+			{
+				int adr = m_DataFile.ByteSize-1;
+				if (adr < 0) adr = 0;
+				ret = Jump(adr, 1);
+			}
+			return ret;
+		}
 	}
 }

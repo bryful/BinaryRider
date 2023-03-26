@@ -51,8 +51,6 @@ namespace BinaryRider
 		public MainForm? MainForm = null;
 
 		public BDataFile BDataFile = new BDataFile();
-		public EditBinary EditBinary0 = new EditBinary();
-		public EditBinary EditBinary1 = new EditBinary();
 		// ***************************************************************
 		public bool IsActive
 		{
@@ -64,6 +62,9 @@ namespace BinaryRider
 		{
 			AllowDrop = true;
 			InitializeComponent();
+
+			editBinaryTwo1.DataFile = BDataFile;
+
 			newFormMenu.Click += NewToolStripMenuItem_Click;
 			openFileMenu.Click += OpenToolStripMenuItem_Click;
 			windowMenu.Click += (sender, e) => { MakeWindowMenu(); };
@@ -79,10 +80,27 @@ namespace BinaryRider
 				editBinaryTwo1.IsVurWin = !editBinaryTwo1.IsVurWin;
 				orientMenu.Checked = editBinaryTwo1.IsVurWin;
 			};
-			shiftJISMenu.Click += (sender, e) =>{CharCodeMode = CharCodeMode.ShiftJIS;};
+			shiftJISMenu.Click += (sender, e) => { CharCodeMode = CharCodeMode.ShiftJIS; };
 			uTF8Menu.Click += (sender, e) => { CharCodeMode = CharCodeMode.UTF8; };
-		}
 
+			consoleMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowConsoleForm(); };
+			scriptEditorMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowScriptEditor(); };
+
+			//jumpTopMenu.ShortcutKeys = Keys.Home;
+			//jumpEndMenu.ShortcutKeys = Keys.End;
+			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
+			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
+			addressMenu.Click += (sender, e) => { Jump(); };
+
+
+		}
+		public byte[] Data
+		{
+			get
+			{
+				return BDataFile.Data;
+			}
+		}
 
 		// ***************************************************************
 		public CharCodeMode CharCodeMode
@@ -105,7 +123,7 @@ namespace BinaryRider
 						uTF8Menu.Checked = false;
 						break;
 				}
-				if(MainForm!=null)MainForm.CharCodeMode = value;
+				if (MainForm != null) MainForm.CharCodeMode = value;
 			}
 		}
 		// ***************************************************************
@@ -166,7 +184,7 @@ namespace BinaryRider
 		public bool OpenFile(string p)
 		{
 			bool ret = false;
-			ret = bDataFile1.LoadFile(p);
+			ret = BDataFile.LoadFile(p);
 			if (ret == true)
 			{
 				this.Text = p;
@@ -182,7 +200,7 @@ namespace BinaryRider
 			bool ret = false;
 			using (OpenFileDialog dlg = new OpenFileDialog())
 			{
-				string p = bDataFile1.FileName;
+				string p = BDataFile.FileName;
 				if (p != "")
 				{
 					dlg.InitialDirectory = Path.GetDirectoryName(p);
@@ -211,6 +229,13 @@ namespace BinaryRider
 		private void editBinaryTwo1_Panel2_Paint(object sender, PaintEventArgs e)
 		{
 
+		}
+		public BSelection Selection
+		{
+			get
+			{
+				return editBinaryTwo1.Selection;
+			}
 		}
 		// ***************************************************************
 		public void MakeWindowMenu()
@@ -242,6 +267,33 @@ namespace BinaryRider
 			}
 			windowMenu.DropDownItems.AddRange(ms.ToArray());
 		}
+		// ***************************************************************
+		public bool Jump(int adr, int Len = 1)
+		{
+			return editBinaryTwo1.Jump(adr, Len);
+		}
+		public bool Jump()
+		{
+			bool ret = false;
+			using (JumpDialog dlg = new JumpDialog())
+			{
+				dlg.RiderForm = this;
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					ret = Jump(dlg.Adress);
+				}
+			}
+			return ret;
+		}
+		public bool JumpTop()
+		{
+			return editBinaryTwo1.JumpTop();
+		}
+		public bool JumpEnd()
+		{
+			return editBinaryTwo1.JumpEnd();
+		}
+		// ***************************************************************
 	}
 
 

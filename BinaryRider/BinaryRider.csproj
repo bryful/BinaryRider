@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="RiderForm_.cs" />
+    <EmbeddedResource Remove="Script\RoslynEdit.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Script\RoslynEdit.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RoslynPad.Editor.Windows" Version="4.4.0" />
   </ItemGroup>
 
 </Project>

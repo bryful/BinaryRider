@@ -30,6 +30,7 @@ namespace BinaryRider
 		// ************************************************************************
 		protected Point m_Location = new Point(0,0);
 		protected Size m_Size = new Size(100, 100);
+		public Size Size { get { return m_Size; } }
 		public Rectangle ClientRectangle { get { return new Rectangle(0, 0, m_Size.Width, m_Size.Height); } }
 		protected Bitmap m_OffScr = new Bitmap(100,100,PixelFormat.Format32bppArgb); 
 		// ************************************************************************

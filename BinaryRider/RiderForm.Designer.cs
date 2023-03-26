@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			components = new System.ComponentModel.Container();
-			bDataFile1 = new BDataFile(components);
+			BSelection bSelection1 = new BSelection();
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			newFormMenu = new ToolStripMenuItem();
@@ -45,6 +45,13 @@
 			CharCodeMenu = new ToolStripMenuItem();
 			shiftJISMenu = new ToolStripMenuItem();
 			uTF8Menu = new ToolStripMenuItem();
+			jumpMenu = new ToolStripMenuItem();
+			addressMenu = new ToolStripMenuItem();
+			jumpTopMenu = new ToolStripMenuItem();
+			jumpEndMenu = new ToolStripMenuItem();
+			scriptMenu = new ToolStripMenuItem();
+			scriptEditorMenu = new ToolStripMenuItem();
+			consoleMenu = new ToolStripMenuItem();
 			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
@@ -55,7 +62,7 @@
 			// 
 			// menuStrip1
 			// 
-			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionToolStripMenuItem, windowMenu, helpToolStripMenuItem });
+			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionToolStripMenuItem, jumpMenu, scriptMenu, windowMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
 			menuStrip1.Size = new Size(576, 24);
@@ -124,33 +131,78 @@
 			// separetDispMenu
 			// 
 			separetDispMenu.Name = "separetDispMenu";
-			separetDispMenu.Size = new Size(180, 22);
+			separetDispMenu.Size = new Size(154, 22);
 			separetDispMenu.Text = "SeparetDisp";
 			// 
 			// orientMenu
 			// 
 			orientMenu.Name = "orientMenu";
-			orientMenu.Size = new Size(180, 22);
+			orientMenu.Size = new Size(154, 22);
 			orientMenu.Text = "Orient";
 			// 
 			// CharCodeMenu
 			// 
 			CharCodeMenu.DropDownItems.AddRange(new ToolStripItem[] { shiftJISMenu, uTF8Menu });
 			CharCodeMenu.Name = "CharCodeMenu";
-			CharCodeMenu.Size = new Size(180, 22);
+			CharCodeMenu.Size = new Size(154, 22);
 			CharCodeMenu.Text = "Character Code";
 			// 
 			// shiftJISMenu
 			// 
 			shiftJISMenu.Name = "shiftJISMenu";
-			shiftJISMenu.Size = new Size(180, 22);
+			shiftJISMenu.Size = new Size(111, 22);
 			shiftJISMenu.Text = "ShiftJIS";
 			// 
 			// uTF8Menu
 			// 
 			uTF8Menu.Name = "uTF8Menu";
-			uTF8Menu.Size = new Size(180, 22);
+			uTF8Menu.Size = new Size(111, 22);
 			uTF8Menu.Text = "UTF8";
+			// 
+			// jumpMenu
+			// 
+			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { addressMenu, jumpTopMenu, jumpEndMenu });
+			jumpMenu.Name = "jumpMenu";
+			jumpMenu.Size = new Size(47, 20);
+			jumpMenu.Text = "Jump";
+			// 
+			// addressMenu
+			// 
+			addressMenu.Name = "addressMenu";
+			addressMenu.ShortcutKeys = Keys.Control | Keys.J;
+			addressMenu.Size = new Size(180, 22);
+			addressMenu.Text = "Address";
+			// 
+			// jumpTopMenu
+			// 
+			jumpTopMenu.Name = "jumpTopMenu";
+			jumpTopMenu.Size = new Size(180, 22);
+			jumpTopMenu.Text = "Top";
+			// 
+			// jumpEndMenu
+			// 
+			jumpEndMenu.Name = "jumpEndMenu";
+			jumpEndMenu.Size = new Size(180, 22);
+			jumpEndMenu.Text = "End";
+			// 
+			// scriptMenu
+			// 
+			scriptMenu.DropDownItems.AddRange(new ToolStripItem[] { scriptEditorMenu, consoleMenu });
+			scriptMenu.Name = "scriptMenu";
+			scriptMenu.Size = new Size(49, 20);
+			scriptMenu.Text = "Script";
+			// 
+			// scriptEditorMenu
+			// 
+			scriptEditorMenu.Name = "scriptEditorMenu";
+			scriptEditorMenu.Size = new Size(135, 22);
+			scriptEditorMenu.Text = "ScriptEditor";
+			// 
+			// consoleMenu
+			// 
+			consoleMenu.Name = "consoleMenu";
+			consoleMenu.Size = new Size(135, 22);
+			consoleMenu.Text = "Console";
 			// 
 			// windowMenu
 			// 
@@ -167,7 +219,6 @@
 			// editBinaryTwo1
 			// 
 			editBinaryTwo1.CharCodeMode = CharCodeMode.UTF8;
-			editBinaryTwo1.DataFile = bDataFile1;
 			editBinaryTwo1.IsTwoWin = false;
 			editBinaryTwo1.IsVurWin = false;
 			editBinaryTwo1.Location = new Point(12, 30);
@@ -178,6 +229,9 @@
 			// 
 			editBinaryTwo1.Panel2.Paint += editBinaryTwo1_Panel2_Paint;
 			editBinaryTwo1.Panel2Collapsed = true;
+			bSelection1.Length = 0;
+			bSelection1.Start = 0;
+			editBinaryTwo1.Selection = bSelection1;
 			editBinaryTwo1.Size = new Size(543, 360);
 			editBinaryTwo1.SplitterDistance = 289;
 			editBinaryTwo1.SplitterIncrement = 2;
@@ -203,8 +257,6 @@
 		}
 
 		#endregion
-
-		private BDataFile bDataFile1;
 		private MenuStrip menuStrip1;
 		private ToolStripMenuItem fileToolStripMenuItem;
 		private ToolStripMenuItem newFormMenu;
@@ -223,5 +275,12 @@
 		private ToolStripMenuItem CharCodeMenu;
 		private ToolStripMenuItem shiftJISMenu;
 		private ToolStripMenuItem uTF8Menu;
+		private ToolStripMenuItem scriptMenu;
+		private ToolStripMenuItem scriptEditorMenu;
+		private ToolStripMenuItem consoleMenu;
+		private ToolStripMenuItem jumpMenu;
+		private ToolStripMenuItem jumpTopMenu;
+		private ToolStripMenuItem jumpEndMenu;
+		private ToolStripMenuItem addressMenu;
 	}
 }
