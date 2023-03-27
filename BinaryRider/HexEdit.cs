@@ -8,17 +8,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Runtime.InteropServices;
 namespace BinaryRider
 {
 	public partial class HexEdit : Control
 	{
-		public readonly int TopBottomHeight = 6;
-		private int m_HightAll = 0;
-		private int m_HightB = 0;
-		private int m_WidthOne = 0;
-		private int m_WidthAll = 0;
+		[DllImport("user32.dll")]
+		private static extern IntPtr SetFocus(IntPtr hWnd);
+		public void  AtFoucus()
+		{ SetFocus(this.Handle); }
 
+		public delegate void ValueChangedEventHandler(object sender, EventArgs e);
+		public event ValueChangedEventHandler? ValueChanged = null;
+		protected virtual void OnValueChanged(EventArgs e)
+		{
+			if (ValueChanged != null)
+			{
+				ValueChanged(this, e);
+			}
+		}
+		private int m_WidthTrue=0;
+		private int m_HeightTrue = 0;
+		private int m_Top1 = 0;
+		private int m_HeightMid = 0;
+
+		private HexOneByte[] HexOneBytes = new HexOneByte[16];
+
+		private int m_UsedByte = 8;
+		private long m_MaxValue = 0x6FFFFFFFFFFFFFFF;
+		public int UsedByte
+		{
+			get { return m_UsedByte; }
+			set 
+			{
+				m_UsedByte = value;
+				if (m_UsedByte < 1) m_UsedByte = 1;
+				else if (m_UsedByte > 8) m_UsedByte = 8;
+				CalcMaxValue();
+				GetSizeFromFont();
+			}
+		}
+		public long MaxValue
+		{
+			get { return m_MaxValue; }
+		}
+		public void CalcMaxValue()
+		{
+			ulong v = 0;
+			for (int i = 0; i < m_UsedByte * 2; i++)
+			{
+				v = (v << 4) + 0xF;
+			}
+			if (v > 0x6FFFFFFFFFFFFFFF)  v = 0x6FFFFFFFFFFFFFFF;
+			m_MaxValue = (long)v;
+			if(m_Value> m_MaxValue)
+			{
+				m_Value = m_MaxValue;
+				OnValueChanged(new EventArgs());
+				DispValue();
+			}
+		}
 		private StringFormat m_Format = new StringFormat();
 		public StringAlignment Alignment
 		{
@@ -29,14 +78,33 @@ namespace BinaryRider
 		private long m_Value = 0;
 		public long Value
 		{
-			get { return m_Value; }
+			get
+			{
+				return m_Value; 
+			}
 			set 
 			{ 
-				m_Value = value;
-				if (m_Value > 0x4FFFFFFF) m_Value = 0x4FFFFFFF;
-				this.Invalidate();
+				long v = value;
+				if (v < 0) v = 0;
+				if(v>m_MaxValue) v = m_MaxValue;
+				if(m_Value!=v)
+				{
+					m_Value = v;
+					OnValueChanged(new EventArgs());
+				}
+				DispValue();
 			}
 
+		}
+		// ***********************************************************
+		private void DispValue()
+		{
+			long v = Value;
+			for(int i = 0; i < m_UsedByte*2; i++)
+			{
+				HexOneBytes[i].Value = (byte)(v & 0xF);
+				v = v >> 4;
+			}
 		}
 
 		// ***********************************************************
@@ -46,6 +114,7 @@ namespace BinaryRider
 			set
 			{
 				base.Font = value;
+
 				GetSizeFromFont();
 			}
 		}
@@ -54,263 +123,209 @@ namespace BinaryRider
 			get { return base.Size; }
 			set
 			{
-				int w = base.Size.Width;
-				int h = base.Size.Height;
-				base.Size = new Size(value.Width, h);
+				base.Size = new Size(m_WidthTrue, m_HeightTrue);
 			}
 		}
+		public new Color BackColor
+		{
+			get { return HexOneBytes[0].BackColor; }
+			set
+			{
+				base.BackColor = Color.Transparent;
+				for(int i=0; i<HexOneBytes.Length; i++)
+				{
+					HexOneBytes[i].BackColor = value;
+				}
+			}
+		}
+		public Color BackColorMid
+		{
+			get { return HexOneBytes[0].BackColorMid; }
+			set
+			{
+				for (int i = 0; i < HexOneBytes.Length; i++)
+				{
+					HexOneBytes[i].BackColorMid = value;
+				}
+			}
+		}
+		public new Color ForeColor
+		{
+			get { return base.ForeColor; }
+			set
+			{
+				base.ForeColor = value;
+				for (int i = 0; i < HexOneBytes.Length; i++)
+				{
+					HexOneBytes[i].ForeColor = value;
+				}
+			}
+		}
+		private TextBox? m_Edit = null;
 		public HexEdit()
 		{
-			this.Size = new Size(100, 75);
-			m_Format.Alignment = StringAlignment.Center;
+			CalcMaxValue();
+			long aa = 1;
+			for (int i = 0; i < HexOneBytes.Length; i++)
+			{
+				HexOneBytes[i] = new HexOneByte();
+				HexOneBytes[i].Name = $"HexOneBytes{i}";
+				HexOneBytes[i].AddValue = aa;
+				aa = aa << 4;
+
+				HexOneBytes[i].Plused += (sender, e) =>
+				{
+					HexOneByte hob = (HexOneByte)sender;
+					long v = m_Value + hob.AddValue;
+					if ((v > m_MaxValue)||(v<0)) v = m_MaxValue;
+					if (m_Value != v)
+					{ 
+						m_Value = v;
+						DispValue();
+						OnValueChanged(new EventArgs());
+					}
+				};
+				HexOneBytes[i].Minused += (sender, e) =>
+				{
+					HexOneByte hob = (HexOneByte)sender;
+					long v = m_Value - hob.AddValue;
+					if (v < 0) v = 0;
+					if (m_Value != v)
+					{
+						m_Value = v;
+						DispValue();
+						OnValueChanged(new EventArgs());
+					}
+				};
+			}
 			GetSizeFromFont();
+			m_Format.Alignment = StringAlignment.Center;
 			InitializeComponent();
 			this.SetStyle(
+ControlStyles.UserMouse |
+ControlStyles.Selectable |
 ControlStyles.DoubleBuffer |
 ControlStyles.UserPaint |
 ControlStyles.AllPaintingInWmPaint |
 ControlStyles.SupportsTransparentBackColor,
 true);
+
 			this.BackColor = SystemColors.Control;
 			this.ForeColor = SystemColors.ControlText;
 			this.UpdateStyles();
+			for(int i = 0;i< HexOneBytes.Length;i++)
+			{
+				this.Controls.Add(HexOneBytes[i]);
+			}
+
 			this.Invalidate();
 		}
-		public Size GetSizeFromFont()
+		public void GetSizeFromFont()
 		{
-			Size ret = new Size(0,0);
-
+			int w = 0;
+			int h = 0;
 			using (StringFormat format = new StringFormat(StringFormat.GenericTypographic))
-			using (Bitmap bmp = new Bitmap(100, 50, PixelFormat.Format32bppArgb))
+			using (Bitmap bmp = new Bitmap(50, 20, PixelFormat.Format32bppArgb))
 			{
 				Graphics g = Graphics.FromImage(bmp);
-				SizeF szF = g.MeasureString("A", this.Font, 100, format);
-				int w = (int)(1.3*szF.Width + 0.5);
-				int h = (int)(szF.Height + 0.5);
-				ret.Width = w;
-				ret.Height = h;
-				m_WidthOne = w;
-				m_WidthAll = w*10;
-				m_HightAll = h + TopBottomHeight * 2;
-				m_HightB = h;
-				base.Size = new Size(m_WidthAll, m_HightAll);
+				SizeF szF = g.MeasureString("A", base.Font, 100, format);
+				w = (int)(szF.Width);
+				h = (int)(szF.Height*0.8);
+				for(int  i = 0; i < HexOneBytes.Length;i++)
+				{
+					HexOneBytes[i].SetCharSize(w, h);
+					HexOneBytes[i].Visible = false;
+					HexOneBytes[i].Font = base.Font;
+				}
+				m_WidthTrue = w * m_UsedByte*2+3;
+				m_HeightTrue = h + HexOneByte.TopBottomHeight*2 +3;
+				m_Top1 = HexOneByte.TopBottomHeight+1;
+				m_HeightMid = h;
+				base.Size = new Size(m_WidthTrue, m_HeightTrue);
+				for (int i = 0; i < m_UsedByte*2; i++)
+				{
+					HexOneBytes[i].Location = new Point(m_WidthTrue - (i + 1) * w-2, 1);
+					HexOneBytes[i].Visible=true;
+				}
+
 			}
-			return ret;
 		}
 		protected override void OnPaint(PaintEventArgs pe)
 		{
 			Graphics g = pe.Graphics;
-			using (SolidBrush sb = new SolidBrush(this.BackColor))
+			using (SolidBrush sb = new SolidBrush(Color.Transparent))
 			using (Pen p = new Pen(this.ForeColor))
 			{
 				//透明
 				sb.Color = Color.Transparent;
 				g.FillRectangle(sb,this.ClientRectangle);
-
-				Rectangle r = new Rectangle(0, TopBottomHeight, this.Width, m_HightB);
-				sb.Color = BackColor;
-				g.FillRectangle(sb, r);
-
-				string s = $"{m_Value:X8}";
-				sb.Color = ForeColor;
-				int x = 0;
-				r = new Rectangle(x,TopBottomHeight,m_WidthOne, m_HightB);
-				g.DrawString("0",this.Font,sb,r);
-				x += m_WidthOne;
-				r = new Rectangle(x, TopBottomHeight, m_WidthOne, m_HightB);
-				g.DrawString("x", this.Font, sb, r);
-				x += m_WidthOne;
-				if(s.Length>0)
+				if (this.Focused)
 				{
-					for(int i=0;i<s.Length;i++)
-					{
-						r = new Rectangle(x, TopBottomHeight, m_WidthOne, m_HightB);
-						g.DrawString(s.Substring(i,1), this.Font, sb, r);
-						x += m_WidthOne;
-					}
+					p.Color = ForeColor;
+					g.DrawRectangle(p, new Rectangle(0,0,this.Width-1,this.Height-1));
 				}
-				if(HexUpDown!=0)
-				{
-					if(HexUpDown>0)
-					{
-						r = new Rectangle(m_WidthOne * (2 + HexPos), 0, m_WidthOne, TopBottomHeight);
-					}else
-					{
-						r = new Rectangle(m_WidthOne * (2 + HexPos), TopBottomHeight+m_HightB, m_WidthOne, TopBottomHeight);
-					}
-					sb.Color = ForeColor;
-					g.FillRectangle(sb, r);
-
-				}
-
-				r = new Rectangle(0, TopBottomHeight, this.Width-1, m_HightB-1);
-				p.Color = ForeColor;
-				g.DrawRectangle(p, r);
-
 			}
 		}
 		protected override void OnResize(EventArgs e)
 		{
-			if(this.Height != m_HightAll)
+			if(this.Width != m_WidthTrue)
 			{
-				this.Height = m_HightAll;
+				this.Width = m_WidthTrue;
 			}
-			if (this.Width != m_WidthAll)
+			if (this.Height != m_HeightTrue)
 			{
-				this.Width = m_WidthAll;
+				this.Height = m_HeightTrue;
 			}
 			//base.OnResize(e);
 		}
-		private bool MDent = false;
-		private int HexPos = -1;
-		private int HexUpDown = 0;
-		protected override void OnMouseEnter(EventArgs e)
+		protected override void OnGotFocus(EventArgs e)
 		{
-			MDent = true;
-			base.OnMouseEnter(e);
+			base.OnGotFocus(e);
+			this.Invalidate();
 		}
-		protected override void OnMouseMove(MouseEventArgs e)
+		protected override void OnLostFocus(EventArgs e)
 		{
-			if (MDent)
-			{
-				int x = -1;
-				int y = 0;
-				x = (e.X - m_WidthOne * 2) / m_WidthOne;
-				if (x >= 8) x = -1;
-				HexPos = x;
-				if (e.Y < TopBottomHeight*2)
-				{
-					y = +1;
-				}
-				else if (e.Y > -TopBottomHeight + m_HightB)
-				{
-					y = -1;
-				}
-				HexUpDown = y;
-				this.Invalidate();
-			}
-			base.OnMouseMove(e);
+			base.OnLostFocus(e);
+			this.Invalidate();
 		}
-		protected override void OnMouseLeave(EventArgs e)
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			if(MDent)
-			{
-				MDent=false;
-				HexPos = -1;
-				HexUpDown = 0;
-			}
-			base.OnMouseLeave(e);
+			base.OnMouseDown(e);
+			AtFoucus();
 		}
-		protected override void OnMouseWheel(MouseEventArgs e)
-		{
-			if (MDent)
-			{
-				long a = e.Delta / 120;
-				long ad = 0;
-				switch (HexPos)
-				{
-					case 7:
-						ad = 1 * a;
-						break;
-					case 6:
-						ad = 0x10 * a;
-						break;
-					case 5:
-						ad = 0x100 * a;
-						break;
-					case 4:
-						ad = 0x1000 * a;
-						break;
-					case 3:
-						ad = 0x10000 * a;
-						break;
-					case 2:
-						ad = 0x100000 * a;
-						break;
-					case 1:
-						ad = 0x1000000 * a;
-						break;
-					case 0:
-						ad = 0x10000000;
-						if (a > 0)
-						{
-							if (m_Value >= 0xEFFFFFFF)
-							{
-								ad = 0;
-							}
-						}
-						else
-						{
-							ad *= -1;
-						}
-						break;
-				}
-				m_Value += ad;
-				if (m_Value < 0) m_Value = 0;
-				this.Invalidate();
-			}
-		}
-		protected override void OnMouseUp(MouseEventArgs e)
-		{
-			if (MDent)
-			{
 
-				if ((HexPos >= 0) && (HexPos < 8) && (HexUpDown != 0))
-				{
-					long ad = 0;
-					switch (HexPos)
-					{
-						case 7:
-							ad = 1 * (long)HexUpDown;
-							break;
-						case 6:
-							ad = 0x10 * (long)HexUpDown;
-							break;
-						case 5:
-							ad = 0x100 * (long)HexUpDown;
-							break;
-						case 4:
-							ad = 0x1000 * (long)HexUpDown;
-							break;
-						case 3:
-							ad = 0x10000 * (long)HexUpDown;
-							break;
-						case 2:
-							ad = 0x100000 * (long)HexUpDown;
-							break;
-						case 1:
-							ad = 0x1000000 * (long)HexUpDown;
-							break;
-						case 0:
-							ad = 0x10000000;
-							if (HexUpDown > 0)
-							{
-								if (m_Value >= 0xEFFFFFFF)
-								{
-									ad = 0;
-								}
-							}
-							else
-							{
-								ad *= -1;
-							}
-							break;
-					}
-					m_Value += ad;
-					if (m_Value < 0) m_Value = 0;
-					this.Invalidate();
-				}
-			}
-			//base.OnMouseDown(e);
-		}
-		protected override void OnMouseDoubleClick(MouseEventArgs e)
+
+		public void SetEdit()
 		{
-			if (HexUpDown == 0)
+			if (m_Edit != null) return;
+			m_Edit = new TextBox();
+			m_Edit.Name = "Edit";
+			m_Edit.Size = new Size(this.Width - 2, m_HeightMid);
+			m_Edit.Location = new Point(2, 2);
+			m_Edit.BorderStyle = BorderStyle.None;
+			m_Edit.Font = base.Font;
+			m_Edit.TextAlign = HorizontalAlignment.Right;
+			m_Edit.Text = $"{m_Value:X}";
+			m_Edit.PreviewKeyDown += M_Edit_PreviewKeyDown;
+			this.Controls.Add(m_Edit);
+			m_Edit.Focus();
+
+		}
+
+		private void M_Edit_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
+		{
+			if(e.KeyData == Keys.Escape)
 			{
-				m_Value = 0;
-				this.Invalidate();
+				EndEdit();
 			}
-			base.OnMouseDoubleClick(e);
+		}
+
+		public void EndEdit()
+		{
+			if (m_Edit == null) return;
+			this.Controls.Remove(m_Edit);
+			m_Edit.Dispose();
+			m_Edit = null;
 		}
 	}
 }

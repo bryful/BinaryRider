@@ -21,9 +21,13 @@ namespace BinaryRider
 				rf = value;
 				if (rf != null)
 				{
-					hexBox1.Value = rf.Selection.Start;
+					hexEdit1.Value = rf.Selection.Start;
 					InfoDisp();
 					ChkEnabled();
+					hexEdit1.ValueChanged += (sender, e) =>
+					{
+						ChkEnabled();
+					};
 				}
 			}
 
@@ -35,45 +39,28 @@ namespace BinaryRider
 				long st = rf.Selection.Start;
 				long mx = rf.BDataFile.ByteSize - 1;
 				if (mx < 0) mx = 0;
-				if (hexBox1.IsHex)
-				{
-					lbInfo.Text = $"Position:0x{st:X}/ Max:0x{mx:X}";
-				}
-				else
-				{
-					lbInfo.Text = $"Position:  {st}/ Max:  {mx}";
-				}
+				lbInfo.Text = $"Position:0x{st:X}/ Max:0x{mx:X}";
 			}
 		}
 		public long Adress
 		{
-			get { return hexBox1.Value; }
+			get { return hexEdit1.Value; }
 			set
 			{
-				hexBox1.Value = value;
+				hexEdit1.Value = value;
 			}
 		}
 		public JumpDialog()
 		{
 			InitializeComponent();
-			cbHex.Checked = hexBox1.IsHex;
-			cbHex.CheckedChanged += (sender, e) =>
-			{
-				hexBox1.IsHex = cbHex.Checked;
-				InfoDisp();
-			};
 			ChkEnabled();
-			hexBox1.TextAlignChanged += (sender, e) =>
-			{
-				ChkEnabled();
-			};
 		}
 		private void ChkEnabled()
 		{
 			if (rf != null)
 			{
 				long sz = rf.BDataFile.ByteSize;
-				long v = hexBox1.Value;
+				long v = hexEdit1.Value;
 				btnJump.Enabled = ((v >= 0) && (v < sz));
 			}
 

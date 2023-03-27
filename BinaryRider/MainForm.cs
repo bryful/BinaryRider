@@ -58,6 +58,7 @@ namespace BinaryRider
 			form.Name = $"BinaryRider{Id_Counter}";
 			form.CharCodeMode = this.CharCodeMode;
 			form.WinClose += Form_WinClose1;
+			m_ActiveRider = form;
 			form.Activated += (senter, e) =>
 			{
 				if(senter != null)
@@ -69,7 +70,8 @@ namespace BinaryRider
 				}
 			};
 			Forms.Add(form);
-			form.Show();
+			form.Show(this);
+			form.Activate();
 			return form;
 		}
 		// *********************************************************************
@@ -91,10 +93,33 @@ namespace BinaryRider
 						Forms.RemoveAt(i);
 					}
 				}
+				m_ActiveRider = null;
 			}
 			if (Forms.Count <= 0)
 			{
 				Application.Exit();
+			}
+			else
+			{
+				if (Forms.Count > 0)
+				{
+					Forms[0].Activate();
+				}
+			}
+		}
+		// *********************************************************************
+		protected override void OnGotFocus(EventArgs e)
+		{
+			if(m_ActiveRider!= null)
+			{
+				m_ActiveRider.Activate();
+			}
+			else
+			{
+				if (Forms.Count > 0)
+				{
+					Forms[0].Activate();
+				}
 			}
 		}
 		// *********************************************************************

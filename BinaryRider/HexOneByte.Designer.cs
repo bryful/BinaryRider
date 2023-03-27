@@ -1,6 +1,6 @@
 ﻿namespace BinaryRider
 {
-	partial class HexBox
+	partial class HexOneByte
 	{
 		/// <summary>
 		/// 必要なデザイナー変数です。
