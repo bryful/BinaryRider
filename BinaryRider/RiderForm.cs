@@ -66,7 +66,7 @@ namespace BinaryRider
 			editBinaryTwo1.DataFile = BDataFile;
 
 			newFormMenu.Click += NewToolStripMenuItem_Click;
-			openFileMenu.Click += OpenToolStripMenuItem_Click;
+			loadFileMenu.Click += OpenToolStripMenuItem_Click;
 			windowMenu.Click += (sender, e) => { MakeWindowMenu(); };
 			separetDispMenu.Checked = editBinaryTwo1.IsTwoWin;
 			separetDispMenu.Click += (sender, e) =>
@@ -269,6 +269,18 @@ namespace BinaryRider
 		public bool Jump(long adr, long Len = 1)
 		{
 			return editBinaryTwo1.Jump(adr, Len);
+		}
+		public bool RJump(long adr)
+		{
+			long ss = Selection.Start;
+			if (ss < 0) ss = 0;
+			long ll = Selection.Length;
+			if (ll <= 0) ll = 1;
+
+			long v = ss + adr;
+			if( v>= BDataFile.ByteSize) return false;
+			if (v+ll<0) return false;
+			return editBinaryTwo1.Jump(v, ll);
 		}
 		public bool Jump()
 		{

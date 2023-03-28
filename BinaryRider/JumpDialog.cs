@@ -32,6 +32,14 @@ namespace BinaryRider
 			}
 
 		}
+		public string Caption
+		{
+			get { return this.Text; }
+			set
+			{
+				this.Text = value;
+			}
+		}
 		private void InfoDisp()
 		{
 			if (rf != null)
@@ -54,6 +62,14 @@ namespace BinaryRider
 		{
 			InitializeComponent();
 			ChkEnabled();
+			btnClose.Click += (sender, e) =>
+			{
+				this.DialogResult = DialogResult.Cancel;
+			};
+			btnJump.Click += (sender, e) =>
+			{
+				this.DialogResult = DialogResult.OK;
+			};
 		}
 		private void ChkEnabled()
 		{

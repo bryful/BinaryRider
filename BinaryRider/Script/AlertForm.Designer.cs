@@ -37,6 +37,7 @@
 			textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			textBox1.BackColor = SystemColors.ControlLightLight;
 			textBox1.BorderStyle = BorderStyle.FixedSingle;
+			textBox1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			textBox1.ForeColor = SystemColors.ControlText;
 			textBox1.Location = new Point(12, 12);
 			textBox1.Multiline = true;
@@ -52,9 +53,9 @@
 			btnOK.DialogResult = DialogResult.OK;
 			btnOK.FlatStyle = FlatStyle.Flat;
 			btnOK.ForeColor = SystemColors.ControlText;
-			btnOK.Location = new Point(335, 147);
+			btnOK.Location = new Point(318, 147);
 			btnOK.Name = "btnOK";
-			btnOK.Size = new Size(75, 23);
+			btnOK.Size = new Size(75, 30);
 			btnOK.TabIndex = 1;
 			btnOK.Text = "OK";
 			btnOK.UseVisualStyleBackColor = true;
@@ -67,6 +68,7 @@
 			ClientSize = new Size(422, 182);
 			Controls.Add(btnOK);
 			Controls.Add(textBox1);
+			Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			ForeColor = SystemColors.ControlText;
 			FormBorderStyle = FormBorderStyle.SizableToolWindow;
 			MaximizeBox = false;
@@ -76,6 +78,7 @@
 			ShowIcon = false;
 			ShowInTaskbar = false;
 			StartPosition = FormStartPosition.CenterParent;
+			Text = "Alert";
 			TopMost = true;
 			ResumeLayout(false);
 			PerformLayout();

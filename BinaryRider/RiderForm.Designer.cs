@@ -32,7 +32,7 @@
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			newFormMenu = new ToolStripMenuItem();
-			openFileMenu = new ToolStripMenuItem();
+			loadFileMenu = new ToolStripMenuItem();
 			saveFileMenu = new ToolStripMenuItem();
 			closeFormMenu = new ToolStripMenuItem();
 			editToolStripMenuItem = new ToolStripMenuItem();
@@ -55,7 +55,6 @@
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
 			hexEdit2 = new HexEdit();
-			hexEdit1 = new HexEdit();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).BeginInit();
 			editBinaryTwo1.Panel1.SuspendLayout();
@@ -73,7 +72,7 @@
 			// 
 			// fileToolStripMenuItem
 			// 
-			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newFormMenu, openFileMenu, saveFileMenu, closeFormMenu });
+			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newFormMenu, loadFileMenu, saveFileMenu, closeFormMenu });
 			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			fileToolStripMenuItem.Size = new Size(37, 20);
 			fileToolStripMenuItem.Text = "File";
@@ -81,26 +80,26 @@
 			// newFormMenu
 			// 
 			newFormMenu.Name = "newFormMenu";
-			newFormMenu.Size = new Size(129, 22);
+			newFormMenu.Size = new Size(180, 22);
 			newFormMenu.Text = "NewForm";
 			// 
-			// openFileMenu
+			// loadFileMenu
 			// 
-			openFileMenu.Name = "openFileMenu";
-			openFileMenu.Size = new Size(129, 22);
-			openFileMenu.Text = "OpenFile";
+			loadFileMenu.Name = "loadFileMenu";
+			loadFileMenu.Size = new Size(180, 22);
+			loadFileMenu.Text = "LoadFile";
 			// 
 			// saveFileMenu
 			// 
 			saveFileMenu.Enabled = false;
 			saveFileMenu.Name = "saveFileMenu";
-			saveFileMenu.Size = new Size(129, 22);
+			saveFileMenu.Size = new Size(180, 22);
 			saveFileMenu.Text = "SaveFile";
 			// 
 			// closeFormMenu
 			// 
 			closeFormMenu.Name = "closeFormMenu";
-			closeFormMenu.Size = new Size(129, 22);
+			closeFormMenu.Size = new Size(180, 22);
 			closeFormMenu.Text = "CloseForm";
 			closeFormMenu.Click += quitToolStripMenuItem_Click;
 			// 
@@ -172,19 +171,19 @@
 			// 
 			addressMenu.Name = "addressMenu";
 			addressMenu.ShortcutKeys = Keys.Control | Keys.J;
-			addressMenu.Size = new Size(153, 22);
+			addressMenu.Size = new Size(180, 22);
 			addressMenu.Text = "Address";
 			// 
 			// jumpTopMenu
 			// 
 			jumpTopMenu.Name = "jumpTopMenu";
-			jumpTopMenu.Size = new Size(153, 22);
+			jumpTopMenu.Size = new Size(180, 22);
 			jumpTopMenu.Text = "Top";
 			// 
 			// jumpEndMenu
 			// 
 			jumpEndMenu.Name = "jumpEndMenu";
-			jumpEndMenu.Size = new Size(153, 22);
+			jumpEndMenu.Size = new Size(180, 22);
 			jumpEndMenu.Text = "End";
 			// 
 			// scriptMenu
@@ -197,13 +196,13 @@
 			// scriptEditorMenu
 			// 
 			scriptEditorMenu.Name = "scriptEditorMenu";
-			scriptEditorMenu.Size = new Size(135, 22);
+			scriptEditorMenu.Size = new Size(180, 22);
 			scriptEditorMenu.Text = "ScriptEditor";
 			// 
 			// consoleMenu
 			// 
 			consoleMenu.Name = "consoleMenu";
-			consoleMenu.Size = new Size(135, 22);
+			consoleMenu.Size = new Size(180, 22);
 			consoleMenu.Text = "Console";
 			// 
 			// windowMenu
@@ -224,7 +223,7 @@
 			editBinaryTwo1.DataFile = null;
 			editBinaryTwo1.IsTwoWin = false;
 			editBinaryTwo1.IsVurWin = false;
-			editBinaryTwo1.Location = new Point(12, 30);
+			editBinaryTwo1.Location = new Point(69, 71);
 			editBinaryTwo1.Name = "editBinaryTwo1";
 			editBinaryTwo1.Orientation = Orientation.Horizontal;
 			// 
@@ -249,27 +248,16 @@
 			// 
 			hexEdit2.Alignment = StringAlignment.Center;
 			hexEdit2.BackColor = SystemColors.Control;
+			hexEdit2.BackColorMid = SystemColors.Control;
 			hexEdit2.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			hexEdit2.ForeColor = SystemColors.ControlText;
 			hexEdit2.Location = new Point(472, 217);
 			hexEdit2.Name = "hexEdit2";
-			hexEdit2.Size = new Size(135, 33);
+			hexEdit2.Size = new Size(160, 29);
 			hexEdit2.TabIndex = 2;
 			hexEdit2.Text = "hexEdit2";
+			hexEdit2.UsedByte = 8;
 			hexEdit2.Value = 256L;
-			// 
-			// hexEdit1
-			// 
-			hexEdit1.Alignment = StringAlignment.Center;
-			hexEdit1.BackColor = SystemColors.Control;
-			hexEdit1.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-			hexEdit1.ForeColor = SystemColors.ControlText;
-			hexEdit1.Location = new Point(469, 413);
-			hexEdit1.Name = "hexEdit1";
-			hexEdit1.Size = new Size(120, 33);
-			hexEdit1.TabIndex = 1;
-			hexEdit1.Text = "hexEdit1";
-			hexEdit1.Value = 11L;
 			// 
 			// RiderForm
 			// 
@@ -278,7 +266,6 @@
 			ClientSize = new Size(732, 489);
 			Controls.Add(editBinaryTwo1);
 			Controls.Add(menuStrip1);
-			Controls.Add(hexEdit1);
 			MainMenuStrip = menuStrip1;
 			Name = "RiderForm";
 			Text = "RiderForm";
@@ -295,7 +282,7 @@
 		private MenuStrip menuStrip1;
 		private ToolStripMenuItem fileToolStripMenuItem;
 		private ToolStripMenuItem newFormMenu;
-		private ToolStripMenuItem openFileMenu;
+		private ToolStripMenuItem loadFileMenu;
 		private ToolStripMenuItem closeFormMenu;
 		private ToolStripMenuItem editToolStripMenuItem;
 		private ToolStripMenuItem windowMenu;
@@ -317,7 +304,6 @@
 		private ToolStripMenuItem jumpTopMenu;
 		private ToolStripMenuItem jumpEndMenu;
 		private ToolStripMenuItem addressMenu;
-		private HexEdit hexEdit1;
 		private HexEdit hexEdit2;
 	}
 }

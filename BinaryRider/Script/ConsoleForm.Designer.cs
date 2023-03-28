@@ -107,7 +107,6 @@
 			ShowIcon = false;
 			ShowInTaskbar = false;
 			Text = "ConsoleForm";
-			TopMost = true;
 			toolStrip1.ResumeLayout(false);
 			toolStrip1.PerformLayout();
 			ResumeLayout(false);

@@ -18,6 +18,11 @@ namespace BinaryRider
 			get { return textBox1.Text; }
 			set { textBox1.AppendText(value); }
 		}
+		public string Caption
+		{
+			get { return this.Text; }
+			set { this.Text = value; }
+		}
 		public string Title
 		{
 			get { return base.Text; }

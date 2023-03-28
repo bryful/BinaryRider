@@ -30,6 +30,30 @@ namespace BinaryRider
 		public ScriptEditor? Editor = null;
 		public CustomRoslynHost? ScriptHost = null;
 
+
+		// **********************************************************************
+		public class TargetRiderEventArgs : EventArgs
+		{
+			public RiderForm? Rider = null;
+			public TargetRiderEventArgs(RiderForm r)
+			{
+				Rider = r;
+			}
+			public Point Point { get; }
+		}
+		//TimeEventArgs型のオブジェクトを返すようにする
+		public delegate void TargetRiderEventHandler(object sender, TargetRiderEventArgs e);
+
+		//イベントデリゲートの宣言
+		public event TargetRiderEventHandler? TargetRider;
+
+		protected virtual void OnTargetRider(TargetRiderEventArgs e)
+		{
+			if (TargetRider != null)
+			{
+				TargetRider(this, e);
+			}
+		}
 		private RiderForm? m_ActiveRider = null;
 		public RiderForm? ActiveRider { get { return m_ActiveRider; } }
 		private int Id_Counter = 0;
@@ -61,11 +85,12 @@ namespace BinaryRider
 			m_ActiveRider = form;
 			form.Activated += (senter, e) =>
 			{
-				if(senter != null)
+				if (senter != null)
 				{
 					if (senter is RiderForm)
 					{
 						m_ActiveRider = (RiderForm)senter;
+						OnTargetRider(new TargetRiderEventArgs(m_ActiveRider));
 					}
 				}
 			};
@@ -110,7 +135,7 @@ namespace BinaryRider
 		// *********************************************************************
 		protected override void OnGotFocus(EventArgs e)
 		{
-			if(m_ActiveRider!= null)
+			if (m_ActiveRider != null)
 			{
 				m_ActiveRider.Activate();
 			}
@@ -176,6 +201,8 @@ namespace BinaryRider
 		{
 			using (AlertForm dlg = new AlertForm())
 			{
+				if (cap == "") cap = "Alert";
+				dlg.Caption = cap;
 				dlg.Text = ObjToString(obj);
 				if (cap != "") dlg.Title = cap;
 				if (dlg.ShowDialog() == DialogResult.OK)
@@ -239,7 +266,7 @@ namespace BinaryRider
 		{
 			try
 			{
-				if(ScriptHost ==null) CreateScriptHost();
+				if (ScriptHost == null) CreateScriptHost();
 				if (ScriptHost == null) return;
 				ScriptOptions options = ScriptOptions.Default
 					.WithReferences(ScriptHost.DefaultReferences)

@@ -58,6 +58,17 @@ namespace BinaryRider
 			0x0100000000000000,
 			0x1000000000000000 
 			};
+		private long[] MaxTbl = new long[]
+			{
+			0x00000000000000FF,
+			0x000000000000FFFF,
+			0x0000000000FFFFFF,
+			0x00000000FFFFFFFF,
+			0x000000FFFFFFFFFF,
+			0x0000FFFFFFFFFFFF,
+			0x00FFFFFFFFFFFFFF,
+			0x7FFFFFFFFFFFFFFF,
+			};
 		public int UsedByte
 		{
 			get { return m_UsedByte; }
@@ -66,8 +77,10 @@ namespace BinaryRider
 				m_UsedByte = value;
 				if (m_UsedByte < 1) m_UsedByte = 1;
 				else if (m_UsedByte > 8) m_UsedByte = 8;
-				CalcMaxValue();
+				m_MaxValue = MaxTbl[m_UsedByte - 1];
+				m_Value = m_Value & m_MaxValue;
 				GetSizeFromFont();
+				this.Invalidate();
 			}
 		}
 		public long MaxValue
@@ -76,16 +89,11 @@ namespace BinaryRider
 		}
 		public void CalcMaxValue()
 		{
-			ulong v = 0;
-			for (int i = 0; i < m_UsedByte * 2; i++)
+			m_MaxValue = MaxTbl[m_UsedByte - 1];
+			long v = m_Value & m_MaxValue;
+			if(m_Value != v)
 			{
-				v = (v << 4) + 0xF;
-			}
-			if (v > 0x6FFFFFFFFFFFFFFF)  v = 0x6FFFFFFFFFFFFFFF;
-			m_MaxValue = (long)v;
-			if(m_Value> m_MaxValue)
-			{
-				m_Value &= m_MaxValue;
+				m_Value = v;
 				OnValueChanged(new EventArgs());
 				this.Invalidate();
 			}
@@ -243,6 +251,19 @@ true);
 					g.FillPolygon(sb, pnts);
 				}
 
+				int l = m_UsedByte / 2;
+				if(l > 0)
+				{
+					p.Color = ForeColor;
+					int y0 = m_Top1;
+					int y1 = m_Top1 + m_HeightMid;
+					for (int i = 0; i < l; i++)
+					{
+						int x = m_WidthTrue - ( i + 1) * m_WidthOne*4;
+						g.DrawLine(p, x, y0, x, y1);
+					}
+				}
+
 				if (this.Focused)
 				{
 					p.Color = ForeColor;
@@ -323,9 +344,63 @@ true);
 		}
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			base.OnMouseDown(e);
+			if (m_InMouse)
+			{
+				GetPos(e);
+				if((m_Keta>=0)&&(m_UpDown!=0))
+				{
+					long v = AddTbl[m_Keta];
+					if(m_UpDown>0)
+					{
+						v = m_Value + v;
+						if((v>m_MaxValue)||(v<0)) { v = m_MaxValue; }
+					}
+					else
+					{
+						v = m_Value - v;
+						if (v<0) { v = 0; }
+					}
+					if(m_Value!=v)
+					{
+						m_Value = v;
+						OnVisibleChanged(new EventArgs());
+						this.Invalidate();
+					}
+				}
+				else
+				{
+					SetEdit();
+				}
+			}
 		}
-
+		protected override void OnMouseWheel(MouseEventArgs e)
+		{
+			if (m_InMouse)
+			{
+				if (m_Keta >= 0)
+				{
+					int d = e.Delta / 120;
+					long v = AddTbl[m_Keta];
+					if (d > 0)
+					{
+						v = m_Value + v;
+						if ((v > m_MaxValue) || (v < 0)) { v = m_MaxValue; }
+					}
+					else
+					{
+						v = m_Value - v;
+						if (v < 0) { v = 0; }
+					}
+					if (m_Value != v)
+					{
+						m_Value = v;
+						OnVisibleChanged(new EventArgs());
+						this.Invalidate();
+					}
+				}
+			}
+		}
+		
 
 		public void SetEdit()
 		{
@@ -337,8 +412,15 @@ true);
 			m_Edit.BorderStyle = BorderStyle.None;
 			m_Edit.Font = base.Font;
 			m_Edit.TextAlign = HorizontalAlignment.Right;
-			m_Edit.Text = $"{m_Value:X}";
 			m_Edit.PreviewKeyDown += M_Edit_PreviewKeyDown;
+			m_Edit.LostFocus += (sender, e) => 
+			{
+				ChkEdit();
+				EndEdit(); 
+			};
+			m_Edit.Text = $"{m_Value:X}";
+			m_Edit.SelectionStart = 0;
+			m_Edit.SelectionLength = m_Edit.Text.Length;
 			this.Controls.Add(m_Edit);
 			m_Edit.Focus();
 
@@ -346,18 +428,48 @@ true);
 
 		private void M_Edit_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
 		{
-			if(e.KeyData == Keys.Escape)
+			if (e.KeyData == Keys.Escape)
 			{
+				ChkEdit();
 				EndEdit();
+			} else if (e.KeyData == Keys.Enter)
+			{
+				if (ChkEdit())
+				{
+					EndEdit();
+				}
 			}
 		}
+		public bool ChkEdit()
+		{
+			bool ret = false;
+			if (m_Edit == null) return ret;
+			try
+			{
+				long v = Convert.ToInt64(m_Edit.Text, 16);
+				if (v < 0) return ret;
+				if (v > m_MaxValue) v = m_MaxValue;
+				if (m_Value != v)
+				{
+					m_Value = v;
+					this.Invalidate();
+					OnValueChanged(new EventArgs());
+				}
+				ret = true;
+			}
+			catch
+			{
 
+			}
+			return ret;
+		}
 		public void EndEdit()
 		{
 			if (m_Edit == null) return;
 			this.Controls.Remove(m_Edit);
-			m_Edit.Dispose();
+			if(m_Edit != null) m_Edit.Dispose();
 			m_Edit = null;
+			this.Focus();
 		}
 	}
 }
