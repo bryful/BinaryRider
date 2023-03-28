@@ -27,15 +27,37 @@ namespace BinaryRider
 				ValueChanged(this, e);
 			}
 		}
+		static public readonly int TopBottomHeight = 6;
 		private int m_WidthTrue=0;
+		private int m_WidthOne = 0;
 		private int m_HeightTrue = 0;
 		private int m_Top1 = 0;
 		private int m_HeightMid = 0;
 
-		private HexOneByte[] HexOneBytes = new HexOneByte[16];
+		private int m_TopBorder = 0;
+		private int m_BottomBorder = 0;
 
 		private int m_UsedByte = 8;
 		private long m_MaxValue = 0x6FFFFFFFFFFFFFFF;
+		private long[] AddTbl = new long[]
+			{
+			0x0000000000000001,
+			0x0000000000000010,
+			0x0000000000000100,
+			0x0000000000001000,
+			0x0000000000010000,
+			0x0000000000100000,
+			0x0000000001000000,
+			0x0000000010000000,
+			0x0000000100000000,
+			0x0000001000000000,
+			0x0000010000000000,
+			0x0000100000000000,
+			0x0001000000000000,
+			0x0010000000000000,
+			0x0100000000000000,
+			0x1000000000000000 
+			};
 		public int UsedByte
 		{
 			get { return m_UsedByte; }
@@ -63,9 +85,9 @@ namespace BinaryRider
 			m_MaxValue = (long)v;
 			if(m_Value> m_MaxValue)
 			{
-				m_Value = m_MaxValue;
+				m_Value &= m_MaxValue;
 				OnValueChanged(new EventArgs());
-				DispValue();
+				this.Invalidate();
 			}
 		}
 		private StringFormat m_Format = new StringFormat();
@@ -92,21 +114,10 @@ namespace BinaryRider
 					m_Value = v;
 					OnValueChanged(new EventArgs());
 				}
-				DispValue();
+				this.Invalidate();
 			}
 
 		}
-		// ***********************************************************
-		private void DispValue()
-		{
-			long v = Value;
-			for(int i = 0; i < m_UsedByte*2; i++)
-			{
-				HexOneBytes[i].Value = (byte)(v & 0xF);
-				v = v >> 4;
-			}
-		}
-
 		// ***********************************************************
 		public new Font Font
 		{
@@ -126,27 +137,14 @@ namespace BinaryRider
 				base.Size = new Size(m_WidthTrue, m_HeightTrue);
 			}
 		}
-		public new Color BackColor
-		{
-			get { return HexOneBytes[0].BackColor; }
-			set
-			{
-				base.BackColor = Color.Transparent;
-				for(int i=0; i<HexOneBytes.Length; i++)
-				{
-					HexOneBytes[i].BackColor = value;
-				}
-			}
-		}
+		private Color m_BackColorMid = SystemColors.Control;
 		public Color BackColorMid
 		{
-			get { return HexOneBytes[0].BackColorMid; }
+			get { return m_BackColorMid; }
 			set
 			{
-				for (int i = 0; i < HexOneBytes.Length; i++)
-				{
-					HexOneBytes[i].BackColorMid = value;
-				}
+				m_BackColorMid= value;
+				this.Invalidate();
 			}
 		}
 		public new Color ForeColor
@@ -155,51 +153,16 @@ namespace BinaryRider
 			set
 			{
 				base.ForeColor = value;
-				for (int i = 0; i < HexOneBytes.Length; i++)
-				{
-					HexOneBytes[i].ForeColor = value;
-				}
+				this.Invalidate();
 			}
 		}
 		private TextBox? m_Edit = null;
 		public HexEdit()
 		{
 			CalcMaxValue();
-			long aa = 1;
-			for (int i = 0; i < HexOneBytes.Length; i++)
-			{
-				HexOneBytes[i] = new HexOneByte();
-				HexOneBytes[i].Name = $"HexOneBytes{i}";
-				HexOneBytes[i].AddValue = aa;
-				aa = aa << 4;
-
-				HexOneBytes[i].Plused += (sender, e) =>
-				{
-					HexOneByte hob = (HexOneByte)sender;
-					long v = m_Value + hob.AddValue;
-					if ((v > m_MaxValue)||(v<0)) v = m_MaxValue;
-					if (m_Value != v)
-					{ 
-						m_Value = v;
-						DispValue();
-						OnValueChanged(new EventArgs());
-					}
-				};
-				HexOneBytes[i].Minused += (sender, e) =>
-				{
-					HexOneByte hob = (HexOneByte)sender;
-					long v = m_Value - hob.AddValue;
-					if (v < 0) v = 0;
-					if (m_Value != v)
-					{
-						m_Value = v;
-						DispValue();
-						OnValueChanged(new EventArgs());
-					}
-				};
-			}
 			GetSizeFromFont();
 			m_Format.Alignment = StringAlignment.Center;
+			m_Format.LineAlignment = StringAlignment.Center;
 			InitializeComponent();
 			this.SetStyle(
 ControlStyles.UserMouse |
@@ -210,15 +173,9 @@ ControlStyles.AllPaintingInWmPaint |
 ControlStyles.SupportsTransparentBackColor,
 true);
 
-			this.BackColor = SystemColors.Control;
+			this.BackColor = SystemColors.Window;
 			this.ForeColor = SystemColors.ControlText;
 			this.UpdateStyles();
-			for(int i = 0;i< HexOneBytes.Length;i++)
-			{
-				this.Controls.Add(HexOneBytes[i]);
-			}
-
-			this.Invalidate();
 		}
 		public void GetSizeFromFont()
 		{
@@ -231,38 +188,65 @@ true);
 				SizeF szF = g.MeasureString("A", base.Font, 100, format);
 				w = (int)(szF.Width);
 				h = (int)(szF.Height*0.8);
-				for(int  i = 0; i < HexOneBytes.Length;i++)
-				{
-					HexOneBytes[i].SetCharSize(w, h);
-					HexOneBytes[i].Visible = false;
-					HexOneBytes[i].Font = base.Font;
-				}
-				m_WidthTrue = w * m_UsedByte*2+3;
-				m_HeightTrue = h + HexOneByte.TopBottomHeight*2 +3;
-				m_Top1 = HexOneByte.TopBottomHeight+1;
+				m_WidthOne = w;
 				m_HeightMid = h;
+				m_WidthTrue = w * m_UsedByte*2;
+				m_HeightTrue = h + TopBottomHeight*2;
+				m_Top1 = TopBottomHeight;
+				m_TopBorder = TopBottomHeight * 2;
+				m_BottomBorder = m_HeightTrue - TopBottomHeight * 2;
 				base.Size = new Size(m_WidthTrue, m_HeightTrue);
-				for (int i = 0; i < m_UsedByte*2; i++)
-				{
-					HexOneBytes[i].Location = new Point(m_WidthTrue - (i + 1) * w-2, 1);
-					HexOneBytes[i].Visible=true;
-				}
-
 			}
 		}
 		protected override void OnPaint(PaintEventArgs pe)
 		{
 			Graphics g = pe.Graphics;
-			using (SolidBrush sb = new SolidBrush(Color.Transparent))
+			using (SolidBrush sb = new SolidBrush(m_BackColorMid))
 			using (Pen p = new Pen(this.ForeColor))
 			{
 				//透明
-				sb.Color = Color.Transparent;
+				sb.Color = m_BackColorMid;
 				g.FillRectangle(sb,this.ClientRectangle);
+
+				Rectangle r = new Rectangle(0, m_Top1, m_WidthTrue, m_HeightMid);
+				sb.Color = BackColor;
+				g.FillRectangle(sb, r);
+
+				long v = m_Value;
+				m_Format.Alignment = StringAlignment.Center;
+				sb.Color = ForeColor;
+				for(int i=0; i<m_UsedByte*2;i++)
+				{
+					r = new Rectangle(m_WidthTrue - m_WidthOne * (i + 1), m_Top1, m_WidthOne, m_HeightMid);
+					long v2 = v & 0xF;
+					g.DrawString($"{v2:X}", this.Font, sb, r, m_Format);
+					v = v >> 4;
+
+
+				}
+				if ((m_Keta >= 0) && (m_UpDown != 0))
+				{
+					int xx = m_WidthTrue - m_WidthOne * (m_Keta + 1);
+					Point[] pnts = new Point[3];
+					if (m_UpDown > 0)
+					{
+						pnts[0] = new Point(xx, TopBottomHeight);
+						pnts[1] = new Point(xx + m_WidthOne / 2, 0);
+						pnts[2] = new Point(xx + m_WidthOne, TopBottomHeight);
+					}
+					else
+					{
+						pnts[0] = new Point(xx, m_HeightTrue - TopBottomHeight);
+						pnts[1] = new Point(xx + m_WidthOne / 2, m_HeightTrue);
+						pnts[2] = new Point(xx + m_WidthOne, m_HeightTrue - TopBottomHeight);
+					}
+					g.FillPolygon(sb, pnts);
+				}
+
 				if (this.Focused)
 				{
 					p.Color = ForeColor;
-					g.DrawRectangle(p, new Rectangle(0,0,this.Width-1,this.Height-1));
+					g.DrawRectangle(p, new Rectangle(0, m_Top1, this.Width-1, m_HeightMid));
 				}
 			}
 		}
@@ -288,10 +272,58 @@ true);
 			base.OnLostFocus(e);
 			this.Invalidate();
 		}
+		private bool m_InMouse = false;
+		private int m_UpDown = 0;
+		private int m_Keta = -1;
+		private void GetPos(MouseEventArgs e)
+		{
+			if ((e.X >= 0) && (e.X < m_WidthTrue))
+			{
+				m_Keta = (m_UsedByte*2-1) -   e.X / m_WidthOne;
+			}
+			else
+			{
+				m_Keta = -1;
+			}
+			m_UpDown = 0;
+			if ((e.Y >= 0) && (e.Y <m_HeightTrue))
+			{
+				if (e.Y < m_TopBorder)
+				{
+					m_UpDown = 1;
+				}
+				else if (e.Y > m_BottomBorder)
+				{
+					m_UpDown = -1;
+				}
+			}
+		}
+
+		protected override void OnMouseEnter(EventArgs e)
+		{
+			m_InMouse = true;
+			//base.OnMouseEnter(e);
+		}
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			m_InMouse = false;
+			m_Keta = -1;
+			m_UpDown = 0;
+			this.Invalidate();
+			//base.OnMouseLeave(e);
+		}
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			if (m_InMouse)
+			{
+				GetPos(e);
+				this.Invalidate();
+			}
+			base.OnMouseMove(e);
+		}
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
-			AtFoucus();
 		}
 
 

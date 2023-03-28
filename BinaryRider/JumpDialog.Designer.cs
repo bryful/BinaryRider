@@ -72,11 +72,11 @@
 			hexEdit1.ForeColor = SystemColors.ControlText;
 			hexEdit1.Location = new Point(17, 28);
 			hexEdit1.Name = "hexEdit1";
-			hexEdit1.Size = new Size(195, 35);
+			hexEdit1.Size = new Size(192, 32);
 			hexEdit1.TabIndex = 1;
 			hexEdit1.Text = "hexEdit3";
 			hexEdit1.UsedByte = 8;
-			hexEdit1.Value = 3L;
+			hexEdit1.Value = 10L;
 			// 
 			// JumpDialog
 			// 
