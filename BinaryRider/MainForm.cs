@@ -30,7 +30,7 @@ namespace BinaryRider
 		public ScriptEditor? Editor = null;
 		public CustomRoslynHost? ScriptHost = null;
 
-
+		public RelativeJumpPanel? RelativeJumpPanel = null;
 		// **********************************************************************
 		public class TargetRiderEventArgs : EventArgs
 		{
@@ -80,6 +80,7 @@ namespace BinaryRider
 			Id_Counter++;
 			form.Text = $"BinaryRider{Id_Counter}";
 			form.Name = $"BinaryRider{Id_Counter}";
+			form.TopMost = false;
 			form.CharCodeMode = this.CharCodeMode;
 			form.WinClose += Form_WinClose1;
 			m_ActiveRider = form;
@@ -95,7 +96,7 @@ namespace BinaryRider
 				}
 			};
 			Forms.Add(form);
-			form.Show(this);
+			form.Show();
 			form.Activate();
 			return form;
 		}
@@ -179,6 +180,25 @@ namespace BinaryRider
 					Editor.Visible = true;
 				}
 				Editor.Activate();
+			}
+			return true;
+		}
+		// *********************************************************************
+		public bool ShowRelativeJump()
+		{
+			if (RelativeJumpPanel == null)
+			{
+				RelativeJumpPanel = new RelativeJumpPanel();
+				RelativeJumpPanel.SetMainForm(this);
+				RelativeJumpPanel.Show(this);
+			}
+			if (RelativeJumpPanel != null)
+			{
+				if (RelativeJumpPanel.Visible == false)
+				{
+					RelativeJumpPanel.Visible = true;
+				}
+				RelativeJumpPanel.Activate();
 			}
 			return true;
 		}

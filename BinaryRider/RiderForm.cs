@@ -68,6 +68,16 @@ namespace BinaryRider
 			newFormMenu.Click += NewToolStripMenuItem_Click;
 			loadFileMenu.Click += OpenToolStripMenuItem_Click;
 			windowMenu.Click += (sender, e) => { MakeWindowMenu(); };
+			topMostMenu.Checked = this.TopMost;
+			optionMenu.Click += (sender, e) =>
+			{
+				topMostMenu.Checked = this.TopMost;
+			};
+			topMostMenu.Click += (sender, e) =>
+			{
+				this.TopMost = !this.TopMost;
+				topMostMenu.Checked = this.TopMost;
+			};
 			separetDispMenu.Checked = editBinaryTwo1.IsTwoWin;
 			separetDispMenu.Click += (sender, e) =>
 			{
@@ -85,7 +95,7 @@ namespace BinaryRider
 
 			consoleMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowConsoleForm(); };
 			scriptEditorMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowScriptEditor(); };
-
+			relativeJumpMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowRelativeJump(); };
 			//jumpTopMenu.ShortcutKeys = Keys.Home;
 			//jumpEndMenu.ShortcutKeys = Keys.End;
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
@@ -224,10 +234,7 @@ namespace BinaryRider
 			this.Close();
 		}
 
-		private void editBinaryTwo1_Panel2_Paint(object sender, PaintEventArgs e)
-		{
 
-		}
 		public BSelection Selection
 		{
 			get
@@ -278,8 +285,8 @@ namespace BinaryRider
 			if (ll <= 0) ll = 1;
 
 			long v = ss + adr;
-			if( v>= BDataFile.ByteSize) return false;
-			if (v+ll<0) return false;
+			if (v >= BDataFile.ByteSize) return false;
+			if (v + ll < 0) return false;
 			return editBinaryTwo1.Jump(v, ll);
 		}
 		public bool Jump()
@@ -288,6 +295,7 @@ namespace BinaryRider
 			using (JumpDialog dlg = new JumpDialog())
 			{
 				dlg.RiderForm = this;
+				if(this.TopMost) { dlg.TopMost = true; }
 				if (dlg.ShowDialog() == DialogResult.OK)
 				{
 					ret = Jump(dlg.Adress);

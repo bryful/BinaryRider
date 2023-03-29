@@ -35,6 +35,18 @@ namespace BinaryRider
 				btnAddJump.Enabled = ((hexEdit1.Value > 0) && (RiderForm != null));
 
 			};
+			btnAddJump.Click += (sender, e) =>
+			{
+				AddJump();
+			};
+			btnSubJump.Click += (sender, e) =>
+			{
+				SubJump();
+			};
+			btnHis.Click += (sender, e) =>
+			{
+				ShowHistory();
+			};
 		}
 		private int IndexOfFromJumps(long adr)
 		{
@@ -45,6 +57,7 @@ namespace BinaryRider
 		public void AddJump()
 		{
 			if (RiderForm == null) return;
+			if (hexEdit1.Value == 0) return;
 			RiderForm.RJump(hexEdit1.Value);
 			if (IndexOfFromJumps(hexEdit1.Value) == -1)
 			{
@@ -54,11 +67,36 @@ namespace BinaryRider
 		public void SubJump()
 		{
 			if (RiderForm == null) return;
+			if (hexEdit1.Value == 0) return;
 			RiderForm.RJump(-1 * hexEdit1.Value);
 			if (IndexOfFromJumps(hexEdit1.Value) == -1)
 			{
 				jumps.Add(hexEdit1.Value);
 			}
+		}
+		public void ShowHistory()
+		{
+			if (jumps.Count <= 0) return;
+			ContextMenuStrip cm = new ContextMenuStrip();
+			foreach (long jump in jumps)
+			{
+				ToolStripMenuItem si = new ToolStripMenuItem();
+				si.Text = $"0x{jump:X4}";
+				si.Tag = jump;
+				si.Click += (sender, e) =>
+				{
+					ToolStripMenuItem? p = (ToolStripMenuItem?)sender;
+					if ((p != null) && (p.Tag != null))
+					{
+						if (p.Tag is long)
+						{
+							hexEdit1.Value = (long)p.Tag;
+						}
+					}
+				};
+				cm.Items.Add(si);
+			}
+			cm.Show(Cursor.Position);
 		}
 	}
 }

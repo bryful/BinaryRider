@@ -33,10 +33,12 @@
 			btnSubJump = new Button();
 			btnAddJump = new Button();
 			contextMenuStrip1 = new ContextMenuStrip(components);
-			button1 = new Button();
+			aToolStripMenuItem = new ToolStripMenuItem();
+			btnHis = new Button();
 			listBox1 = new ListBox();
 			button2 = new Button();
 			button3 = new Button();
+			contextMenuStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// hexEdit1
@@ -60,7 +62,7 @@
 			btnSubJump.Location = new Point(140, 23);
 			btnSubJump.Name = "btnSubJump";
 			btnSubJump.Size = new Size(32, 32);
-			btnSubJump.TabIndex = 1;
+			btnSubJump.TabIndex = 2;
 			btnSubJump.Text = "- ";
 			btnSubJump.UseVisualStyleBackColor = true;
 			// 
@@ -70,24 +72,32 @@
 			btnAddJump.Location = new Point(178, 23);
 			btnAddJump.Name = "btnAddJump";
 			btnAddJump.Size = new Size(32, 32);
-			btnAddJump.TabIndex = 2;
+			btnAddJump.TabIndex = 3;
 			btnAddJump.Text = "+";
 			btnAddJump.UseVisualStyleBackColor = true;
 			// 
 			// contextMenuStrip1
 			// 
+			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { aToolStripMenuItem });
 			contextMenuStrip1.Name = "contextMenuStrip1";
-			contextMenuStrip1.Size = new Size(61, 4);
+			contextMenuStrip1.Size = new Size(81, 26);
 			// 
-			// button1
+			// aToolStripMenuItem
 			// 
-			button1.FlatStyle = FlatStyle.Flat;
-			button1.Location = new Point(110, 28);
-			button1.Name = "button1";
-			button1.Size = new Size(24, 22);
-			button1.TabIndex = 4;
-			button1.Text = ">";
-			button1.UseVisualStyleBackColor = true;
+			aToolStripMenuItem.Name = "aToolStripMenuItem";
+			aToolStripMenuItem.Size = new Size(80, 22);
+			aToolStripMenuItem.Text = "a";
+			// 
+			// btnHis
+			// 
+			btnHis.FlatStyle = FlatStyle.Flat;
+			btnHis.Location = new Point(110, 28);
+			btnHis.Name = "btnHis";
+			btnHis.Size = new Size(24, 22);
+			btnHis.TabIndex = 1;
+			btnHis.TabStop = false;
+			btnHis.Text = ">";
+			btnHis.UseVisualStyleBackColor = true;
 			// 
 			// listBox1
 			// 
@@ -99,7 +109,7 @@
 			listBox1.ScrollAlwaysVisible = true;
 			listBox1.Size = new Size(140, 130);
 			listBox1.Sorted = true;
-			listBox1.TabIndex = 5;
+			listBox1.TabIndex = 6;
 			// 
 			// button2
 			// 
@@ -107,7 +117,7 @@
 			button2.Location = new Point(12, 70);
 			button2.Name = "button2";
 			button2.Size = new Size(52, 23);
-			button2.TabIndex = 6;
+			button2.TabIndex = 4;
 			button2.Text = "Push";
 			button2.UseVisualStyleBackColor = true;
 			// 
@@ -117,7 +127,7 @@
 			button3.Location = new Point(12, 175);
 			button3.Name = "button3";
 			button3.Size = new Size(52, 23);
-			button3.TabIndex = 7;
+			button3.TabIndex = 5;
 			button3.Text = "Delete";
 			button3.UseVisualStyleBackColor = true;
 			// 
@@ -129,13 +139,14 @@
 			Controls.Add(button3);
 			Controls.Add(button2);
 			Controls.Add(listBox1);
-			Controls.Add(button1);
+			Controls.Add(btnHis);
 			Controls.Add(btnAddJump);
 			Controls.Add(btnSubJump);
 			Controls.Add(hexEdit1);
 			Name = "RelativeJumpPanel";
 			Text = "RelativeJumpPanel";
 			TopMost = true;
+			contextMenuStrip1.ResumeLayout(false);
 			ResumeLayout(false);
 		}
 
@@ -145,9 +156,10 @@
 		private Button btnSubJump;
 		private Button btnAddJump;
 		private ContextMenuStrip contextMenuStrip1;
-		private Button button1;
+		private Button btnHis;
 		private ListBox listBox1;
 		private Button button2;
 		private Button button3;
+		private ToolStripMenuItem aToolStripMenuItem;
 	}
 }

@@ -35,7 +35,7 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ControlDark;
-			ClientSize = new Size(190, 27);
+			ClientSize = new Size(355, 30);
 			FormBorderStyle = FormBorderStyle.None;
 			Name = "MainForm";
 			Opacity = 0D;
