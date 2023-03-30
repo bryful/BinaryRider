@@ -65,7 +65,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, scriptMenu, windowMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(562, 24);
+			menuStrip1.Size = new Size(640, 24);
 			menuStrip1.TabIndex = 1;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -112,13 +112,13 @@
 			// copyToolStripMenuItem
 			// 
 			copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-			copyToolStripMenuItem.Size = new Size(180, 22);
+			copyToolStripMenuItem.Size = new Size(102, 22);
 			copyToolStripMenuItem.Text = "Copy";
 			// 
 			// pasteToolStripMenuItem
 			// 
 			pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-			pasteToolStripMenuItem.Size = new Size(180, 22);
+			pasteToolStripMenuItem.Size = new Size(102, 22);
 			pasteToolStripMenuItem.Text = "Paste";
 			// 
 			// optionMenu
@@ -131,20 +131,20 @@
 			// separetDispMenu
 			// 
 			separetDispMenu.Name = "separetDispMenu";
-			separetDispMenu.Size = new Size(180, 22);
+			separetDispMenu.Size = new Size(154, 22);
 			separetDispMenu.Text = "SeparetDisp";
 			// 
 			// orientMenu
 			// 
 			orientMenu.Name = "orientMenu";
-			orientMenu.Size = new Size(180, 22);
+			orientMenu.Size = new Size(154, 22);
 			orientMenu.Text = "Orient";
 			// 
 			// CharCodeMenu
 			// 
 			CharCodeMenu.DropDownItems.AddRange(new ToolStripItem[] { shiftJISMenu, uTF8Menu });
 			CharCodeMenu.Name = "CharCodeMenu";
-			CharCodeMenu.Size = new Size(180, 22);
+			CharCodeMenu.Size = new Size(154, 22);
 			CharCodeMenu.Text = "Character Code";
 			// 
 			// shiftJISMenu
@@ -162,7 +162,7 @@
 			// topMostMenu
 			// 
 			topMostMenu.Name = "topMostMenu";
-			topMostMenu.Size = new Size(180, 22);
+			topMostMenu.Size = new Size(154, 22);
 			topMostMenu.Text = "TopMost";
 			// 
 			// jumpMenu
@@ -176,19 +176,19 @@
 			// 
 			relativeJumpMenu.Name = "relativeJumpMenu";
 			relativeJumpMenu.ShortcutKeys = Keys.Control | Keys.J;
-			relativeJumpMenu.Size = new Size(180, 22);
+			relativeJumpMenu.Size = new Size(139, 22);
 			relativeJumpMenu.Text = "Jump";
 			// 
 			// jumpTopMenu
 			// 
 			jumpTopMenu.Name = "jumpTopMenu";
-			jumpTopMenu.Size = new Size(180, 22);
+			jumpTopMenu.Size = new Size(139, 22);
 			jumpTopMenu.Text = "Top";
 			// 
 			// jumpEndMenu
 			// 
 			jumpEndMenu.Name = "jumpEndMenu";
-			jumpEndMenu.Size = new Size(180, 22);
+			jumpEndMenu.Size = new Size(139, 22);
 			jumpEndMenu.Text = "End";
 			// 
 			// scriptMenu
@@ -201,13 +201,13 @@
 			// scriptEditorMenu
 			// 
 			scriptEditorMenu.Name = "scriptEditorMenu";
-			scriptEditorMenu.Size = new Size(180, 22);
+			scriptEditorMenu.Size = new Size(135, 22);
 			scriptEditorMenu.Text = "ScriptEditor";
 			// 
 			// consoleMenu
 			// 
 			consoleMenu.Name = "consoleMenu";
-			consoleMenu.Size = new Size(180, 22);
+			consoleMenu.Size = new Size(135, 22);
 			consoleMenu.Text = "Console";
 			// 
 			// windowMenu
@@ -235,7 +235,7 @@
 			bSelection1.Length = 0L;
 			bSelection1.Start = 0L;
 			editBinaryTwo1.Selection = bSelection1;
-			editBinaryTwo1.Size = new Size(543, 360);
+			editBinaryTwo1.Size = new Size(640, 360);
 			editBinaryTwo1.SplitterDistance = 289;
 			editBinaryTwo1.SplitterIncrement = 2;
 			editBinaryTwo1.SplitterWidth = 8;
@@ -245,7 +245,7 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(562, 399);
+			ClientSize = new Size(640, 399);
 			Controls.Add(menuStrip1);
 			Controls.Add(editBinaryTwo1);
 			MainMenuStrip = menuStrip1;
