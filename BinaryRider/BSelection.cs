@@ -6,8 +6,36 @@ using System.Threading.Tasks;
 
 namespace BinaryRider
 {
+	public class SelChangedEventArgs : EventArgs
+	{
+		public long Start = 0;
+		public long Length = 0;
+		public SelChangedEventArgs(long s, long l)
+		{
+			Start = s;
+			Length = l;
+		}
+		public SelChangedEventArgs(BSelection sel)
+		{
+			Start = sel.Start;
+			Length = sel.Length;
+		}
+	}
 	public class BSelection
 	{
+		//TimeEventArgs型のオブジェクトを返すようにする
+		public delegate void SelChangedEventHandler(object sender, SelChangedEventArgs e);
+
+		//イベントデリゲートの宣言
+		public event SelChangedEventHandler? SelChanged;
+
+		protected virtual void OnSelChanged(SelChangedEventArgs e)
+		{
+			if (SelChanged != null)
+			{
+				SelChanged(this, e);
+			}
+		}
 		// *******************************************************
 		private EditBinary? m_BE = null;
 		public void SetEditBinary(EditBinary be)
@@ -29,8 +57,10 @@ namespace BinaryRider
 			{
 				if (value + m_Length >= 0)
 				{
+					bool b = (m_Start != value);
 					m_Start = value;
 					m_Last = m_Start + m_Length;
+					if(b) { OnSelChanged(new SelChangedEventArgs(m_Start, m_Length)); }
 				}
 			}
 		}
@@ -40,8 +70,10 @@ namespace BinaryRider
 			set 
 			{
 				if (value < 0) value = 0;
+				bool b = (m_Length != value);
 				m_Length = value;
 				m_Last = m_Start + m_Length;
+				if (b) { OnSelChanged(new SelChangedEventArgs(m_Start, m_Length)); }
 			}
 		}
 		public long Last
@@ -50,11 +82,13 @@ namespace BinaryRider
 		}
 		public void SetStartLength(long st,long len)
 		{
+			if (st + len < 0) return;
+			bool b1 = (m_Start != st);
+			bool b2 = (m_Length != len);
 			m_Start = st;
-			if (m_Start < 0) m_Start = 0;
 			m_Length = len;
-			if (m_Length < 0) m_Length = 0;
 			m_Last = m_Start + m_Length;
+			if(b1 || b2) { OnSelChanged(new SelChangedEventArgs(m_Start, m_Length)); }
 		}
 		// *******************************************************
 		public BSelection()
@@ -76,16 +110,22 @@ namespace BinaryRider
 		{
 			if (m_BE != null)
 			{
-				Length = Math.Abs(last - st)+1;
+				long len = Math.Abs(last - st)+1;
+				long ss = 0;
 				if(st<=last)
 				{
-					m_Start = st;
+					ss = st;
 				}
 				else
 				{
-					m_Start = last;
+					ss = last;
 				}
+				bool b1 = (m_Start != ss);
+				bool b2 = (m_Length != len);
+				m_Start = ss;
+				m_Length = ss;
 				m_Last = m_Start + m_Length;
+				if (b1 || b2) { OnSelChanged(new SelChangedEventArgs(m_Start, m_Length)); }
 			}
 		}
 	}

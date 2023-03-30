@@ -30,7 +30,7 @@ namespace BinaryRider
 		public ScriptEditor? Editor = null;
 		public CustomRoslynHost? ScriptHost = null;
 
-		public RelativeJumpPanel? RelativeJumpPanel = null;
+		public JumpPanel? RelativeJumpPanel = null;
 		// **********************************************************************
 		public class TargetRiderEventArgs : EventArgs
 		{
@@ -54,6 +54,20 @@ namespace BinaryRider
 				TargetRider(this, e);
 			}
 		}
+		// *********************************************************************
+		public delegate void SelChangedEventHandler(object sender, SelChangedEventArgs e);
+
+		//イベントデリゲートの宣言
+		public event SelChangedEventHandler? SelChanged;
+
+		protected virtual void OnSelChanged(SelChangedEventArgs e)
+		{
+			if (SelChanged != null)
+			{
+				SelChanged(this, e);
+			}
+		}
+		// *********************************************************************
 		private RiderForm? m_ActiveRider = null;
 		public RiderForm? ActiveRider { get { return m_ActiveRider; } }
 		private int Id_Counter = 0;
@@ -92,6 +106,7 @@ namespace BinaryRider
 					{
 						m_ActiveRider = (RiderForm)senter;
 						OnTargetRider(new TargetRiderEventArgs(m_ActiveRider));
+						OnSelChanged(new SelChangedEventArgs(m_ActiveRider.Selection));
 					}
 				}
 			};
@@ -149,6 +164,33 @@ namespace BinaryRider
 			}
 		}
 		// *********************************************************************
+		public RiderForm? Form(int idx)
+		{
+			RiderForm? ret = null;
+			if ((idx>=0)&&(idx < Forms.Count))
+			{
+				ret = Forms[idx];
+			}
+			return ret;	
+		}
+		public int IndexOf(RiderForm rf)
+		{
+			return Forms.IndexOf(rf);
+		}
+		public int IndexOf(string name)
+		{
+			int ret = -1;
+			for(int i=0; i<Forms.Count; i++)
+			{
+				if (Forms[i].Name == name)
+				{
+					ret = i;
+					break;
+				}
+			}
+			return ret;
+		}
+		// *********************************************************************
 		public bool ShowConsoleForm()
 		{
 			if (ConsoleForm == null)
@@ -188,7 +230,7 @@ namespace BinaryRider
 		{
 			if (RelativeJumpPanel == null)
 			{
-				RelativeJumpPanel = new RelativeJumpPanel();
+				RelativeJumpPanel = new JumpPanel();
 				RelativeJumpPanel.SetMainForm(this);
 				RelativeJumpPanel.Show(this);
 			}

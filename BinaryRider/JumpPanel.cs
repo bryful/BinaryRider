@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BinaryRider
 {
-	public partial class RelativeJumpPanel : RiderPanelForm
+	public partial class JumpPanel : RiderPanelForm
 	{
 		public MainForm? MainForm = null;
 		public RiderForm? RiderForm = null;
@@ -23,16 +23,23 @@ namespace BinaryRider
 				MainForm.TargetRider += (sender, e) =>
 				{
 					RiderForm = e.Rider;
+					if (RiderForm != null)
+					{
+						RiderForm.SelChanged += (sender, e) =>
+						{
+							heAbsAdress.Value = e.Start;
+						};
+					}
 				};
 			}
 		}
-		public RelativeJumpPanel()
+		public JumpPanel()
 		{
 			InitializeComponent();
-			hexEdit1.ValueChanged += (sender, e) =>
+			heRelative.ValueChanged += (sender, e) =>
 			{
 				btnSubJump.Enabled =
-				btnAddJump.Enabled = ((hexEdit1.Value > 0) && (RiderForm != null));
+				btnAddJump.Enabled = ((heRelative.Value > 0) && (RiderForm != null));
 
 			};
 			btnAddJump.Click += (sender, e) =>
@@ -47,6 +54,10 @@ namespace BinaryRider
 			{
 				ShowHistory();
 			};
+			btnPush.Click += (sender, e) =>
+			{
+				SetAbsAdress();
+			};
 		}
 		private int IndexOfFromJumps(long adr)
 		{
@@ -57,21 +68,21 @@ namespace BinaryRider
 		public void AddJump()
 		{
 			if (RiderForm == null) return;
-			if (hexEdit1.Value == 0) return;
-			RiderForm.RJump(hexEdit1.Value);
-			if (IndexOfFromJumps(hexEdit1.Value) == -1)
+			if (heRelative.Value == 0) return;
+			RiderForm.RJump(heRelative.Value);
+			if (IndexOfFromJumps(heRelative.Value) == -1)
 			{
-				jumps.Add(hexEdit1.Value);
+				jumps.Add(heRelative.Value);
 			}
 		}
 		public void SubJump()
 		{
 			if (RiderForm == null) return;
-			if (hexEdit1.Value == 0) return;
-			RiderForm.RJump(-1 * hexEdit1.Value);
-			if (IndexOfFromJumps(hexEdit1.Value) == -1)
+			if (heRelative.Value == 0) return;
+			RiderForm.RJump(-1 * heRelative.Value);
+			if (IndexOfFromJumps(heRelative.Value) == -1)
 			{
-				jumps.Add(hexEdit1.Value);
+				jumps.Add(heRelative.Value);
 			}
 		}
 		public void ShowHistory()
@@ -90,13 +101,48 @@ namespace BinaryRider
 					{
 						if (p.Tag is long)
 						{
-							hexEdit1.Value = (long)p.Tag;
+							heRelative.Value = (long)p.Tag;
 						}
 					}
 				};
 				cm.Items.Add(si);
 			}
 			cm.Show(Cursor.Position);
+		}
+		private string HexStr(long v)
+		{
+			return $"0x{v:X6}";
+		}
+		private int IndexOfLbHistory(long l)
+		{
+			int ret = -1;
+			string s = HexStr(l);
+			if (lbHistory.Items.Count > 0)
+			{
+				for (int i = 0; i < lbHistory.Items.Count; i++)
+				{
+					if (lbHistory.Items[i].ToString() == s)
+					{
+						ret = i;
+						break;
+					}
+				}
+			}
+			return ret;
+		}
+		public void SetAbsAdress()
+		{
+			if (RiderForm != null)
+			{
+				long adr = RiderForm.Selection.Start;
+				if (adr > 0)
+				{
+					if (IndexOfLbHistory(adr) < 0)
+					{
+						lbHistory.Items.Add(HexStr(adr));
+					}
+				}
+			}
 		}
 	}
 }

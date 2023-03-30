@@ -13,6 +13,19 @@ namespace BinaryRider
 {
 	public partial class RiderForm : Form
 	{
+		// *********************************************************************
+		public delegate void SelChangedEventHandler(object sender, SelChangedEventArgs e);
+
+		//イベントデリゲートの宣言
+		public event SelChangedEventHandler? SelChanged;
+
+		protected virtual void OnSelChanged(SelChangedEventArgs e)
+		{
+			if (SelChanged != null)
+			{
+				SelChanged(this, e);
+			}
+		}
 		// ***************************************************************
 		public class WinCloseEventArgs : EventArgs
 		{
@@ -100,8 +113,10 @@ namespace BinaryRider
 			//jumpEndMenu.ShortcutKeys = Keys.End;
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
 			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
-			addressMenu.Click += (sender, e) => { Jump(); };
-
+			editBinaryTwo1.SelChanged += (sender, e) =>
+			{
+				OnSelChanged(e);
+			};
 
 		}
 		public byte[] Data
@@ -197,7 +212,8 @@ namespace BinaryRider
 			ret = BDataFile.LoadFile(p);
 			if (ret == true)
 			{
-				this.Text = p;
+				this.Text = BDataFile.Caption;
+				this.Name = BDataFile.Caption;
 				editBinaryTwo1.SelectionInit();
 
 			}
@@ -273,8 +289,12 @@ namespace BinaryRider
 			windowMenu.DropDownItems.AddRange(ms.ToArray());
 		}
 		// ***************************************************************
-		public bool Jump(long adr, long Len = 1)
+		public bool Jump(long adr, long Len = 0)
 		{
+			if (Len == 0)
+			{
+				Len = editBinaryTwo1.Selection.Length;
+			}
 			return editBinaryTwo1.Jump(adr, Len);
 		}
 		public bool RJump(long adr)
@@ -288,20 +308,6 @@ namespace BinaryRider
 			if (v >= BDataFile.ByteSize) return false;
 			if (v + ll < 0) return false;
 			return editBinaryTwo1.Jump(v, ll);
-		}
-		public bool Jump()
-		{
-			bool ret = false;
-			using (JumpDialog dlg = new JumpDialog())
-			{
-				dlg.RiderForm = this;
-				if(this.TopMost) { dlg.TopMost = true; }
-				if (dlg.ShowDialog() == DialogResult.OK)
-				{
-					ret = Jump(dlg.Adress);
-				}
-			}
-			return ret;
 		}
 		public bool JumpTop()
 		{

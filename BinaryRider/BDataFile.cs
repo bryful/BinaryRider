@@ -45,6 +45,8 @@ namespace BinaryRider
 		// *************************************************************
 		private string m_FileName = "";
 		public string FileName { get { return m_FileName; } }
+		private string m_Caption = "";
+		public string Caption { get { return m_FileName; } }
 		// *************************************************************
 		// *************************************************************
 		private byte[] m_Data = new byte[0];
@@ -187,6 +189,15 @@ namespace BinaryRider
 					{
 						m_Data = bs;
 						m_FileName = fn;
+
+						string cap = Path.GetFileName(fn);
+						string? capD = Path.GetDirectoryName(fn);
+						if(capD != null)
+						{
+							capD= Path.GetFileName(capD);
+							cap = capD + "/" + cap;
+						}
+						m_Caption = cap;
 						OnOpenedFile(new EventArgs());
 						ret = true;
 					}

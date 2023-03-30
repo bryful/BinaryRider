@@ -15,6 +15,18 @@ namespace BinaryRider
 {
 	public partial class EditBinary : Control
 	{
+		//TimeEventArgs型のオブジェクトを返すようにする
+		public delegate void SelChangedEventHandler(object sender, SelChangedEventArgs e);
+		//イベントデリゲートの宣言
+		public event SelChangedEventHandler? SelChanged;
+
+		protected virtual void OnSelChanged(SelChangedEventArgs e)
+		{
+			if (SelChanged != null)
+			{
+				SelChanged(this, e);
+			}
+		}
 		private bool DrawFlag = true;
 		public BAdressH BAdressHor { get; set; }= new BAdressH();
 		public BAdressV BAdressVur { get; set; } = new BAdressV();
@@ -190,6 +202,7 @@ true);
 							Selection.Length = 1;
 							BinSheet.DrawOffScr();
 							this.Invalidate();
+							OnSelChanged(new SelChangedEventArgs(Selection.Start, Selection.Length));
 						}
 					}
 				}
@@ -236,7 +249,7 @@ true);
 		{
 			int x = e.Delta/120;
 
-			BDp.Y += x * BSz.LineHeight;
+			BDp.Y -= x * BSz.LineHeight;
 			vsbar.Value = BDp.Y;
 			if(BinSheet!=null) BinSheet.DrawOffScr();
 			if (BAdressVur != null) BAdressVur.DrawOffScr();

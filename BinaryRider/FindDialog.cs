@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BinaryRider
 {
-	public partial class FindDialog : Form
+	public partial class FindDialog : RiderPanelForm
 	{
 		public FindDialog()
 		{

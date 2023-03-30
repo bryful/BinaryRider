@@ -12,6 +12,18 @@ namespace BinaryRider
 {
 	public partial class EditBinaryTwo : SplitContainer
 	{
+		public delegate void SelChangedEventHandler(object sender, SelChangedEventArgs e);
+
+		//イベントデリゲートの宣言
+		public event SelChangedEventHandler? SelChanged;
+
+		protected virtual void OnSelChanged(SelChangedEventArgs e)
+		{
+			if (SelChanged != null)
+			{
+				SelChanged(this, e);
+			}
+		}
 		public BDataFile? DataFile
 		{
 			get { return EditBinary1.DataFile; }
@@ -86,13 +98,25 @@ namespace BinaryRider
 			EditBinary1.GotFocus += (sender, e) =>
 			{
 				ActiveEditBinary = EditBinary1;
+				OnSelChanged(new SelChangedEventArgs(EditBinary1.Selection));
 			};
 			EditBinary2.GotFocus += (sender, e) =>
 			{
 				ActiveEditBinary = EditBinary2;
+				OnSelChanged(new SelChangedEventArgs(EditBinary2.Selection));
 			};
-			EditBinary1.Focus();
 
+			EditBinary1.Focus();
+			EditBinary1.SelChanged+=(sender,e)=>
+			{
+				OnSelChanged(e);
+
+			};
+			EditBinary2.SelChanged += (sender, e) =>
+			{
+				OnSelChanged(e);
+
+			};
 		}
 		public BSelection Selection
 		{

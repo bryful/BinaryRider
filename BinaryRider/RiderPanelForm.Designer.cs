@@ -34,7 +34,7 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(385, 97);
+			ClientSize = new Size(770, 97);
 			FormBorderStyle = FormBorderStyle.None;
 			Name = "RiderPanelForm";
 			Text = "RiderPanelForm";
