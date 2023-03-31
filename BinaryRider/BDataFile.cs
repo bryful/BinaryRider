@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BinaryRider
 {
 	public enum CharCodeMode
 	{
-		ShiftJIS,
-		UTF8
+		UTF8,
+		ShiftJIS
 	}
+
+
 	public partial class BDataFile : Component
 	{
 		// *************************************************************
@@ -157,6 +161,7 @@ namespace BinaryRider
 		public BDataFile()
 		{
 			InitializeComponent();
+			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // memo: Shift-JISを扱うためのおまじない
 		}
 
 		// *************************************************************
@@ -210,5 +215,65 @@ namespace BinaryRider
 			return ret;
 		}
 		// *************************************************************
+		public long FindForward(byte[] bs ,long st)
+		{
+			long ret = -1;
+			if ((bs == null) || (bs.Length <= 0)) return ret;
+			if (st < 0) st = 0;
+			if((m_Data.Length <= 0)||(st>= m_Data.Length-bs.Length)) return ret;
+
+			long cnt = m_Data.Length - bs.Length;
+			for (long i=st; i< cnt; i++)
+			{
+				if (m_Data[i] == bs[0])
+				{
+					bool b = true;
+					for(long j=1; j<bs.Length;j++)
+					{
+						if(m_Data[i + j] != bs[j])
+						{
+							b = false;
+							break;
+						}
+					}
+					if(b)
+					{
+						ret = i;
+						break;
+					}
+				}
+			}
+			return ret;
+		}
+		// *************************************************************
+		public long FindBackward(byte[] bs, long st)
+		{
+			long ret = -1;
+			if ((bs == null) || (bs.Length <= 0)) return ret;
+			if (st >= m_Data.Length - bs.Length) st = m_Data.Length - bs.Length - 1;
+			if ((m_Data.Length < bs.Length)) return ret;
+
+			for (long i = st; i >=0; i--)
+			{
+				if (m_Data[i] == bs[0])
+				{
+					bool b = true;
+					for (long j = 1; j < bs.Length; j++)
+					{
+						if (m_Data[i + j] != bs[j])
+						{
+							b = false;
+							break;
+						}
+					}
+					if (b)
+					{
+						ret = i;
+						break;
+					}
+				}
+			}
+			return ret;
+		}
 	}
 }

@@ -55,6 +55,7 @@
 			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
+			findMenu = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).BeginInit();
 			editBinaryTwo1.SuspendLayout();
@@ -65,7 +66,7 @@
 			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, scriptMenu, windowMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
-			menuStrip1.Size = new Size(640, 24);
+			menuStrip1.Size = new Size(645, 24);
 			menuStrip1.TabIndex = 1;
 			menuStrip1.Text = "menuStrip1";
 			// 
@@ -167,7 +168,7 @@
 			// 
 			// jumpMenu
 			// 
-			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { relativeJumpMenu, jumpTopMenu, jumpEndMenu });
+			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { findMenu, relativeJumpMenu, jumpTopMenu, jumpEndMenu });
 			jumpMenu.Name = "jumpMenu";
 			jumpMenu.Size = new Size(47, 20);
 			jumpMenu.Text = "Jump";
@@ -241,11 +242,17 @@
 			editBinaryTwo1.SplitterWidth = 8;
 			editBinaryTwo1.TabIndex = 2;
 			// 
+			// findMenu
+			// 
+			findMenu.Name = "findMenu";
+			findMenu.Size = new Size(139, 22);
+			findMenu.Text = "Find";
+			// 
 			// RiderForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(640, 399);
+			ClientSize = new Size(645, 399);
 			Controls.Add(menuStrip1);
 			Controls.Add(editBinaryTwo1);
 			MainMenuStrip = menuStrip1;
@@ -286,5 +293,6 @@
 		private ToolStripMenuItem relativeJumpMenu;
 		private ToolStripMenuItem topMostMenu;
 		private EditBinaryTwo editBinaryTwo1;
+		private ToolStripMenuItem findMenu;
 	}
 }

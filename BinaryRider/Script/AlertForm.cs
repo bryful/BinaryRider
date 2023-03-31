@@ -16,13 +16,13 @@ namespace BinaryRider
 		public new string Text
 		{
 			get { return textBox1.Text; }
-			set { textBox1.AppendText(value); }
+			set
+			{ 
+				textBox1.Text =value;
+				textBox1.SelectionLength = 0;
+			}
 		}
-		public string Caption
-		{
-			get { return this.Text; }
-			set { this.Text = value; }
-		}
+		
 		public string Title
 		{
 			get { return base.Text; }

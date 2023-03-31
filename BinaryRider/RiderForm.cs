@@ -65,6 +65,15 @@ namespace BinaryRider
 
 		public BDataFile BDataFile = new BDataFile();
 		// ***************************************************************
+		public long FindForward(byte[] bs, long st)
+		{
+			return BDataFile.FindForward(bs, st);
+		}
+		public long FindBackward(byte[] bs, long st)
+		{
+			return BDataFile.FindBackward(bs, st);
+		}
+		// ***************************************************************
 		public bool IsActive
 		{
 			get { return (Form.ActiveForm == this); }
@@ -108,9 +117,9 @@ namespace BinaryRider
 
 			consoleMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowConsoleForm(); };
 			scriptEditorMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowScriptEditor(); };
-			relativeJumpMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowRelativeJump(); };
-			//jumpTopMenu.ShortcutKeys = Keys.Home;
-			//jumpEndMenu.ShortcutKeys = Keys.End;
+			relativeJumpMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowJumpPanel(); };
+			findMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowFindDialog(); };
+
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
 			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
 			editBinaryTwo1.SelChanged += (sender, e) =>

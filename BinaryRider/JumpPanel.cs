@@ -38,15 +38,15 @@ namespace BinaryRider
 			InitializeComponent();
 			heRelative.ValueChanged += (sender, e) =>
 			{
-				btnSubJump.Enabled =
-				btnAddJump.Enabled = ((heRelative.Value > 0) && (RiderForm != null));
+				btnSub.Enabled =
+				btnAdd.Enabled = ((heRelative.Value > 0) && (RiderForm != null));
 
 			};
-			btnAddJump.Click += (sender, e) =>
+			btnAdd.Click += (sender, e) =>
 			{
 				AddJump();
 			};
-			btnSubJump.Click += (sender, e) =>
+			btnSub.Click += (sender, e) =>
 			{
 				SubJump();
 			};
@@ -57,6 +57,41 @@ namespace BinaryRider
 			btnPush.Click += (sender, e) =>
 			{
 				SetAbsAdress();
+			};
+			btnTop.Click += (sender, e) =>
+			{
+				if (RiderForm != null) RiderForm.JumpTop();
+			};
+			btnEnd.Click += (sender, e) =>
+			{
+				if (RiderForm != null) RiderForm.JumpEnd();
+			};
+			btnJump.Click += (sender, e) =>
+			{
+				if (RiderForm != null)
+				{
+					RiderForm.Jump(heAbsAdress.Value);
+				}
+			};
+			lbHistory.DoubleClick += (sender, e) =>
+			{
+				if (RiderForm != null)
+				{
+					string? s = lbHistory.SelectedItem.ToString();
+					if (s != null)
+					{
+						try
+						{
+							long a = Convert.ToInt64(s, 16);
+							RiderForm.Jump(a);
+						}
+						catch
+						{
+
+						}
+					}
+				}
+
 			};
 		}
 		private int IndexOfFromJumps(long adr)

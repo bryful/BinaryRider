@@ -32,15 +32,17 @@
 			toolStrip1 = new ToolStrip();
 			btnClear = new ToolStripButton();
 			btnFont = new ToolStripButton();
-			btnHide = new ToolStripButton();
 			tbOutput = new TextBox();
 			toolStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// toolStrip1
 			// 
-			toolStrip1.Items.AddRange(new ToolStripItem[] { btnClear, btnFont, btnHide });
-			toolStrip1.Location = new Point(0, 0);
+			toolStrip1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			toolStrip1.AutoSize = false;
+			toolStrip1.Dock = DockStyle.None;
+			toolStrip1.Items.AddRange(new ToolStripItem[] { btnClear, btnFont });
+			toolStrip1.Location = new Point(0, 22);
 			toolStrip1.Name = "toolStrip1";
 			toolStrip1.Size = new Size(702, 25);
 			toolStrip1.TabIndex = 0;
@@ -65,30 +67,19 @@
 			btnFont.Size = new Size(35, 22);
 			btnFont.Text = "Font";
 			// 
-			// btnHide
-			// 
-			btnHide.Alignment = ToolStripItemAlignment.Right;
-			btnHide.DisplayStyle = ToolStripItemDisplayStyle.Text;
-			btnHide.Image = (Image)resources.GetObject("btnHide.Image");
-			btnHide.ImageTransparentColor = Color.Magenta;
-			btnHide.Name = "btnHide";
-			btnHide.Size = new Size(36, 22);
-			btnHide.Text = "Hide";
-			btnHide.Click += btnHide_Click;
-			// 
 			// tbOutput
 			// 
+			tbOutput.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			tbOutput.BackColor = SystemColors.Control;
-			tbOutput.Dock = DockStyle.Fill;
 			tbOutput.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			tbOutput.ForeColor = SystemColors.ControlText;
-			tbOutput.Location = new Point(0, 25);
+			tbOutput.Location = new Point(0, 48);
 			tbOutput.Margin = new Padding(5);
 			tbOutput.MaxLength = 65536;
 			tbOutput.Multiline = true;
 			tbOutput.Name = "tbOutput";
 			tbOutput.ScrollBars = ScrollBars.Vertical;
-			tbOutput.Size = new Size(702, 161);
+			tbOutput.Size = new Size(702, 122);
 			tbOutput.TabIndex = 1;
 			tbOutput.Text = "123456";
 			// 
@@ -96,6 +87,7 @@
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
+			CanResize = true;
 			ClientSize = new Size(702, 186);
 			ControlBox = false;
 			Controls.Add(tbOutput);
@@ -119,6 +111,5 @@
 		private TextBox tbOutput;
 		private ToolStripButton btnClear;
 		private ToolStripButton btnFont;
-		private ToolStripButton btnHide;
 	}
 }

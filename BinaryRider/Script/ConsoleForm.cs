@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BinaryRider
 {
-	public partial class ConsoleForm : Form
+	public partial class ConsoleForm : RiderPanelForm
 	{
 		public MainForm? MainForm = null;
 		public void SetMainForm(MainForm mf)

@@ -67,17 +67,17 @@ namespace BinaryRider
 				return ret;
 			}
 		}
+		public string FormNames()
+		{
+			string ret = "";
+			if (MainForm != null)
+				ret = MainForm.FormNames();
+			return ret;
+		}
 		public void Alert(object? obj, string cap = "")
 		{
-			using (AlertForm dlg = new AlertForm())
-			{
-				dlg.Text = MainForm.ObjToString(obj);
-				if (cap != "") dlg.Title = cap;
-				if (dlg.ShowDialog() == DialogResult.OK)
-				{
-
-				}
-			}
+			if (MainForm != null)
+				MainForm.Alert(obj, cap);
 		}
 		public void WriteLine(object? o)
 		{

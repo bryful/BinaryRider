@@ -30,7 +30,8 @@ namespace BinaryRider
 		public ScriptEditor? Editor = null;
 		public CustomRoslynHost? ScriptHost = null;
 
-		public JumpPanel? RelativeJumpPanel = null;
+		public JumpPanel? JumpPanel = null;
+		public FindDialog? FindDialog = null;
 		// **********************************************************************
 		public class TargetRiderEventArgs : EventArgs
 		{
@@ -226,21 +227,40 @@ namespace BinaryRider
 			return true;
 		}
 		// *********************************************************************
-		public bool ShowRelativeJump()
+		public bool ShowJumpPanel()
 		{
-			if (RelativeJumpPanel == null)
+			if (JumpPanel == null)
 			{
-				RelativeJumpPanel = new JumpPanel();
-				RelativeJumpPanel.SetMainForm(this);
-				RelativeJumpPanel.Show(this);
+				JumpPanel = new JumpPanel();
+				JumpPanel.SetMainForm(this);
+				JumpPanel.Show(this);
 			}
-			if (RelativeJumpPanel != null)
+			if (JumpPanel != null)
 			{
-				if (RelativeJumpPanel.Visible == false)
+				if (JumpPanel.Visible == false)
 				{
-					RelativeJumpPanel.Visible = true;
+					JumpPanel.Visible = true;
 				}
-				RelativeJumpPanel.Activate();
+				JumpPanel.Activate();
+			}
+			return true;
+		}
+		// *********************************************************************
+		public bool ShowFindDialog()
+		{
+			if (FindDialog == null)
+			{
+				FindDialog = new FindDialog();
+				FindDialog.SetMainForm(this);
+				FindDialog.Show(this);
+			}
+			if (FindDialog != null)
+			{
+				if (FindDialog.Visible == false)
+				{
+					FindDialog.Visible = true;
+				}
+				FindDialog.Activate();
 			}
 			return true;
 		}
@@ -264,9 +284,8 @@ namespace BinaryRider
 			using (AlertForm dlg = new AlertForm())
 			{
 				if (cap == "") cap = "Alert";
-				dlg.Caption = cap;
+				dlg.Title = cap;
 				dlg.Text = ObjToString(obj);
-				if (cap != "") dlg.Title = cap;
 				if (dlg.ShowDialog() == DialogResult.OK)
 				{
 				}
@@ -324,6 +343,22 @@ namespace BinaryRider
 			if (ret == null) { ret = "null"; }
 			return ret;
 		}
+		// *****************************************************************************
+		public string  FormNames()
+		{
+			string ret = "";
+			if(Forms.Count > 0)
+			{
+				foreach (Form form in Forms)
+				{
+					if( ret !="") ret += ", ";
+					ret += $"\"{form.Name}\"";
+
+				}
+			}
+			return ret;
+		}
+		// *****************************************************************************
 		public void ScriptExecute(string code)
 		{
 			try

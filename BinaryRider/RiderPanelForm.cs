@@ -109,7 +109,7 @@ namespace BinaryRider
 		protected override void OnResize(EventArgs e)
 		{
 			ChkSize();
-			this.Invalidate();	
+			this.Refresh();
 			base.OnResize(e);
 		}
 		// *************************************************************

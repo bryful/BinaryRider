@@ -22,7 +22,7 @@ using System.IO;
 
 namespace BinaryRider
 {
-	public partial class ScriptEditor : Form
+	public partial class ScriptEditor : RiderPanelForm
 	{
 		public CustomRoslynHost? Host
 		{
