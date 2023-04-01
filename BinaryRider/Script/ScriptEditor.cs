@@ -50,5 +50,10 @@ namespace BinaryRider
 			if (MainForm == null) return;
 			MainForm.ScriptExecute(roslynEdit1.Text);
 		}
+
+		private void bindingSource1_CurrentChanged(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

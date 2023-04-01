@@ -159,6 +159,7 @@ true);
 			};
 			DrawFlag = true;
 			this.Refresh();
+			Selection.SetEditBinary(this);
 		}
 		// *************************************************************
 		public void DrawOffScr()
@@ -197,6 +198,7 @@ true);
 						BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
 						if (stat.Down == true)
 						{
+							Selection.SetEditBinary(this);
 							m_MDStat = stat;
 							Selection.Start = stat.Adress;
 							Selection.Length = 1;
@@ -215,14 +217,17 @@ true);
 			{
 				if (BinSheet != null)
 				{
-					BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
-					if (stat.Down == true)
+					if (m_MDStat.Down == true)
 					{
+						BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
 						if (m_MDStat.IsByte == stat.IsByte)
 						{
-							Selection.SetStartLast(m_MDStat.Adress, stat.Adress);
-							BinSheet.DrawOffScr();
-							this.Invalidate();
+							if (m_MDStat.Adress != stat.Adress)
+							{
+								Selection.SetStartLast(m_MDStat.Adress, stat.Adress);
+								BinSheet.DrawOffScr();
+								this.Refresh();
+							}
 						}
 					}
 				}

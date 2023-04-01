@@ -32,6 +32,7 @@ namespace BinaryRider
 
 		public JumpPanel? JumpPanel = null;
 		public FindDialog? FindDialog = null;
+		public StructView? StructView = null;
 		// **********************************************************************
 		public class TargetRiderEventArgs : EventArgs
 		{
@@ -264,6 +265,26 @@ namespace BinaryRider
 			}
 			return true;
 		}
+		// *********************************************************************
+		public bool ShowStructView()
+		{
+			if (StructView == null)
+			{
+				StructView = new StructView();
+				StructView.SetMainForm(this);
+				StructView.Show(this);
+			}
+			if (StructView != null)
+			{
+				if (StructView.Visible == false)
+				{
+					StructView.Visible = true;
+				}
+				StructView.Activate();
+			}
+			return true;
+		}
+		// *********************************************************************
 		public void WriteLine(object? o)
 		{
 			ShowConsoleForm();

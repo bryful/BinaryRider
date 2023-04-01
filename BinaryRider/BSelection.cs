@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,7 @@ namespace BinaryRider
 		}
 		// *******************************************************
 		private EditBinary? m_BE = null;
+		public EditBinary? BE { get { return m_BE; } }
 		public void SetEditBinary(EditBinary be)
 		{
 			m_BE = be;
@@ -108,22 +110,29 @@ namespace BinaryRider
 		}
 		public void SetStartLast(long st, long last) 
 		{
+			Debug.Write("1");
 			if (m_BE != null)
 			{
+				Debug.Write("2");
 				long len = Math.Abs(last - st)+1;
 				long ss = 0;
 				if(st<=last)
 				{
+					Debug.Write("3A");
 					ss = st;
 				}
 				else
 				{
+					Debug.Write("3B");
 					ss = last;
 				}
+				Debug.Write("4");
 				bool b1 = (m_Start != ss);
 				bool b2 = (m_Length != len);
+				long d = m_Start;
 				m_Start = ss;
-				m_Length = ss;
+				m_Length = len;
+				Debug.WriteLine($"st:{st},last:{last},m_s;{m_Start},n_l{m_Length}");
 				m_Last = m_Start + m_Length;
 				if (b1 || b2) { OnSelChanged(new SelChangedEventArgs(m_Start, m_Length)); }
 			}

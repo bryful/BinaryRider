@@ -46,6 +46,7 @@
 			uTF8Menu = new ToolStripMenuItem();
 			topMostMenu = new ToolStripMenuItem();
 			jumpMenu = new ToolStripMenuItem();
+			findMenu = new ToolStripMenuItem();
 			relativeJumpMenu = new ToolStripMenuItem();
 			jumpTopMenu = new ToolStripMenuItem();
 			jumpEndMenu = new ToolStripMenuItem();
@@ -55,7 +56,7 @@
 			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
-			findMenu = new ToolStripMenuItem();
+			structViewMenu = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).BeginInit();
 			editBinaryTwo1.SuspendLayout();
@@ -168,28 +169,34 @@
 			// 
 			// jumpMenu
 			// 
-			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { findMenu, relativeJumpMenu, jumpTopMenu, jumpEndMenu });
+			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { findMenu, relativeJumpMenu, jumpTopMenu, jumpEndMenu, structViewMenu });
 			jumpMenu.Name = "jumpMenu";
 			jumpMenu.Size = new Size(47, 20);
 			jumpMenu.Text = "Jump";
+			// 
+			// findMenu
+			// 
+			findMenu.Name = "findMenu";
+			findMenu.Size = new Size(180, 22);
+			findMenu.Text = "Find";
 			// 
 			// relativeJumpMenu
 			// 
 			relativeJumpMenu.Name = "relativeJumpMenu";
 			relativeJumpMenu.ShortcutKeys = Keys.Control | Keys.J;
-			relativeJumpMenu.Size = new Size(139, 22);
+			relativeJumpMenu.Size = new Size(180, 22);
 			relativeJumpMenu.Text = "Jump";
 			// 
 			// jumpTopMenu
 			// 
 			jumpTopMenu.Name = "jumpTopMenu";
-			jumpTopMenu.Size = new Size(139, 22);
+			jumpTopMenu.Size = new Size(180, 22);
 			jumpTopMenu.Text = "Top";
 			// 
 			// jumpEndMenu
 			// 
 			jumpEndMenu.Name = "jumpEndMenu";
-			jumpEndMenu.Size = new Size(139, 22);
+			jumpEndMenu.Size = new Size(180, 22);
 			jumpEndMenu.Text = "End";
 			// 
 			// scriptMenu
@@ -242,11 +249,11 @@
 			editBinaryTwo1.SplitterWidth = 8;
 			editBinaryTwo1.TabIndex = 2;
 			// 
-			// findMenu
+			// structViewMenu
 			// 
-			findMenu.Name = "findMenu";
-			findMenu.Size = new Size(139, 22);
-			findMenu.Text = "Find";
+			structViewMenu.Name = "structViewMenu";
+			structViewMenu.Size = new Size(180, 22);
+			structViewMenu.Text = "StructView";
 			// 
 			// RiderForm
 			// 
@@ -294,5 +301,6 @@
 		private ToolStripMenuItem topMostMenu;
 		private EditBinaryTwo editBinaryTwo1;
 		private ToolStripMenuItem findMenu;
+		private ToolStripMenuItem structViewMenu;
 	}
 }

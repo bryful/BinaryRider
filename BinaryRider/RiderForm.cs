@@ -119,7 +119,7 @@ namespace BinaryRider
 			scriptEditorMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowScriptEditor(); };
 			relativeJumpMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowJumpPanel(); };
 			findMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowFindDialog(); };
-
+			structViewMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowStructView(); };
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
 			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
 			editBinaryTwo1.SelChanged += (sender, e) =>

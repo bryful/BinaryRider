@@ -31,8 +31,8 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptEditor));
 			roslynEdit1 = new RoslynEdit();
 			toolStrip1 = new ToolStrip();
-			btnFont = new ToolStripButton();
 			btnV8Execute = new ToolStripButton();
+			btnFont = new ToolStripButton();
 			toolStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -57,15 +57,6 @@
 			toolStrip1.TabIndex = 2;
 			toolStrip1.Text = "toolStrip1";
 			// 
-			// btnFont
-			// 
-			btnFont.DisplayStyle = ToolStripItemDisplayStyle.Text;
-			btnFont.Image = (Image)resources.GetObject("btnFont.Image");
-			btnFont.ImageTransparentColor = Color.Magenta;
-			btnFont.Name = "btnFont";
-			btnFont.Size = new Size(35, 22);
-			btnFont.Text = "Font";
-			// 
 			// btnV8Execute
 			// 
 			btnV8Execute.AutoSize = false;
@@ -80,6 +71,15 @@
 			btnV8Execute.Size = new Size(100, 22);
 			btnV8Execute.Text = "Execute";
 			btnV8Execute.Click += btnV8Execute_Click;
+			// 
+			// btnFont
+			// 
+			btnFont.DisplayStyle = ToolStripItemDisplayStyle.Text;
+			btnFont.Image = (Image)resources.GetObject("btnFont.Image");
+			btnFont.ImageTransparentColor = Color.Magenta;
+			btnFont.Name = "btnFont";
+			btnFont.Size = new Size(35, 22);
+			btnFont.Text = "Font";
 			// 
 			// ScriptEditor
 			// 
