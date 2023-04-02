@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace BinaryRider
@@ -88,7 +90,7 @@ namespace BinaryRider
 						}
 					}
 				}
-				ret = $"0x{v:X}";
+				ret = $"0x{v:X}({v})";
 			}
 			else
 			{
@@ -98,7 +100,7 @@ namespace BinaryRider
 					ret += $"0x{m_Bytes[i]:X2}";
 				}
 			}
-			ret += $" \"{ToStrUtf8()}\"";
+			ret += $" - \"{ToStrUtf8()}\" : {Comment}";
 			return ret;
 		}
 		public StructItem()
@@ -133,6 +135,70 @@ namespace BinaryRider
 			{
 				return String.Empty;
 			}
+		}
+		public JsonObject ToJson()
+		{
+			JsonObject ret = new JsonObject();
+			ret.Add("SKind", (int)m_Kind);
+			ret.Add("ByteLength", (int)ByteLength);
+			ret.Add("IsBigEndian", (bool)IsBigEndian);
+			ret.Add("Comment", (string)Comment);
+			return ret;
+		}
+		public bool FromJson(JsonObject? jo)
+		{
+			bool ret = false;
+			if (jo == null) return ret;
+			try
+			{
+				int cnt = 0;
+				string key = "SKind";
+				if (jo.ContainsKey(key))
+				{
+					int? v = jo[key].GetValue<int?>();
+					if(v != null)
+					{
+						m_Kind = (SKind)v;
+						cnt++;
+					}
+				}
+				key = "ByteLength";
+				if (jo.ContainsKey(key))
+				{
+					long? v1 = jo[key].GetValue<long?>();
+					if (v1 != null)
+					{
+						ByteLength = (long)v1;
+						cnt++;
+					}
+				}
+				key = "IsBigEndian";
+				if (jo.ContainsKey(key))
+				{
+					bool? b = jo[key].GetValue<bool?>();
+					if (b != null)
+					{
+						IsBigEndian = (bool)b;
+						cnt++;
+					}
+				}
+				key = "Comment";
+				if (jo.ContainsKey(key))
+				{
+					string? s = jo[key].GetValue<string?>();
+					if (s != null)
+					{
+						Comment = (string)s;
+						cnt++;
+					}
+				}
+				ret = (cnt == 4);
+			}
+			catch
+			{
+				ret = false;
+			}
+			return ret;
 		}
 	}
 

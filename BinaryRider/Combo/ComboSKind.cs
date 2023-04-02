@@ -62,6 +62,21 @@ namespace BinaryRider
 			SKind.SStrUtf8
 
 		};
+		private string[] SKindNameTbl = new string[]
+		{
+			"None",
+			"sbyte",
+			"byte",
+			"short",
+			"ushort",
+			"int",
+			"uint",
+			"long",
+			"ulong",
+			"StrShiftJIS",
+			"StrUtf8"
+
+		};
 		private SKind m_SKind = SKind.None;
 		public SKind SKind
 		{
@@ -93,7 +108,7 @@ namespace BinaryRider
 			int ret = 0;
 			switch (value)
 			{
-				case SKind.None: ret = 0; break;
+				case SKind.None: ret = 1; break;
 				case SKind.Ssbyte: ret = 1; break;
 				case SKind.Sbyte: ret = 2; break;
 
@@ -123,11 +138,10 @@ namespace BinaryRider
 		public void Init()
 		{
 			this.DropDownStyle = ComboBoxStyle.DropDownList;
-			string[] ims = Enum.GetNames(typeof(SKind));
 			this.Items.Clear();
-			this.Items.AddRange(ims);
+			this.Items.AddRange(SKindNameTbl);
 			RefFLag = true;
-			this.SelectedIndex = 0;
+			this.SelectedIndex = 2;
 			RefFLag = false;
 		}
 		private bool RefFLag = false;

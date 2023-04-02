@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,10 +27,25 @@ namespace BinaryRider
 					{
 						AddItem(m_EStructItem.StructItem);
 					};
+					m_EStructItem.BApply += (sender, e) =>
+					{
+						ApplyItem(m_EStructItem.StructItem);
+					};
+					m_EStructItem.BUp += (sender, e) =>
+					{
+						ItemUp();
+					};
+					m_EStructItem.BDown += (sender, e) =>
+					{
+						ItemDown();
+					};
+					m_EStructItem.BDelete += (sender, e) =>
+					{
+						ItemDelete();
+					};
 				}
 			}
 		}
-		
 		// ***********************************************************************
 		private byte[]? _data = null;
 		public void SetData(byte[]? b) { _data = b; Rescan(); }
@@ -79,7 +95,7 @@ namespace BinaryRider
 					this.Items.AddRange(_items.ToArray());
 				}
 			}
-
+			if(item.Kind == SKind.None) { item.Kind = SKind.Sbyte; }
 			item.Adress = _items.Count + 1;
 			item.RAdress = 0;
 			if (_items.Count>0)
@@ -89,6 +105,21 @@ namespace BinaryRider
 			}
 			_items.Add(item);
 			Items.Add(item);
+			Rescan();
+		}
+		public void ApplyItem(StructItem item)
+		{
+			int idx = this.SelectedIndex;
+			if (idx < 0) return;
+			if (item.Kind == SKind.None) { item.Kind = SKind.Sbyte; }
+
+			_items[idx].Kind = item.Kind;
+			_items[idx].ByteLength = item.ByteLength;
+			_items[idx].IsBigEndian = item.IsBigEndian;
+			_items[idx].Comment = item.Comment;
+
+
+			Items[idx] = _items[idx];
 			Rescan();
 		}
 		public void Rescan()
@@ -130,10 +161,71 @@ namespace BinaryRider
 							}
 						}
 					}
-
+					this.Items[i] = _items[i];
 				}
 			}
 			this.Invalidate();
+		}
+		public void ItemUp()
+		{
+			int idx = this.SelectedIndex;
+			if (idx < 0) return;
+			if (idx>=1)
+			{
+				if(Swap(idx, idx-1))
+				{
+					Rescan();
+					this.SelectedIndex = idx-1;
+				}
+
+			}
+		}
+		public void ItemDown()
+		{
+			int idx = this.SelectedIndex;
+			if (idx < 0) return;
+			if (idx <_items.Count-1)
+			{
+				if (Swap(idx, idx + 1))
+				{
+					Rescan();
+					this.SelectedIndex = idx + 1;
+				}
+
+			}
+		}
+		public bool Swap(int a, int b)
+		{
+			bool ret = false;
+			if(a==b) return ret;
+			if ((a < 0) || (a >= _items.Count)) return ret;
+			if ((b < 0) || (b >= _items.Count)) return ret;
+			SKind sk = _items[a].Kind;
+			long bs = _items[a].ByteLength;
+			bool bb = _items[a].IsBigEndian;
+			string cm = _items[a].Comment;
+			_items[a].Kind = _items[b].Kind;
+			_items[a].ByteLength = _items[b].ByteLength;
+			_items[a].IsBigEndian = _items[b].IsBigEndian;
+			_items[a].Comment = _items[b].Comment;
+			_items[b].Kind = sk;
+			_items[b].ByteLength = bs;
+			_items[b].IsBigEndian = bb;
+			_items[b].Comment = cm;
+			this.Items[a] = _items[a];
+			this.Items[b] = _items[b];
+			ret =true;
+			return ret;
+		}
+		public void ItemDelete()
+		{
+			int idx = this.SelectedIndex;
+			if((idx>=0)&&(idx<_items.Count))
+			{
+				_items.RemoveAt(idx);
+				this.Items.RemoveAt(idx);
+				Rescan();
+			}
 		}
 		public void Clear()
 		{
@@ -156,7 +248,7 @@ namespace BinaryRider
 					Rectangle r = new Rectangle(bb.Left, bb.Top, 20, bb.Height);
 					g.DrawString($"{si.Index}", e.Font, sb, r, _format);
 
-					r = new Rectangle(r.Left + r.Width, r.Top, 40, r.Height);
+					r = new Rectangle(r.Left + r.Width, r.Top, 80, r.Height);
 					g.DrawString($"{si.Adress:X4}", e.Font, sb, r, _format);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, 40, r.Height);
@@ -171,10 +263,10 @@ namespace BinaryRider
 					g.DrawString($"{be}", e.Font, sb, r, _format);
 
 					_format.Alignment = StringAlignment.Near;
-					r = new Rectangle(r.Left + r.Width, r.Top, 200, r.Height);
+					int w = this.Width - (r.Left + r.Width);
+
+					r = new Rectangle(r.Left + r.Width, r.Top, w, r.Height);
 					g.DrawString($"{si.ValueStr()}", e.Font, sb, r, _format);
-					r = new Rectangle(r.Left + r.Width, r.Top, 200, r.Height);
-					g.DrawString($"{si.Comment}", e.Font, sb, r, _format);
 				}
 			}
 			e.DrawFocusRectangle();
@@ -189,6 +281,90 @@ namespace BinaryRider
 					m_EStructItem.StructItem = _items[this.SelectedIndex];
 				}
 			}
+		}
+		public JsonObject ToJson()
+		{
+			JsonObject jo = new JsonObject();
+
+			jo.Add("Header", "StructListBox");
+			JsonArray ja = new JsonArray();
+			if(_items.Count>0)
+			{
+				foreach( StructItem item in _items)
+				{
+					ja.Add(item.ToJson());
+				}
+			}
+			jo.Add("Items", ja);
+
+			return jo;
+		}
+		public bool SaveJsonFile(string path)
+		{
+			bool ret = false;
+			try
+			{
+				JsonObject jo = ToJson();
+				File.WriteAllText(path, jo.ToJsonString());
+				ret = true;
+			}
+			catch
+			{
+				ret = false;
+			}
+			return ret;
+		}
+		public bool FromJson(JsonObject jo)
+		{
+			bool ret = false;
+			Clear();
+			string key = "Items";
+			if (jo.ContainsKey(key))
+			{
+				JsonArray? ja = jo[key].AsArray();
+				if(ja!= null )
+				{
+					if( ja.Count>0 )
+					{
+						foreach( JsonObject item in ja)
+						{
+							StructItem si = new StructItem();
+							if(si.FromJson(item)==true )
+							{
+								AddItem(si);
+							}
+						}
+					}
+				}
+			}
+
+			return ret;
+		}
+		public bool Load(string p)
+		{
+			bool ret = false;
+
+			try
+			{
+				if (File.Exists(p) == true)
+				{
+					string str = File.ReadAllText(p);
+					if (str != "")
+					{
+						var doc = JsonNode.Parse(str);
+						if (doc != null)
+						{
+							FromJson((JsonObject)doc);
+						}
+						ret = true;
+					}
+				}
+			}
+			catch
+			{
+				ret = false;
+			}
+			return ret;
 		}
 	}
 }

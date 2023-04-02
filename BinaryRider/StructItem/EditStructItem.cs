@@ -23,6 +23,8 @@ namespace BinaryRider
 		// ***********************************************
 		public event EventHandler? BAdd;
 		protected virtual void OnBAdd(EventArgs e){if (BAdd != null){ BAdd(this, e);}}
+		public event EventHandler? BApply;
+		protected virtual void OnBApply(EventArgs e) { if (BApply != null) { BApply(this, e); } }
 		public event EventHandler? BUp;
 		protected virtual void OnBUp(EventArgs e) { if (BUp != null) { BUp(this, e); } }
 		public event EventHandler? BDown;
@@ -113,14 +115,15 @@ namespace BinaryRider
 			btnDown.Text = "Down";
 			btnDelete.Size = new Size(40, h);
 			btnDelete.Text = "Del";
-			btnApply.Size = new Size(40, h);
+			btnApply.Size = new Size(50, h);
 			btnApply.Text = "Apply";
 			cmbSkind.Size = new Size(70, h);
 			EditBLength.Size = new Size(50, h);
 			cbBigEndian.Size = new Size(80, h);
+
 			tbCommant.Size = new Size(120, h);
 			cbBigEndian.Text = "BigEndian";
-
+			cbBigEndian.Checked = true;
 			ChkSize();
 			this.Controls.Add(btnUp);
 			this.Controls.Add(btnDown);
@@ -134,6 +137,7 @@ namespace BinaryRider
 
 
 			btnAdd.Click += (sender, e) => { OnBAdd(new EventArgs()); };
+			btnApply.Click += (sender, e) => { OnBApply(new EventArgs()); };
 			btnUp.Click += (sender, e) => { OnBUp(new EventArgs()); };
 			btnDown.Click += (sender, e) => { OnBDown(new EventArgs()); };
 			btnDelete.Click += (sender, e) => { OnBDelete(new EventArgs()); };

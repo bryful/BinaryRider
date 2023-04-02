@@ -52,7 +52,7 @@
 			StructItem structItem1 = new StructItem();
 			hexEdit1 = new HexEdit();
 			structListBox1 = new StructListBox();
-			editStructItemcs1 = new EditStructItem();
+			editStructItem1 = new EditStructItem();
 			SuspendLayout();
 			// 
 			// hexEdit1
@@ -72,8 +72,9 @@
 			// 
 			// structListBox1
 			// 
+			structListBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			structListBox1.DrawMode = DrawMode.OwnerDrawFixed;
-			structListBox1.EStructItem = editStructItemcs1;
+			structListBox1.EStructItem = editStructItem1;
 			structListBox1.Font = new Font("源ノ角ゴシック Code JP R", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
 			structListBox1.FormattingEnabled = true;
 			structItem2.Adress = 0L;
@@ -247,37 +248,38 @@
 			structListBox1.Items.AddRange(new object[] { structItem2, structItem3, structItem4, structItem5, structItem6, structItem7, structItem8, structItem9, structItem10, structItem11, structItem12, structItem13, structItem14, structItem15, structItem16, structItem17, structItem18, structItem19, structItem20, structItem21, structItem22 });
 			structListBox1.Location = new Point(12, 90);
 			structListBox1.Name = "structListBox1";
-			structListBox1.Size = new Size(593, 355);
+			structListBox1.Size = new Size(593, 381);
 			structListBox1.StartAdr = 0L;
 			structListBox1.TabIndex = 7;
 			// 
-			// editStructItemcs1
+			// editStructItem1
 			// 
-			editStructItemcs1.BigEndianWidth = 80;
-			editStructItemcs1.ByteLengthWidth = 50;
-			editStructItemcs1.CommantWidth = 176;
-			editStructItemcs1.Location = new Point(12, 62);
-			editStructItemcs1.Name = "editStructItemcs1";
-			editStructItemcs1.Size = new Size(593, 23);
-			editStructItemcs1.SKindWidth = 75;
+			editStructItem1.BigEndianWidth = 80;
+			editStructItem1.ByteLengthWidth = 50;
+			editStructItem1.CommantWidth = 173;
+			editStructItem1.Location = new Point(10, 61);
+			editStructItem1.Name = "editStructItem1";
+			editStructItem1.Size = new Size(595, 23);
+			editStructItem1.SKindWidth = 70;
 			structItem1.Adress = 0L;
 			structItem1.ByteLength = 1L;
 			structItem1.Comment = "";
 			structItem1.Index = 0L;
-			structItem1.IsBigEndian = false;
+			structItem1.IsBigEndian = true;
 			structItem1.Kind = SKind.None;
 			structItem1.RAdress = 0L;
 			structItem1.Value = null;
-			editStructItemcs1.StructItem = structItem1;
-			editStructItemcs1.TabIndex = 10;
-			editStructItemcs1.Text = "editStructItemcs1";
+			editStructItem1.StructItem = structItem1;
+			editStructItem1.TabIndex = 8;
+			editStructItem1.Text = "editStructItem1";
 			// 
 			// StructView
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
+			CanResize = true;
 			ClientSize = new Size(617, 486);
-			Controls.Add(editStructItemcs1);
+			Controls.Add(editStructItem1);
 			Controls.Add(structListBox1);
 			Controls.Add(hexEdit1);
 			Name = "StructView";
@@ -288,6 +290,6 @@
 		#endregion
 		private HexEdit hexEdit1;
 		private StructListBox structListBox1;
-		private EditStructItem editStructItemcs1;
+		private EditStructItem editStructItem1;
 	}
 }
