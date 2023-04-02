@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryRider", "BinaryRider\BinaryRider.csproj", "{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BinaryRider Inst", "BinaryRider Inst\BinaryRider Inst.vdproj", "{810E5D2D-01BB-46FC-9281-3E767B0AFB33}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|x64.ActiveCfg = Release|x64
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|x64.Build.0 = Release|x64
-		{810E5D2D-01BB-46FC-9281-3E767B0AFB33}.Debug|Any CPU.ActiveCfg = Debug
-		{810E5D2D-01BB-46FC-9281-3E767B0AFB33}.Debug|x64.ActiveCfg = Debug
-		{810E5D2D-01BB-46FC-9281-3E767B0AFB33}.Release|Any CPU.ActiveCfg = Release
-		{810E5D2D-01BB-46FC-9281-3E767B0AFB33}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
