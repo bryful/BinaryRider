@@ -204,6 +204,7 @@
 			Controls.Add(btnSub);
 			Controls.Add(heRelative);
 			Name = "JumpPanel";
+			ShowInTaskbar = false;
 			Text = "Adress Jump";
 			TopMost = true;
 			ResumeLayout(false);

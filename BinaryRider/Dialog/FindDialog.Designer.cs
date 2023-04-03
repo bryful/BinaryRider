@@ -212,6 +212,7 @@
 			Controls.Add(label3);
 			Controls.Add(groupBox1);
 			Name = "FindDialog";
+			ShowInTaskbar = false;
 			Text = "Find";
 			groupBox1.ResumeLayout(false);
 			groupBox1.PerformLayout();

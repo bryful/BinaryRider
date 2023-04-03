@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace BinaryRider
 	{
 		public int BarHeight { get; set; } = 20;
 		public Color BarColor = SystemColors.ControlDark;
+		public Color ForeColorNone = SystemColors.ControlLight;
 		private Rectangle TopMostRect = new Rectangle(0, 0, 0, 0);
 		private Rectangle HideRect = new Rectangle(0, 0, 0, 0);
 		private StringFormat m_Format = new StringFormat();
@@ -22,6 +24,12 @@ namespace BinaryRider
 		{
 			get { return m_CanResize; }
 			set { m_CanResize = value; }
+		}
+		private bool m_IsHideBtn = true;
+		public bool IsHideBtn
+		{
+			get { return m_IsHideBtn; }
+			set { m_IsHideBtn = value;this.Invalidate(); }
 		}
 
 		// *************************************************************
@@ -76,22 +84,31 @@ namespace BinaryRider
 				int l = TopMostRect.Left + 2 + TopMostRect.Width + 3;
 				int ww = this.Width - l*2;
 				r = new Rectangle(l, 0, ww, BarHeight);
-				sb.Color = ForeColor;
-
+				if (IsActived)
+				{
+					sb.Color = ForeColor;
+				}
+				else
+				{
+					sb.Color = ForeColorNone;
+				}
 				g.DrawString(this.Text, this.Font,sb,r,m_Format);
 
 
 				// Hide
-				p.Color = ForeColor;
-				g.DrawRectangle(p, HideRect);
-				g.DrawLine(p,
-					HideRect.Left, HideRect.Top,
-					HideRect.Right, HideRect.Bottom
-					);
-				g.DrawLine(p,
-					HideRect.Left, HideRect.Bottom,
-					HideRect.Right, HideRect.Top
-					);
+				if (m_IsHideBtn)
+				{
+					p.Color = ForeColor;
+					g.DrawRectangle(p, HideRect);
+					g.DrawLine(p,
+						HideRect.Left, HideRect.Top,
+						HideRect.Right, HideRect.Bottom
+						);
+					g.DrawLine(p,
+						HideRect.Left, HideRect.Bottom,
+						HideRect.Right, HideRect.Top
+						);
+				}
 
 				r = new Rectangle(0,0,this.Width-1,this.Height-1);
 				p.Color = BarColor;
@@ -118,34 +135,60 @@ namespace BinaryRider
 			return ((e.X >= rct.Left) && (e.X < rct.Right) && (e.Y >= rct.Top) && (e.Y < rct.Bottom));
 		}
 		// *************************************************************
+		protected override void OnGotFocus(EventArgs e)
+		{
+			base.OnGotFocus(e);
+			this.Invalidate();
+		}
+		protected override void OnLostFocus(EventArgs e)
+		{
+			base.OnLostFocus(e);
+			this.Invalidate();
+		}
+		// *************************************************************
 		private Point m_mdp = new Point(0, 0);
 		private bool m_md = false;
 		private bool m_mdReSize = false;
 		private Size m_mdSize = new Size(0, 0);
+		protected override void OnMouseEnter(EventArgs e)
+		{
+			if(IsActived==false)
+			{
+				this.Activate();
+				this.Invalidate();
+			}
+			base.OnMouseEnter(e);
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
+			Debug.WriteLine($"MD1");
 			if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
 			{
+				Debug.WriteLine($"MD2");
 				if (InPoint(e, TopMostRect))
 				{
 					this.TopMost = !this.TopMost;
 					this.Invalidate();
 				}
-				else if (InPoint(e, HideRect))
+				else if ((m_IsHideBtn)&& (InPoint(e, HideRect)))
 				{
 					this.Hide();
 				}
 				else
 				{
+					Debug.WriteLine($"MD3");
 					m_mdp = new Point(e.X, e.Y);
 					if ((m_CanResize)&&( (e.X>(this.Width-20))&& (e.Y > (this.Height - 20))))
 					{
+						Debug.WriteLine($"MD4");
 						m_mdReSize = true;
 						m_mdSize = new Size(this.Width,this.Height);
 					}
 					else
 					{
 						m_md = true;
+						Debug.WriteLine($"MD5");
 
 					}
 				}
@@ -154,6 +197,7 @@ namespace BinaryRider
 			{
 				base.OnMouseDown(e);
 			}
+			Debug.WriteLine($"MD6");
 		}
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
@@ -184,6 +228,20 @@ namespace BinaryRider
 				m_mdReSize = false;
 			}
 			base.OnMouseUp(e);
+		}
+		private bool IsActived = false;
+		protected override void OnActivated(EventArgs e)
+		{
+
+			base.OnActivated(e);
+			IsActived = true;
+			this.Invalidate();
+		}
+		protected override void OnDeactivate(EventArgs e)
+		{
+			base.OnDeactivate(e);
+			IsActived = false;
+			this.Invalidate();
 		}
 	}
 }

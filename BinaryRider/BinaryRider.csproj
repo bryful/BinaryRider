@@ -8,10 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>AnyCPU;x64</Platforms>
     <SignAssembly>False</SignAssembly>
-    <Authors>bry-ful</Authors>
+    <Authors>bryful</Authors>
     <Title>BinaryRider</Title>
     <Company>Alefgard</Company>
     <Copyright>bry-ful copyright 2023</Copyright>
+    <IsPublishable>False</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>

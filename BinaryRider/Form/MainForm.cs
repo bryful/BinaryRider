@@ -22,14 +22,12 @@ using System.IO;
 
 namespace BinaryRider
 {
-	public partial class MainForm : Form
+	public partial class MainForm : RiderPanelForm
 	{
-		public ConsoleForm? ConsoleForm = null;
 		public Root Root = new Root();
-
+		public ConsoleForm? ConsoleForm = null;
 		public ScriptEditor? Editor = null;
 		public CustomRoslynHost? ScriptHost = null;
-
 		public JumpPanel? JumpPanel = null;
 		public FindDialog? FindDialog = null;
 		public StructView? StructView = null;
@@ -81,9 +79,15 @@ namespace BinaryRider
 			CreateScriptHost();
 
 			InitializeComponent();
-			this.Visible = false;
-			this.Opacity = 0;
-			this.Size = new Size(0, 0);
+
+			this.Size = new Size(400, 30);
+
+			mainFormMaxSizeMenu.Click += (center, e) => { MainFormMaxSize(); };
+			MainFormMaxSize();
+
+
+
+
 			AddForm();
 		}
 		public CharCodeMode CharCodeMode { get; set; } = CharCodeMode.UTF8;
@@ -113,7 +117,7 @@ namespace BinaryRider
 				}
 			};
 			Forms.Add(form);
-			form.Show();
+			form.Show(this);
 			form.Activate();
 			return form;
 		}
@@ -138,42 +142,44 @@ namespace BinaryRider
 				}
 				m_ActiveRider = null;
 			}
-			if (Forms.Count <= 0)
+			if (Forms.Count > 0)
 			{
-				Application.Exit();
+				Forms[0].Activate();
+				this.ShowInTaskbar = false;
 			}
 			else
 			{
-				if (Forms.Count > 0)
+				if(this.Visible==false)
 				{
-					Forms[0].Activate();
+					Application.Exit();
+				}
+				else
+				{
+					this.ShowInTaskbar = true;
 				}
 			}
 		}
 		// *********************************************************************
-		protected override void OnGotFocus(EventArgs e)
+		protected override void OnVisibleChanged(EventArgs e)
 		{
-			if (m_ActiveRider != null)
+			if(Forms.Count == 0)
 			{
-				m_ActiveRider.Activate();
-			}
-			else
-			{
-				if (Forms.Count > 0)
+				if (this.Visible == false)
 				{
-					Forms[0].Activate();
+					Application.Exit();
 				}
 			}
+			base.OnVisibleChanged(e);
 		}
 		// *********************************************************************
 		public RiderForm? Form(int idx)
 		{
 			RiderForm? ret = null;
-			if ((idx>=0)&&(idx < Forms.Count))
+			if ((idx >= 0) && (idx < Forms.Count))
 			{
 				ret = Forms[idx];
 			}
-			return ret;	
+			return ret;
 		}
 		public int IndexOf(RiderForm rf)
 		{
@@ -182,7 +188,7 @@ namespace BinaryRider
 		public int IndexOf(string name)
 		{
 			int ret = -1;
-			for(int i=0; i<Forms.Count; i++)
+			for (int i = 0; i < Forms.Count; i++)
 			{
 				if (Forms[i].Name == name)
 				{
@@ -191,6 +197,16 @@ namespace BinaryRider
 				}
 			}
 			return ret;
+		}
+		// *********************************************************************
+		public bool ShowMainForm()
+		{
+			if (this.Visible == false)
+			{
+				this.Visible = true;
+			}
+			this.Activate();
+			return true;
 		}
 		// *********************************************************************
 		public bool ShowConsoleForm()
@@ -365,14 +381,14 @@ namespace BinaryRider
 			return ret;
 		}
 		// *****************************************************************************
-		public string  FormNames()
+		public string FormNames()
 		{
 			string ret = "";
-			if(Forms.Count > 0)
+			if (Forms.Count > 0)
 			{
 				foreach (Form form in Forms)
 				{
-					if( ret !="") ret += ", ";
+					if (ret != "") ret += ", ";
 					ret += $"\"{form.Name}\"";
 
 				}
@@ -440,6 +456,12 @@ namespace BinaryRider
 				RoslynHostReferences.NamespaceDefault.With(assemblyReferences: assemblies));
 
 		}
-
+		// ********************************************************************************
+		public void MainFormMaxSize()
+		{
+			Screen s = Screen.FromControl(this);
+			this.Location = new Point(s.WorkingArea.Left, s.WorkingArea.Top);
+			this.Size = new Size(s.WorkingArea.Width, this.Height);
+		}
 	}
 }

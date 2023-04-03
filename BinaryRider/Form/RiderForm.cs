@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//using System.Security.Permissions;
 
 
 namespace BinaryRider
@@ -78,6 +79,23 @@ namespace BinaryRider
 		{
 			get { return (Form.ActiveForm == this); }
 		}
+
+		// ***************************************************************
+		//[SecurityPermission(SecurityAction.Demand,	Flags = SecurityPermissionFlag.UnmanagedCode)]
+		protected override void WndProc(ref Message m)
+		{
+			const int WM_NCLBUTTONDBLCLK = 0xA3;
+
+			if (m.Msg == WM_NCLBUTTONDBLCLK)
+			{
+				//非クライアント領域がダブルクリックされた時
+				m.Result = IntPtr.Zero;
+				MaxSize();
+				return;
+			}
+
+			base.WndProc(ref m);
+		}
 		// ***************************************************************
 		// ***************************************************************
 		public RiderForm()
@@ -120,6 +138,8 @@ namespace BinaryRider
 			relativeJumpMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowJumpPanel(); };
 			findMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowFindDialog(); };
 			structViewMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowStructView(); };
+			mainMenu.Click += (sender, e) => { if (MainForm != null) MainForm.ShowMainForm(); };
+			maxSizeMenu.Click += (sender, e) => { MaxSize(); };
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
 			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
 			editBinaryTwo1.SelChanged += (sender, e) =>
@@ -175,6 +195,25 @@ namespace BinaryRider
 			}
 		}
 		// ***************************************************************
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			FormWindowState state = this.WindowState;
+
+			if (this.WindowState == FormWindowState.Minimized ||
+				this.WindowState == FormWindowState.Maximized)
+			{
+				this.WindowState = FormWindowState.Normal;
+			}
+			if(state == FormWindowState.Maximized)
+			{
+				MaxSize();
+			}
+			int mh = 25;
+			int w = this.ClientSize.Width;
+			int h = this.ClientSize.Height - mh;
+			editBinaryTwo1.Location = new Point(0, mh);
+			editBinaryTwo1.Size = new Size(w, h);
+		}
 		protected override void OnResize(EventArgs e)
 		{
 			int mh = 25;
@@ -327,6 +366,48 @@ namespace BinaryRider
 			return editBinaryTwo1.JumpEnd();
 		}
 		// ***************************************************************
+		private bool IsActived = false;
+		protected override void OnActivated(EventArgs e)
+		{
+
+			base.OnActivated(e);
+			IsActived = true;
+			this.Invalidate();
+		}
+		protected override void OnDeactivate(EventArgs e)
+		{
+			base.OnDeactivate(e);
+			IsActived = false;
+			this.Invalidate();
+		}
+		protected override void OnMouseEnter(EventArgs e)
+		{
+			if (IsActived == false)
+			{
+				this.Activate();
+			}
+			base.OnMouseEnter(e);
+		}
+		public void MaxSize()
+		{
+			Screen s = Screen.FromControl(this);
+			int h = s.WorkingArea.Height;
+			int t = s.WorkingArea.Top;
+			if (MainForm != null)
+			{
+				if (MainForm.Visible == true)
+				{
+					MainForm.MainFormMaxSize();
+					if (s.Bounds.Top == MainForm.Top)
+					{
+						h -= MainForm.Height;
+						t += MainForm.Height;
+					}
+				}
+			}
+			this.Location = new Point(this.Left, t);
+			this.Size = new Size(this.Width, h);
+		}
 	}
 
 

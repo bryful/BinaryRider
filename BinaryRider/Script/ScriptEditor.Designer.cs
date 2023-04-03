@@ -84,6 +84,7 @@
 			// ScriptEditor
 			// 
 			AutoScaleMode = AutoScaleMode.None;
+			CanResize = true;
 			ClientSize = new Size(790, 419);
 			ControlBox = false;
 			Controls.Add(toolStrip1);

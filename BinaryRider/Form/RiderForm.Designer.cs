@@ -39,24 +39,30 @@
 			copyToolStripMenuItem = new ToolStripMenuItem();
 			pasteToolStripMenuItem = new ToolStripMenuItem();
 			optionMenu = new ToolStripMenuItem();
+			topMostMenu = new ToolStripMenuItem();
+			maxSizeMenu = new ToolStripMenuItem();
+			toolStripMenuItem1 = new ToolStripSeparator();
 			separetDispMenu = new ToolStripMenuItem();
 			orientMenu = new ToolStripMenuItem();
+			toolStripMenuItem2 = new ToolStripSeparator();
 			CharCodeMenu = new ToolStripMenuItem();
 			shiftJISMenu = new ToolStripMenuItem();
 			uTF8Menu = new ToolStripMenuItem();
-			topMostMenu = new ToolStripMenuItem();
 			jumpMenu = new ToolStripMenuItem();
 			findMenu = new ToolStripMenuItem();
 			relativeJumpMenu = new ToolStripMenuItem();
 			jumpTopMenu = new ToolStripMenuItem();
 			jumpEndMenu = new ToolStripMenuItem();
-			scriptMenu = new ToolStripMenuItem();
+			toolMenu = new ToolStripMenuItem();
+			mainMenu = new ToolStripMenuItem();
+			toolStripMenuItem3 = new ToolStripSeparator();
+			structViewMenu = new ToolStripMenuItem();
+			toolStripMenuItem4 = new ToolStripSeparator();
 			scriptEditorMenu = new ToolStripMenuItem();
 			consoleMenu = new ToolStripMenuItem();
 			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
-			structViewMenu = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)editBinaryTwo1).BeginInit();
 			editBinaryTwo1.SuspendLayout();
@@ -64,7 +70,7 @@
 			// 
 			// menuStrip1
 			// 
-			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, scriptMenu, windowMenu, helpToolStripMenuItem });
+			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, toolMenu, windowMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
 			menuStrip1.Size = new Size(645, 24);
@@ -125,10 +131,27 @@
 			// 
 			// optionMenu
 			// 
-			optionMenu.DropDownItems.AddRange(new ToolStripItem[] { separetDispMenu, orientMenu, CharCodeMenu, topMostMenu });
+			optionMenu.DropDownItems.AddRange(new ToolStripItem[] { topMostMenu, maxSizeMenu, toolStripMenuItem1, separetDispMenu, orientMenu, toolStripMenuItem2, CharCodeMenu });
 			optionMenu.Name = "optionMenu";
-			optionMenu.Size = new Size(56, 20);
-			optionMenu.Text = "Option";
+			optionMenu.Size = new Size(44, 20);
+			optionMenu.Text = "View";
+			// 
+			// topMostMenu
+			// 
+			topMostMenu.Name = "topMostMenu";
+			topMostMenu.Size = new Size(154, 22);
+			topMostMenu.Text = "TopMost";
+			// 
+			// maxSizeMenu
+			// 
+			maxSizeMenu.Name = "maxSizeMenu";
+			maxSizeMenu.Size = new Size(154, 22);
+			maxSizeMenu.Text = "MaxSize";
+			// 
+			// toolStripMenuItem1
+			// 
+			toolStripMenuItem1.Name = "toolStripMenuItem1";
+			toolStripMenuItem1.Size = new Size(151, 6);
 			// 
 			// separetDispMenu
 			// 
@@ -141,6 +164,11 @@
 			orientMenu.Name = "orientMenu";
 			orientMenu.Size = new Size(154, 22);
 			orientMenu.Text = "Orient";
+			// 
+			// toolStripMenuItem2
+			// 
+			toolStripMenuItem2.Name = "toolStripMenuItem2";
+			toolStripMenuItem2.Size = new Size(151, 6);
 			// 
 			// CharCodeMenu
 			// 
@@ -161,15 +189,9 @@
 			uTF8Menu.Size = new Size(111, 22);
 			uTF8Menu.Text = "UTF8";
 			// 
-			// topMostMenu
-			// 
-			topMostMenu.Name = "topMostMenu";
-			topMostMenu.Size = new Size(154, 22);
-			topMostMenu.Text = "TopMost";
-			// 
 			// jumpMenu
 			// 
-			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { findMenu, relativeJumpMenu, jumpTopMenu, jumpEndMenu, structViewMenu });
+			jumpMenu.DropDownItems.AddRange(new ToolStripItem[] { findMenu, relativeJumpMenu, jumpTopMenu, jumpEndMenu });
 			jumpMenu.Name = "jumpMenu";
 			jumpMenu.Size = new Size(47, 20);
 			jumpMenu.Text = "Jump";
@@ -177,34 +199,56 @@
 			// findMenu
 			// 
 			findMenu.Name = "findMenu";
-			findMenu.Size = new Size(180, 22);
+			findMenu.Size = new Size(139, 22);
 			findMenu.Text = "Find";
 			// 
 			// relativeJumpMenu
 			// 
 			relativeJumpMenu.Name = "relativeJumpMenu";
 			relativeJumpMenu.ShortcutKeys = Keys.Control | Keys.J;
-			relativeJumpMenu.Size = new Size(180, 22);
+			relativeJumpMenu.Size = new Size(139, 22);
 			relativeJumpMenu.Text = "Jump";
 			// 
 			// jumpTopMenu
 			// 
 			jumpTopMenu.Name = "jumpTopMenu";
-			jumpTopMenu.Size = new Size(180, 22);
+			jumpTopMenu.Size = new Size(139, 22);
 			jumpTopMenu.Text = "Top";
 			// 
 			// jumpEndMenu
 			// 
 			jumpEndMenu.Name = "jumpEndMenu";
-			jumpEndMenu.Size = new Size(180, 22);
+			jumpEndMenu.Size = new Size(139, 22);
 			jumpEndMenu.Text = "End";
 			// 
-			// scriptMenu
+			// toolMenu
 			// 
-			scriptMenu.DropDownItems.AddRange(new ToolStripItem[] { scriptEditorMenu, consoleMenu });
-			scriptMenu.Name = "scriptMenu";
-			scriptMenu.Size = new Size(49, 20);
-			scriptMenu.Text = "Script";
+			toolMenu.DropDownItems.AddRange(new ToolStripItem[] { mainMenu, toolStripMenuItem3, structViewMenu, toolStripMenuItem4, scriptEditorMenu, consoleMenu });
+			toolMenu.Name = "toolMenu";
+			toolMenu.Size = new Size(41, 20);
+			toolMenu.Text = "Tool";
+			// 
+			// mainMenu
+			// 
+			mainMenu.Name = "mainMenu";
+			mainMenu.Size = new Size(135, 22);
+			mainMenu.Text = "Main";
+			// 
+			// toolStripMenuItem3
+			// 
+			toolStripMenuItem3.Name = "toolStripMenuItem3";
+			toolStripMenuItem3.Size = new Size(132, 6);
+			// 
+			// structViewMenu
+			// 
+			structViewMenu.Name = "structViewMenu";
+			structViewMenu.Size = new Size(135, 22);
+			structViewMenu.Text = "StructView";
+			// 
+			// toolStripMenuItem4
+			// 
+			toolStripMenuItem4.Name = "toolStripMenuItem4";
+			toolStripMenuItem4.Size = new Size(132, 6);
 			// 
 			// scriptEditorMenu
 			// 
@@ -249,12 +293,6 @@
 			editBinaryTwo1.SplitterWidth = 8;
 			editBinaryTwo1.TabIndex = 2;
 			// 
-			// structViewMenu
-			// 
-			structViewMenu.Name = "structViewMenu";
-			structViewMenu.Size = new Size(180, 22);
-			structViewMenu.Text = "StructView";
-			// 
 			// RiderForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -263,6 +301,8 @@
 			Controls.Add(menuStrip1);
 			Controls.Add(editBinaryTwo1);
 			MainMenuStrip = menuStrip1;
+			MaximizeBox = false;
+			MinimizeBox = false;
 			Name = "RiderForm";
 			Text = "RiderForm";
 			menuStrip1.ResumeLayout(false);
@@ -291,7 +331,7 @@
 		private ToolStripMenuItem CharCodeMenu;
 		private ToolStripMenuItem shiftJISMenu;
 		private ToolStripMenuItem uTF8Menu;
-		private ToolStripMenuItem scriptMenu;
+		private ToolStripMenuItem toolMenu;
 		private ToolStripMenuItem scriptEditorMenu;
 		private ToolStripMenuItem consoleMenu;
 		private ToolStripMenuItem jumpMenu;
@@ -301,6 +341,12 @@
 		private ToolStripMenuItem topMostMenu;
 		private EditBinaryTwo editBinaryTwo1;
 		private ToolStripMenuItem findMenu;
+		private ToolStripSeparator toolStripMenuItem1;
+		private ToolStripSeparator toolStripMenuItem2;
+		private ToolStripMenuItem mainMenu;
+		private ToolStripSeparator toolStripMenuItem3;
 		private ToolStripMenuItem structViewMenu;
+		private ToolStripSeparator toolStripMenuItem4;
+		private ToolStripMenuItem maxSizeMenu;
 	}
 }
