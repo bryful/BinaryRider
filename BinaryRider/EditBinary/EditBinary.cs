@@ -187,25 +187,44 @@ true);
 		private BSheet.MouseDownStatus?  m_MDStat = null;
 		private Point m_MDPoint = new Point();
 		private int m_Start = 0;
+		protected override void OnMouseDoubleClick(MouseEventArgs e)
+		{
+			if (DataFile != null)
+			{
+				if (BinSheet != null)
+				{
+					BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
+					if ((stat.Adress >= 0)&&(stat.Adress<DataFile.ByteSize))
+					{
+						using (EditValueByte dlg = new EditValueByte())
+						{
+							dlg.Value = DataFile.Data[stat.Adress];
+							if (dlg.ShowDialog() == DialogResult.OK)
+							{
+								DataFile.Data[stat.Adress] = dlg.Value;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			if (DataFile != null)
 			{
-				if (DataFile.FileName != "")
+				if (BinSheet != null)
 				{
-					if (BinSheet != null)
+					BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
+					if (stat.Down == true)
 					{
-						BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
-						if (stat.Down == true)
-						{
-							Selection.SetEditBinary(this);
-							m_MDStat = stat;
-							Selection.Start = stat.Adress;
-							Selection.Length = 1;
-							BinSheet.DrawOffScr();
-							this.Invalidate();
-							OnSelChanged(new SelChangedEventArgs(Selection.Start, Selection.Length));
-						}
+						Selection.SetEditBinary(this);
+						m_MDStat = stat;
+						Selection.Start = stat.Adress;
+						Selection.Length = 1;
+						BinSheet.DrawOffScr();
+						this.Invalidate();
+						OnSelChanged(new SelChangedEventArgs(Selection.Start, Selection.Length));
 					}
 				}
 			}
@@ -305,6 +324,30 @@ true);
 				ret = Jump(adr, 1);
 			}
 			return ret;
+		}
+		public void Copy()
+		{
+			if (m_DataFile != null)
+			{
+				if (Selection.Length>0)
+				{
+					string ret = "";
+					for(long i=0;i< Selection.Length;i++)
+					{
+						long adr = Selection.Start + i;
+						if((adr >= 0)&&(adr<m_DataFile.ByteSize))
+						{
+							if (ret != "") ret += ",";
+							ret += $"0x{m_DataFile.Data[adr]:X2}";
+						}
+					}
+					if (ret != "")
+					{
+						ret = "[" + ret + "]";
+						Clipboard.SetText(ret);
+					}
+				}
+			}
 		}
 	}
 }

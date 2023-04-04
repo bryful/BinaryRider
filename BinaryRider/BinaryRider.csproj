@@ -10,9 +10,14 @@
     <SignAssembly>False</SignAssembly>
     <Authors>bryful</Authors>
     <Title>BinaryRider</Title>
-    <Company>Alefgard</Company>
-    <Copyright>bry-ful copyright 2023</Copyright>
+    <Company></Company>
+    <Copyright>bry-ful copyright(c) 2023</Copyright>
     <IsPublishable>False</IsPublishable>
+    <RepositoryUrl>https://github.com/bryful/BinaryRider</RepositoryUrl>
+    <VersionPefix>1.0.0</VersionPefix>
+    <VersionSuffix>beta</VersionSuffix>
+    <Description>Binary Editor</Description>
+    <PackageProjectUrl>https://github.com/bryful/BinaryRider</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +34,21 @@
 
   <ItemGroup>
     <PackageReference Include="RoslynPad.Editor.Windows" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

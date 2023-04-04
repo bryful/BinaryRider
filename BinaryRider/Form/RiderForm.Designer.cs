@@ -36,7 +36,7 @@
 			saveFileMenu = new ToolStripMenuItem();
 			closeFormMenu = new ToolStripMenuItem();
 			editToolStripMenuItem = new ToolStripMenuItem();
-			copyToolStripMenuItem = new ToolStripMenuItem();
+			copyMenu = new ToolStripMenuItem();
 			pasteToolStripMenuItem = new ToolStripMenuItem();
 			optionMenu = new ToolStripMenuItem();
 			topMostMenu = new ToolStripMenuItem();
@@ -112,16 +112,16 @@
 			// 
 			// editToolStripMenuItem
 			// 
-			editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { copyToolStripMenuItem, pasteToolStripMenuItem });
+			editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { copyMenu, pasteToolStripMenuItem });
 			editToolStripMenuItem.Name = "editToolStripMenuItem";
 			editToolStripMenuItem.Size = new Size(39, 20);
 			editToolStripMenuItem.Text = "Edit";
 			// 
 			// copyToolStripMenuItem
 			// 
-			copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-			copyToolStripMenuItem.Size = new Size(102, 22);
-			copyToolStripMenuItem.Text = "Copy";
+			copyMenu.Name = "copyToolStripMenuItem";
+			copyMenu.Size = new Size(102, 22);
+			copyMenu.Text = "Copy";
 			// 
 			// pasteToolStripMenuItem
 			// 
@@ -326,7 +326,7 @@
 		private ToolStripMenuItem optionMenu;
 		private ToolStripMenuItem separetDispMenu;
 		private ToolStripMenuItem orientMenu;
-		private ToolStripMenuItem copyToolStripMenuItem;
+		private ToolStripMenuItem copyMenu;
 		private ToolStripMenuItem pasteToolStripMenuItem;
 		private ToolStripMenuItem CharCodeMenu;
 		private ToolStripMenuItem shiftJISMenu;

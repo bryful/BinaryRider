@@ -166,6 +166,13 @@ namespace BinaryRider
 			}
 			return ret;
 		}
+		public void Copy()
+		{
+			if (ActiveEditBinary != null)
+			{
+				ActiveEditBinary.Copy();
+			}
+		}
 		public void SelectionInit()
 		{
 			EditBinary1.Selection.SetStartLength(0, 0);

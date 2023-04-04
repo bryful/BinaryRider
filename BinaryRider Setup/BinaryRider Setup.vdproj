@@ -37,6 +37,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -53,6 +69,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -110,6 +142,17 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_BAC3D8C35A5F461DA149801C02026051"
+                    {
+                    "Name" = "8:BinaryRider"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_BF0C2EEFA79A43439B6B580416F499E9"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_EBA1EC6EE75643C197174E2FF9C9AF3D"
@@ -141,14 +184,14 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BinaryRider"
         "ProductCode" = "8:{A3442663-732A-4DF7-925B-91BEEA04D55C}"
-        "PackageCode" = "8:{805C813A-9861-49FD-83DA-CA575043350A}"
+        "PackageCode" = "8:{5B7C4581-BF7B-45D2-9779-3606836AF0B9}"
         "UpgradeCode" = "8:{8D340368-3985-4D6D-A9D4-CA3DD5BF86EB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.0-beta"
         "Manufacturer" = "8:bry-ful"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -157,7 +200,7 @@
         "ARPCONTACT" = "8:bry-ful"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:"
+        "ARPURLINFOABOUT" = "8:https://github.com/bryful/BinaryRider"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
@@ -261,6 +304,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_0D142CC50BB049CCBA8EBCCF1C6A3440"
+            {
+            "Name" = "8:BinaryRider"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_BAC3D8C35A5F461DA149801C02026051"
+            "Folder" = "8:_2C1F50894CE2483FBB1612C334ED138E"
+            "WorkingFolder" = "8:_2C1F50894CE2483FBB1612C334ED138E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7DB03D2DF525435A99EEF81B717803F0"
             {
             "Name" = "8:BinaryRider"
@@ -676,7 +733,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AC00DB7E01754FA0ACABF1046BCD81FA"
             {
-            "SourcePath" = "8:..\\BinaryRider\\obj\\x64\\Release\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\BinaryRider\\obj\\x64\\Debug\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EBA1EC6EE75643C197174E2FF9C9AF3D"

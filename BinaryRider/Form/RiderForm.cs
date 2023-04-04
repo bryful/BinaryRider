@@ -142,6 +142,7 @@ namespace BinaryRider
 			maxSizeMenu.Click += (sender, e) => { MaxSize(); };
 			jumpTopMenu.Click += (sender, e) => { JumpTop(); };
 			jumpEndMenu.Click += (sender, e) => { JumpEnd(); };
+			copyMenu.Click += (sender, e) => { Copy(); };
 			editBinaryTwo1.SelChanged += (sender, e) =>
 			{
 				OnSelChanged(e);
@@ -337,6 +338,10 @@ namespace BinaryRider
 			windowMenu.DropDownItems.AddRange(ms.ToArray());
 		}
 		// ***************************************************************
+		public void Copy()
+		{
+			editBinaryTwo1.Copy();
+		}
 		public bool Jump(long adr, long Len = 0)
 		{
 			if (Len == 0)

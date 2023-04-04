@@ -78,9 +78,12 @@ namespace BinaryRider
 				if (m_UsedByte < 1) m_UsedByte = 1;
 				else if (m_UsedByte > 8) m_UsedByte = 8;
 				m_MaxValue = MaxTbl[m_UsedByte - 1];
-				m_Value = m_Value & m_MaxValue;
+				long v = m_Value & m_MaxValue;
+				bool b = (m_Value != v);
+				m_Value = v;
 				GetSizeFromFont();
 				this.Invalidate();
+				if(b) OnValueChanged(new EventArgs());
 			}
 		}
 		public long MaxValue
@@ -164,6 +167,7 @@ namespace BinaryRider
 				this.Invalidate();
 			}
 		}
+		public bool CanEdit { get; set; } = true;
 		private TextBox? m_Edit = null;
 		public HexEdit()
 		{
@@ -322,7 +326,10 @@ true);
 
 		protected override void OnMouseEnter(EventArgs e)
 		{
-			m_InMouse = true;
+			if (CanEdit)
+			{
+				m_InMouse = true;
+			}
 			//base.OnMouseEnter(e);
 		}
 		protected override void OnMouseLeave(EventArgs e)
@@ -363,7 +370,7 @@ true);
 					if(m_Value!=v)
 					{
 						m_Value = v;
-						OnVisibleChanged(new EventArgs());
+						OnValueChanged(new EventArgs());
 						this.Invalidate();
 					}
 				}
@@ -404,6 +411,7 @@ true);
 
 		public void SetEdit()
 		{
+			if(CanEdit==false) return;
 			if (m_Edit != null) return;
 			m_Edit = new TextBox();
 			m_Edit.Name = "Edit";

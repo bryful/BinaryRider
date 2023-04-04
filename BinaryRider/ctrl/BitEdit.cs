@@ -22,8 +22,22 @@ namespace BinaryRider
 		Blong = 80,
 		Bulong = 81
 	};
+
 	public partial class BitEdit : Control
 	{
+		//TimeEventArgs型のオブジェクトを返すようにする
+		public delegate void ValueChangedEventHandler(object sender, EventArgs e);
+
+		//イベントデリゲートの宣言
+		public event ValueChangedEventHandler? ValueChanged;
+
+		protected virtual void OnValueChanged(EventArgs e)
+		{
+			if (ValueChanged != null)
+			{
+				ValueChanged(this, e);
+			}
+		}
 		private ulong[] _MaxBit = new ulong[]
 		{
 			0x0000000000000000,
@@ -80,8 +94,11 @@ namespace BinaryRider
 			set
 			{
 				m_BitType= value;
-				m_Value &= _MaxBit[(int)m_BitType / 10];
+				ulong v =  m_Value & _MaxBit[(int)m_BitType / 10];
+				bool b = (m_Value != v);
+				m_Value = v;
 				this.Size = new Size(BitWidthAll, BitHeightAll);
+				if(b) OnValueChanged(new EventArgs());
 			}
 		}
 		private ulong m_Value = 0;
@@ -90,8 +107,10 @@ namespace BinaryRider
 			get { return m_Value; }
 			set
 			{
+				bool b = (m_Value != value);
 				m_Value = value;
 				this.Invalidate();
+				if(b) OnValueChanged(new EventArgs());
 			}
 		}
 		public BitEdit()
@@ -154,10 +173,11 @@ true);
 
 			int xx =  7 - (e.X % BitWidth8)/(m_BitWidth+m_BitInter);
 			int xxx = (int)x * 8 + (int)xx;
-			Debug.WriteLine($"x{x},xx{xx},xxx{xxx}");
 
-			m_Value = m_Value ^ ((ulong)0x01 << xxx);
+			ulong v = m_Value ^ ((ulong)0x01 << xxx); ;
+			bool b = (m_Value != v);
 			this.Invalidate();
+			if(b) OnValueChanged(new EventArgs());
 		}
 	}
 }

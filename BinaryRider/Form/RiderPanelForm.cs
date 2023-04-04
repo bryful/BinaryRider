@@ -31,7 +31,12 @@ namespace BinaryRider
 			get { return m_IsHideBtn; }
 			set { m_IsHideBtn = value;this.Invalidate(); }
 		}
-
+		private bool m_IsHideAndColse = false;
+		public bool IsHideAndColse
+		{
+			get { return m_IsHideAndColse; }
+			set { m_IsHideAndColse = value; this.Invalidate(); }
+		}
 		// *************************************************************
 		public new bool TopMost
 		{
@@ -173,7 +178,15 @@ namespace BinaryRider
 				}
 				else if ((m_IsHideBtn)&& (InPoint(e, HideRect)))
 				{
-					this.Hide();
+					if(m_IsHideAndColse)
+					{
+						this.DialogResult = DialogResult.Cancel;
+						//this.Close();
+					}
+					else
+					{
+						this.Hide();
+					}
 				}
 				else
 				{
