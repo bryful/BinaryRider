@@ -94,7 +94,11 @@ namespace BinaryRider
 			if (MainForm != null)
 				MainForm.ClearScreen();
 		}
-		
+		public void Clr()
+		{
+			if (MainForm != null)
+				MainForm.ClearScreen();
+		}
 
 
 	}
