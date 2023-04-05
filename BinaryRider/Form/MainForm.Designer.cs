@@ -29,16 +29,20 @@
 		private void InitializeComponent()
 		{
 			menuStrip1 = new MenuStrip();
-			fileToolStripMenuItem = new ToolStripMenuItem();
-			toolToolStripMenuItem = new ToolStripMenuItem();
-			scriptEditorToolStripMenuItem = new ToolStripMenuItem();
-			consoleToolStripMenuItem = new ToolStripMenuItem();
-			findToolStripMenuItem = new ToolStripMenuItem();
-			jumpToolStripMenuItem = new ToolStripMenuItem();
-			compareToolStripMenuItem = new ToolStripMenuItem();
-			windowSetToolStripMenuItem = new ToolStripMenuItem();
-			windowToolStripMenuItem = new ToolStripMenuItem();
+			fileMenu = new ToolStripMenuItem();
+			newMenu = new ToolStripMenuItem();
+			openMenu = new ToolStripMenuItem();
+			quitMenu = new ToolStripMenuItem();
+			toolMenu = new ToolStripMenuItem();
+			scriptEditorMenu = new ToolStripMenuItem();
+			consoleMenu = new ToolStripMenuItem();
+			findMenu = new ToolStripMenuItem();
+			jumpMenu = new ToolStripMenuItem();
+			structViewMenu = new ToolStripMenuItem();
+			compareMenu = new ToolStripMenuItem();
+			windowPosMenu = new ToolStripMenuItem();
 			mainFormMaxSizeMenu = new ToolStripMenuItem();
+			windowMenu = new ToolStripMenuItem();
 			menuStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -47,74 +51,100 @@
 			menuStrip1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			menuStrip1.AutoSize = false;
 			menuStrip1.Dock = DockStyle.None;
-			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, toolToolStripMenuItem, compareToolStripMenuItem, windowSetToolStripMenuItem, windowToolStripMenuItem });
+			menuStrip1.Items.AddRange(new ToolStripItem[] { fileMenu, toolMenu, compareMenu, windowPosMenu, windowMenu });
 			menuStrip1.Location = new Point(0, 20);
 			menuStrip1.Name = "menuStrip1";
 			menuStrip1.Size = new Size(1082, 24);
 			menuStrip1.TabIndex = 0;
 			menuStrip1.Text = "menuStrip1";
 			// 
-			// fileToolStripMenuItem
+			// fileMenu
 			// 
-			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			fileToolStripMenuItem.Size = new Size(37, 20);
-			fileToolStripMenuItem.Text = "File";
+			fileMenu.DropDownItems.AddRange(new ToolStripItem[] { newMenu, openMenu, quitMenu });
+			fileMenu.Name = "fileMenu";
+			fileMenu.Size = new Size(37, 20);
+			fileMenu.Text = "File";
 			// 
-			// toolToolStripMenuItem
+			// newMenu
 			// 
-			toolToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { scriptEditorToolStripMenuItem, consoleToolStripMenuItem, findToolStripMenuItem, jumpToolStripMenuItem });
-			toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-			toolToolStripMenuItem.Size = new Size(41, 20);
-			toolToolStripMenuItem.Text = "Tool";
+			newMenu.Name = "newMenu";
+			newMenu.Size = new Size(180, 22);
+			newMenu.Text = "New";
 			// 
-			// scriptEditorToolStripMenuItem
+			// openMenu
 			// 
-			scriptEditorToolStripMenuItem.Name = "scriptEditorToolStripMenuItem";
-			scriptEditorToolStripMenuItem.Size = new Size(135, 22);
-			scriptEditorToolStripMenuItem.Text = "ScriptEditor";
+			openMenu.Name = "openMenu";
+			openMenu.Size = new Size(180, 22);
+			openMenu.Text = "Open";
 			// 
-			// consoleToolStripMenuItem
+			// quitMenu
 			// 
-			consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-			consoleToolStripMenuItem.Size = new Size(135, 22);
-			consoleToolStripMenuItem.Text = "Console";
+			quitMenu.Name = "quitMenu";
+			quitMenu.Size = new Size(180, 22);
+			quitMenu.Text = "Quit";
 			// 
-			// findToolStripMenuItem
+			// toolMenu
 			// 
-			findToolStripMenuItem.Name = "findToolStripMenuItem";
-			findToolStripMenuItem.Size = new Size(135, 22);
-			findToolStripMenuItem.Text = "Find";
+			toolMenu.DropDownItems.AddRange(new ToolStripItem[] { structViewMenu, findMenu, jumpMenu, scriptEditorMenu, consoleMenu });
+			toolMenu.Name = "toolMenu";
+			toolMenu.Size = new Size(41, 20);
+			toolMenu.Text = "Tool";
 			// 
-			// jumpToolStripMenuItem
+			// scriptEditorpMenu
 			// 
-			jumpToolStripMenuItem.Name = "jumpToolStripMenuItem";
-			jumpToolStripMenuItem.Size = new Size(135, 22);
-			jumpToolStripMenuItem.Text = "Jump";
+			scriptEditorMenu.Name = "scriptEditorpMenu";
+			scriptEditorMenu.Size = new Size(180, 22);
+			scriptEditorMenu.Text = "ScriptEditor";
 			// 
-			// compareToolStripMenuItem
+			// consoleMenu
 			// 
-			compareToolStripMenuItem.Name = "compareToolStripMenuItem";
-			compareToolStripMenuItem.Size = new Size(66, 20);
-			compareToolStripMenuItem.Text = "Compare";
+			consoleMenu.Name = "consoleMenu";
+			consoleMenu.Size = new Size(180, 22);
+			consoleMenu.Text = "Console";
 			// 
-			// windowSetToolStripMenuItem
+			// findMenu
 			// 
-			windowSetToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { mainFormMaxSizeMenu });
-			windowSetToolStripMenuItem.Name = "windowSetToolStripMenuItem";
-			windowSetToolStripMenuItem.Size = new Size(82, 20);
-			windowSetToolStripMenuItem.Text = "WindowPos";
+			findMenu.Name = "findMenu";
+			findMenu.Size = new Size(180, 22);
+			findMenu.Text = "Find";
 			// 
-			// windowToolStripMenuItem
+			// jumpMenu
 			// 
-			windowToolStripMenuItem.Name = "windowToolStripMenuItem";
-			windowToolStripMenuItem.Size = new Size(63, 20);
-			windowToolStripMenuItem.Text = "Window";
+			jumpMenu.Name = "jumpMenu";
+			jumpMenu.Size = new Size(180, 22);
+			jumpMenu.Text = "Jump";
+			// 
+			// structViewMenu
+			// 
+			structViewMenu.Name = "structViewMenu";
+			structViewMenu.Size = new Size(180, 22);
+			structViewMenu.Text = "StructView";
+			// 
+			// compareMenu
+			// 
+			compareMenu.Enabled = false;
+			compareMenu.Name = "compareMenu";
+			compareMenu.Size = new Size(66, 20);
+			compareMenu.Text = "Compare";
+			// 
+			// windowPosMenu
+			// 
+			windowPosMenu.DropDownItems.AddRange(new ToolStripItem[] { mainFormMaxSizeMenu });
+			windowPosMenu.Name = "windowPosMenu";
+			windowPosMenu.Size = new Size(82, 20);
+			windowPosMenu.Text = "WindowPos";
 			// 
 			// mainFormMaxSizeMenu
 			// 
 			mainFormMaxSizeMenu.Name = "mainFormMaxSizeMenu";
-			mainFormMaxSizeMenu.Size = new Size(180, 22);
+			mainFormMaxSizeMenu.Size = new Size(171, 22);
 			mainFormMaxSizeMenu.Text = "MainFormMaxSize";
+			// 
+			// windowMenu
+			// 
+			windowMenu.Name = "windowMenu";
+			windowMenu.Size = new Size(63, 20);
+			windowMenu.Text = "Window";
 			// 
 			// MainForm
 			// 
@@ -145,15 +175,19 @@
 		#endregion
 
 		private MenuStrip menuStrip1;
-		private ToolStripMenuItem fileToolStripMenuItem;
-		private ToolStripMenuItem toolToolStripMenuItem;
-		private ToolStripMenuItem scriptEditorToolStripMenuItem;
-		private ToolStripMenuItem consoleToolStripMenuItem;
-		private ToolStripMenuItem findToolStripMenuItem;
-		private ToolStripMenuItem jumpToolStripMenuItem;
-		private ToolStripMenuItem compareToolStripMenuItem;
-		private ToolStripMenuItem windowSetToolStripMenuItem;
-		private ToolStripMenuItem windowToolStripMenuItem;
+		private ToolStripMenuItem fileMenu;
+		private ToolStripMenuItem toolMenu;
+		private ToolStripMenuItem scriptEditorMenu;
+		private ToolStripMenuItem consoleMenu;
+		private ToolStripMenuItem findMenu;
+		private ToolStripMenuItem jumpMenu;
+		private ToolStripMenuItem compareMenu;
+		private ToolStripMenuItem windowPosMenu;
+		private ToolStripMenuItem windowMenu;
 		private ToolStripMenuItem mainFormMaxSizeMenu;
+		private ToolStripMenuItem newMenu;
+		private ToolStripMenuItem openMenu;
+		private ToolStripMenuItem quitMenu;
+		private ToolStripMenuItem structViewMenu;
 	}
 }

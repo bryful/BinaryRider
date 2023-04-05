@@ -24,6 +24,23 @@ namespace BinaryRider
 {
 	public partial class MainForm : RiderPanelForm
 	{
+		private string m_FileName = "";
+		public string FileName
+		{
+			get { return m_FileName; }
+			set
+			{
+				m_FileName = value;
+				if (m_FileName != "")
+				{
+					windowMenu.Text = Path.GetFileName(m_FileName);
+				}
+				else
+				{
+					windowMenu.Text = "Window";
+				}
+			}
+		}
 		public Root Root = new Root();
 		public ConsoleForm? ConsoleForm = null;
 		public ScriptEditor? Editor = null;
@@ -84,11 +101,16 @@ namespace BinaryRider
 
 			mainFormMaxSizeMenu.Click += (center, e) => { MainFormMaxSize(); };
 			MainFormMaxSize();
-
-
-
-
-			AddForm();
+			newMenu.Click += (center, e) => { AddForm(); };
+			openMenu.Click += (center, e) => { OpenForm(); };
+			quitMenu.Click += (center, e) => { Application.Exit(); };
+			scriptEditorMenu.Click += (center, e) => { ShowScriptEditor(); };
+			consoleMenu.Click += (center, e) => { ShowConsoleForm(); };
+			jumpMenu.Click += (center, e) => { ShowJumpPanel(); };
+			findMenu.Click += (center, e) => { ShowFindDialog(); };
+			structViewMenu.Click += (center, e) => { ShowStructView(); };
+			windowMenu.Click += (center, e) => { MakeWindowMenu(); };
+			//AddForm();
 		}
 		public CharCodeMode CharCodeMode { get; set; } = CharCodeMode.UTF8;
 		// *********************************************************************
@@ -111,6 +133,7 @@ namespace BinaryRider
 					if (senter is RiderForm)
 					{
 						m_ActiveRider = (RiderForm)senter;
+						this.FileName = m_ActiveRider.BDataFile.FileName;
 						OnTargetRider(new TargetRiderEventArgs(m_ActiveRider));
 						OnSelChanged(new SelChangedEventArgs(m_ActiveRider.Selection));
 					}
@@ -126,6 +149,20 @@ namespace BinaryRider
 		{
 			RiderForm rf = AddForm();
 			rf.OpenFile(p);
+		}
+		public void OpenForm()
+		{
+			using (OpenFileDialog dlg = new OpenFileDialog())
+			{
+				if (m_FileName != "")
+				{
+					dlg.InitialDirectory = Path.GetDirectoryName(m_FileName);
+				}
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					OpenForm(dlg.FileName);
+				}
+			}
 		}
 		// *********************************************************************
 		private void Form_WinClose1(object sender, RiderForm.WinCloseEventArgs e)
@@ -149,12 +186,13 @@ namespace BinaryRider
 			}
 			else
 			{
-				if(this.Visible==false)
+				if (this.Visible == false)
 				{
 					Application.Exit();
 				}
 				else
 				{
+					this.Activate();
 					this.ShowInTaskbar = true;
 				}
 			}
@@ -162,7 +200,7 @@ namespace BinaryRider
 		// *********************************************************************
 		protected override void OnVisibleChanged(EventArgs e)
 		{
-			if(Forms.Count == 0)
+			if (Forms.Count == 0)
 			{
 				if (this.Visible == false)
 				{
@@ -299,6 +337,35 @@ namespace BinaryRider
 				StructView.Activate();
 			}
 			return true;
+		}
+		// *********************************************************************
+		public void MakeWindowMenu()
+		{
+			if (windowMenu.DropDownItems.Count > 0)
+			{
+				windowMenu.DropDownItems.Clear();
+			}
+			if (Forms.Count<= 0) return;
+			List<ToolStripMenuItem> ms = new List<ToolStripMenuItem>();
+			foreach (RiderForm rf in Forms)
+			{
+				ToolStripMenuItem m = new ToolStripMenuItem();
+				m.Text = rf.Text;
+				m.Checked = rf.IsActive;
+				m.Tag = (Object)rf;
+				m.Click += (sender, e) =>
+				{
+					ToolStripMenuItem? m = (ToolStripMenuItem?)sender;
+					if (m != null)
+					{
+						RiderForm? rr = (RiderForm?)m.Tag;
+						if (rr != null) rr.Activate();
+					}
+					windowMenu.DropDownItems.Clear();
+				};
+				ms.Add(m);
+			}
+			windowMenu.DropDownItems.AddRange(ms.ToArray());
 		}
 		// *********************************************************************
 		public void WriteLine(object? o)

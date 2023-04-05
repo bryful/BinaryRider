@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			BSelection bSelection1 = new BSelection();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RiderForm));
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
 			newFormMenu = new ToolStripMenuItem();
@@ -60,7 +61,6 @@
 			toolStripMenuItem4 = new ToolStripSeparator();
 			scriptEditorMenu = new ToolStripMenuItem();
 			consoleMenu = new ToolStripMenuItem();
-			windowMenu = new ToolStripMenuItem();
 			helpToolStripMenuItem = new ToolStripMenuItem();
 			editBinaryTwo1 = new EditBinaryTwo();
 			menuStrip1.SuspendLayout();
@@ -70,7 +70,7 @@
 			// 
 			// menuStrip1
 			// 
-			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, toolMenu, windowMenu, helpToolStripMenuItem });
+			menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, optionMenu, jumpMenu, toolMenu, helpToolStripMenuItem });
 			menuStrip1.Location = new Point(0, 0);
 			menuStrip1.Name = "menuStrip1";
 			menuStrip1.Size = new Size(645, 24);
@@ -117,9 +117,9 @@
 			editToolStripMenuItem.Size = new Size(39, 20);
 			editToolStripMenuItem.Text = "Edit";
 			// 
-			// copyToolStripMenuItem
+			// copyMenu
 			// 
-			copyMenu.Name = "copyToolStripMenuItem";
+			copyMenu.Name = "copyMenu";
 			copyMenu.Size = new Size(102, 22);
 			copyMenu.Text = "Copy";
 			// 
@@ -262,12 +262,6 @@
 			consoleMenu.Size = new Size(135, 22);
 			consoleMenu.Text = "Console";
 			// 
-			// windowMenu
-			// 
-			windowMenu.Name = "windowMenu";
-			windowMenu.Size = new Size(63, 20);
-			windowMenu.Text = "Window";
-			// 
 			// helpToolStripMenuItem
 			// 
 			helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -300,6 +294,7 @@
 			ClientSize = new Size(645, 399);
 			Controls.Add(menuStrip1);
 			Controls.Add(editBinaryTwo1);
+			Icon = (Icon)resources.GetObject("$this.Icon");
 			MainMenuStrip = menuStrip1;
 			MaximizeBox = false;
 			MinimizeBox = false;
@@ -320,7 +315,6 @@
 		private ToolStripMenuItem loadFileMenu;
 		private ToolStripMenuItem closeFormMenu;
 		private ToolStripMenuItem editToolStripMenuItem;
-		private ToolStripMenuItem windowMenu;
 		private ToolStripMenuItem helpToolStripMenuItem;
 		private ToolStripMenuItem saveFileMenu;
 		private ToolStripMenuItem optionMenu;

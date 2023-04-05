@@ -351,7 +351,6 @@ true);
 					}
 					if (ret != "")
 					{
-						ret = "[" + ret + "]";
 						Clipboard.SetText(ret);
 					}
 				}

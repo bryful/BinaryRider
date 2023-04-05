@@ -79,7 +79,26 @@ namespace BinaryRider
 		{
 			get { return (Form.ActiveForm == this); }
 		}
-
+		public long ByteSize
+		{
+			get { return this.BDataFile.ByteSize; }
+		}
+		public string FileName
+		{
+			get { return this.BDataFile.FileName; }
+		}
+		public byte[] Data
+		{
+			get
+			{
+				return BDataFile.Data;
+			}
+		}
+		public BSelection Selection
+		{
+			get { return editBinaryTwo1.Selection; }
+			set { editBinaryTwo1.Selection = value; }
+		}
 		// ***************************************************************
 		//[SecurityPermission(SecurityAction.Demand,	Flags = SecurityPermissionFlag.UnmanagedCode)]
 		protected override void WndProc(ref Message m)
@@ -108,7 +127,6 @@ namespace BinaryRider
 
 			newFormMenu.Click += NewToolStripMenuItem_Click;
 			loadFileMenu.Click += OpenToolStripMenuItem_Click;
-			windowMenu.Click += (sender, e) => { MakeWindowMenu(); };
 			topMostMenu.Checked = this.TopMost;
 			optionMenu.Click += (sender, e) =>
 			{
@@ -149,13 +167,6 @@ namespace BinaryRider
 				OnSelChanged(e);
 			};
 
-		}
-		public byte[] Data
-		{
-			get
-			{
-				return BDataFile.Data;
-			}
 		}
 
 		// ***************************************************************
@@ -206,7 +217,7 @@ namespace BinaryRider
 			{
 				this.WindowState = FormWindowState.Normal;
 			}
-			if(state == FormWindowState.Maximized)
+			if (state == FormWindowState.Maximized)
 			{
 				MaxSize();
 			}
@@ -301,43 +312,8 @@ namespace BinaryRider
 		}
 
 
-		public BSelection Selection
-		{
-			get
-			{
-				return editBinaryTwo1.Selection;
-			}
-		}
 		// ***************************************************************
-		public void MakeWindowMenu()
-		{
-			if (windowMenu.DropDownItems.Count > 0)
-			{
-				windowMenu.DropDownItems.Clear();
-			}
-			if (MainForm == null) return;
-			if (MainForm.Forms.Count <= 0) return;
-			List<ToolStripMenuItem> ms = new List<ToolStripMenuItem>();
-			foreach (RiderForm rf in MainForm.Forms)
-			{
-				ToolStripMenuItem m = new ToolStripMenuItem();
-				m.Text = rf.Text;
-				m.Checked = rf.IsActive;
-				m.Tag = (Object)rf;
-				m.Click += (sender, e) =>
-				{
-					ToolStripMenuItem? m = (ToolStripMenuItem?)sender;
-					if (m != null)
-					{
-						RiderForm? rr = (RiderForm?)m.Tag;
-						if (rr != null) rr.Activate();
-					}
-					windowMenu.DropDownItems.Clear();
-				};
-				ms.Add(m);
-			}
-			windowMenu.DropDownItems.AddRange(ms.ToArray());
-		}
+
 		// ***************************************************************
 		public void Copy()
 		{
@@ -375,8 +351,9 @@ namespace BinaryRider
 		private bool IsActived = false;
 		protected override void OnActivated(EventArgs e)
 		{
-
+			if (MainForm != null) { MainForm.FileName = BDataFile.FileName; }
 			base.OnActivated(e);
+
 			IsActived = true;
 			this.Invalidate();
 		}

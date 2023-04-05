@@ -27,7 +27,7 @@ namespace BinaryRider
 						structListBox1.SetData(RiderForm.BDataFile.Data);
 						RiderForm.SelChanged += (sender, e) =>
 						{
-							hexEdit1.Value = e.Start;
+							heAdr.Value = e.Start;
 							structListBox1.StartAdr = e.Start;
 						};
 					}
@@ -38,6 +38,14 @@ namespace BinaryRider
 		{
 			InitializeComponent();
 			structListBox1.Clear();
+			heAdr.ValueChanged += (sender, e) =>
+			{
+				if (RiderForm == null) return;
+				if ((heAdr.Value >= 0) && (heAdr.Value < RiderForm.BDataFile.ByteSize))
+				{
+					structListBox1.StartAdr = heAdr.Value;
+				}
+			};
 		}
 	}
 }
