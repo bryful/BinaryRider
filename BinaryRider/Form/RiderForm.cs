@@ -125,7 +125,6 @@ namespace BinaryRider
 			editBinaryTwo1.DataFile = BDataFile;
 			editBinaryTwo1.SetRiderForm(this);
 
-			newFormMenu.Click += NewToolStripMenuItem_Click;
 			loadFileMenu.Click += OpenToolStripMenuItem_Click;
 			topMostMenu.Checked = this.TopMost;
 			optionMenu.Click += (sender, e) =>

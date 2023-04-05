@@ -190,8 +190,7 @@ true);
 		// *************************************************************
 		
 		private BSheet.MouseDownStatus?  m_MDStat = null;
-		private Point m_MDPoint = new Point();
-		private int m_Start = 0;
+		//private Point m_MDPoint = new Point();
 		protected override void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			if (DataFile != null)

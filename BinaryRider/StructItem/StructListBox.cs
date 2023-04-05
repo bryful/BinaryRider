@@ -238,6 +238,8 @@ namespace BinaryRider
 			e.DrawBackground();
 			if ((e.Index >=0)&&(e.Index < _items.Count))
 			{
+				Font? ff = e.Font;
+				if (ff == null) ff = this.Font;
 				Rectangle bb = e.Bounds;
 				StructItem si = _items[e.Index];
 				Debug.WriteLine(si.ToString());
@@ -246,27 +248,27 @@ namespace BinaryRider
 					_format.Alignment = StringAlignment.Far;
 
 					Rectangle r = new Rectangle(bb.Left, bb.Top, 20, bb.Height);
-					g.DrawString($"{si.Index}", e.Font, sb, r, _format);
+					g.DrawString($"{si.Index}", ff, sb, r, _format);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, 80, r.Height);
-					g.DrawString($"{si.Adress:X4}", e.Font, sb, r, _format);
+					g.DrawString($"{si.Adress:X4}", ff, sb, r, _format);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, 40, r.Height);
-					g.DrawString($"{si.RAdress:X2}", e.Font, sb, r, _format);
+					g.DrawString($"{si.RAdress:X2}", ff, sb, r, _format);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, 20, r.Height);
-					g.DrawString($"{si.ByteLength}", e.Font, sb, r, _format);
+					g.DrawString($"{si.ByteLength}", ff, sb, r, _format);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, 10, r.Height);
 					string be = "B";
 					if (si.IsBigEndian) be = "B"; else be = "L";
-					g.DrawString($"{be}", e.Font, sb, r, _format);
+					g.DrawString($"{be}", ff, sb, r, _format);
 
 					_format.Alignment = StringAlignment.Near;
 					int w = this.Width - (r.Left + r.Width);
 
 					r = new Rectangle(r.Left + r.Width, r.Top, w, r.Height);
-					g.DrawString($"{si.ValueStr()}", e.Font, sb, r, _format);
+					g.DrawString($"{si.ValueStr()}", ff, sb, r, _format);
 				}
 			}
 			e.DrawFocusRectangle();
@@ -314,10 +316,11 @@ namespace BinaryRider
 			}
 			return ret;
 		}
-		public bool FromJson(JsonObject jo)
+		public bool FromJson(JsonObject? jo)
 		{
 			bool ret = false;
 			Clear();
+			if (jo == null) return ret;
 			string key = "Items";
 			if (jo.ContainsKey(key))
 			{
@@ -326,8 +329,9 @@ namespace BinaryRider
 				{
 					if( ja.Count>0 )
 					{
-						foreach( JsonObject item in ja)
+						foreach( JsonObject? item in ja)
 						{
+							if (item == null) continue;
 							StructItem si = new StructItem();
 							if(si.FromJson(item)==true )
 							{

@@ -32,7 +32,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RiderForm));
 			menuStrip1 = new MenuStrip();
 			fileToolStripMenuItem = new ToolStripMenuItem();
-			newFormMenu = new ToolStripMenuItem();
 			loadFileMenu = new ToolStripMenuItem();
 			saveFileMenu = new ToolStripMenuItem();
 			closeFormMenu = new ToolStripMenuItem();
@@ -79,34 +78,28 @@
 			// 
 			// fileToolStripMenuItem
 			// 
-			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newFormMenu, loadFileMenu, saveFileMenu, closeFormMenu });
+			fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFileMenu, saveFileMenu, closeFormMenu });
 			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			fileToolStripMenuItem.Size = new Size(37, 20);
 			fileToolStripMenuItem.Text = "File";
 			// 
-			// newFormMenu
-			// 
-			newFormMenu.Name = "newFormMenu";
-			newFormMenu.Size = new Size(129, 22);
-			newFormMenu.Text = "NewForm";
-			// 
 			// loadFileMenu
 			// 
 			loadFileMenu.Name = "loadFileMenu";
-			loadFileMenu.Size = new Size(129, 22);
+			loadFileMenu.Size = new Size(180, 22);
 			loadFileMenu.Text = "LoadFile";
 			// 
 			// saveFileMenu
 			// 
 			saveFileMenu.Enabled = false;
 			saveFileMenu.Name = "saveFileMenu";
-			saveFileMenu.Size = new Size(129, 22);
+			saveFileMenu.Size = new Size(180, 22);
 			saveFileMenu.Text = "SaveFile";
 			// 
 			// closeFormMenu
 			// 
 			closeFormMenu.Name = "closeFormMenu";
-			closeFormMenu.Size = new Size(129, 22);
+			closeFormMenu.Size = new Size(180, 22);
 			closeFormMenu.Text = "CloseForm";
 			closeFormMenu.Click += quitToolStripMenuItem_Click;
 			// 
@@ -311,7 +304,6 @@
 		#endregion
 		private MenuStrip menuStrip1;
 		private ToolStripMenuItem fileToolStripMenuItem;
-		private ToolStripMenuItem newFormMenu;
 		private ToolStripMenuItem loadFileMenu;
 		private ToolStripMenuItem closeFormMenu;
 		private ToolStripMenuItem editToolStripMenuItem;

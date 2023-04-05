@@ -14,7 +14,7 @@
     <Copyright>bry-ful copyright(c) 2023</Copyright>
     <IsPublishable>False</IsPublishable>
     <RepositoryUrl>https://github.com/bryful/BinaryRider</RepositoryUrl>
-    <VersionPefix>1.0.0</VersionPefix>
+    <VersionPefix>0.0.1</VersionPefix>
     <VersionSuffix>beta</VersionSuffix>
     <Description>Binary Editor</Description>
     <PackageProjectUrl>https://github.com/bryful/BinaryRider</PackageProjectUrl>

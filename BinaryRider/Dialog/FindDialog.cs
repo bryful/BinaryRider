@@ -56,7 +56,6 @@ namespace BinaryRider
 
 			bool IsByte = rbByte.Checked;
 
-			string s = "";
 			if (IsByte)
 			{
 				ret = new ByteStrings(FindMode.String, cmbByte.Text);

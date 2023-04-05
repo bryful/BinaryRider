@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryRider", "BinaryRider\BinaryRider.csproj", "{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BinaryRider Setup", "BinaryRider Setup\BinaryRider Setup.vdproj", "{470DDE98-8BB1-4300-9599-1361AD20EAA4}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BinaryRider Setup", "BinaryRider Setup\BinaryRider Setup.vdproj", "{B31F0DC1-01E4-43A0-9A21-72078DBC4F9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|x64.ActiveCfg = Release|x64
 		{A63F20CC-74DC-46CB-93B7-2275FD9F8A47}.Release|x64.Build.0 = Release|x64
-		{470DDE98-8BB1-4300-9599-1361AD20EAA4}.Debug|Any CPU.ActiveCfg = Debug
-		{470DDE98-8BB1-4300-9599-1361AD20EAA4}.Debug|x64.ActiveCfg = Debug
-		{470DDE98-8BB1-4300-9599-1361AD20EAA4}.Release|Any CPU.ActiveCfg = Release
-		{470DDE98-8BB1-4300-9599-1361AD20EAA4}.Release|x64.ActiveCfg = Release
+		{B31F0DC1-01E4-43A0-9A21-72078DBC4F9E}.Debug|Any CPU.ActiveCfg = Debug
+		{B31F0DC1-01E4-43A0-9A21-72078DBC4F9E}.Debug|x64.ActiveCfg = Debug
+		{B31F0DC1-01E4-43A0-9A21-72078DBC4F9E}.Release|Any CPU.ActiveCfg = Release
+		{B31F0DC1-01E4-43A0-9A21-72078DBC4F9E}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
