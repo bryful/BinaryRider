@@ -91,7 +91,18 @@ namespace BinaryRider
 		{
 			get
 			{
-				return BDataFile.Data;
+				try
+				{
+					return BDataFile.Data;
+				}
+				catch
+				{
+                    if (MainForm!=null)
+                    {
+						MainForm.Alert("例外");
+						return new byte[0]; 
+                    }
+                }
 			}
 		}
 		public BSelection Selection
