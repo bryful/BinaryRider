@@ -24,6 +24,11 @@ namespace BinaryRider
 				SelChanged(this, e);
 			}
 		}
+		public void SetRiderForm(RiderForm? rf)
+		{
+			EditBinary1.SetRiderForm(rf);
+			EditBinary2.SetRiderForm(rf);
+		}
 		public BDataFile? DataFile
 		{
 			get { return EditBinary1.DataFile; }

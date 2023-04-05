@@ -14,12 +14,16 @@ namespace BinaryRider
 	{
 		private bool refFlag = false;
 		private byte m_Value = 0;
+		private byte m_ValueOrg = 0;
 		public byte Value
 		{
 			get { return m_Value; }
 			set
 			{
-				SetValue(value);
+				m_Value = value;
+				m_ValueOrg = value;
+				btnOrg.Text = $"0x{m_ValueOrg:X2}";
+				SetValueA(value);
 			}
 		}
 		public EditValueByte()
@@ -29,36 +33,41 @@ namespace BinaryRider
 			{
 				if (refFlag) return;
 				m_Value = (byte)bitEdit1.Value;
-				SetValue(m_Value);
+				SetValueA(m_Value);
 			};
 			hexEdit1.ValueChanged += (sender, e) =>
 			{
 				if (refFlag) return;
 				m_Value = (byte)hexEdit1.Value;
-				SetValue(m_Value);
+				SetValueA(m_Value);
 			};
 			numericUpDown1.ValueChanged += (sender, e) =>
 			{
 				if (refFlag) return;
 				m_Value = (byte)numericUpDown1.Value;
-				SetValue(m_Value);
+				SetValueA(m_Value);
 			};
 			btnShr.Click += (sender, e) =>
 			{
 				m_Value >>= 1;
-				SetValue(m_Value);
+				SetValueA(m_Value);
 			};
 			btnShl.Click += (sender, e) =>
 			{
 				m_Value <<= 1;
-				SetValue(m_Value);
+				SetValueA(m_Value);
 			};
 			btnOK.Click += (sender, e) =>
 			{
 				this.DialogResult = DialogResult.OK;
 			};
+			btnOrg.Click += (sender, e) =>
+			{
+				m_Value = m_ValueOrg;
+				SetValueA(m_Value);
+			};
 		}
-		public void SetValue(byte b)
+		private void SetValueA(byte b)
 		{
 			refFlag = true;
 			if (bitEdit1.Value != (ulong)b) bitEdit1.Value = (ulong)b;

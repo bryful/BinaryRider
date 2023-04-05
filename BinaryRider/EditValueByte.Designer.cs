@@ -39,6 +39,7 @@
 			lbBin = new Label();
 			lbHex = new Label();
 			lbDec = new Label();
+			btnOrg = new Button();
 			((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
 			SuspendLayout();
 			// 
@@ -151,11 +152,21 @@
 			lbDec.TabIndex = 13;
 			lbDec.Text = "dec";
 			// 
+			// btnOrg
+			// 
+			btnOrg.Location = new Point(12, 105);
+			btnOrg.Name = "btnOrg";
+			btnOrg.Size = new Size(56, 23);
+			btnOrg.TabIndex = 14;
+			btnOrg.Text = "Org";
+			btnOrg.UseVisualStyleBackColor = true;
+			// 
 			// EditValueByte
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(283, 140);
+			Controls.Add(btnOrg);
 			Controls.Add(lbDec);
 			Controls.Add(lbHex);
 			Controls.Add(lbBin);
@@ -189,5 +200,6 @@
 		private Label lbBin;
 		private Label lbHex;
 		private Label lbDec;
+		private Button btnOrg;
 	}
 }

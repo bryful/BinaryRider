@@ -38,6 +38,11 @@ namespace BinaryRider
 		public BSize BSz = new BSize();
 		public BDisp BDp = new BDisp();
 
+		private RiderForm? RiderForm =null;
+		public void SetRiderForm(RiderForm? rf)
+		{
+			RiderForm = rf;
+		}
 		// *************************************************************
 		private Color m_Gay = Color.DimGray;
 		private Color m_ColorSelect = Color.Gray;
@@ -196,8 +201,11 @@ true);
 					BSheet.MouseDownStatus stat = BinSheet.MousePosStatus(e);
 					if ((stat.Adress >= 0)&&(stat.Adress<DataFile.ByteSize))
 					{
+
+
 						using (EditValueByte dlg = new EditValueByte())
 						{
+							if(RiderForm != null) dlg.TopMost = RiderForm.TopMost;
 							dlg.Value = DataFile.Data[stat.Adress];
 							if (dlg.ShowDialog() == DialogResult.OK)
 							{
